@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.calibrator module &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="index.html"/>
+        <link rel="up" title="mafipy package" href="mafipy.html"/>
+        <link rel="next" title="mafipy.date_util module" href="mafipy.date_util.html"/>
+        <link rel="prev" title="mafipy.analytic_formula module" href="mafipy.analytic_formula.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mafipy.analytic_formula.html">mafipy.analytic_formula module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.calibrator module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.date_util.html">mafipy.date_util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.error.html">mafipy.error module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.market_data.html">mafipy.market_data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.market_reader.html">mafipy.market_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.math_formula.html">mafipy.math_formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.payoff.html">mafipy.payoff module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.pricer_quanto_cms.html">mafipy.pricer_quanto_cms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.replication.html">mafipy.replication module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.util.html">mafipy.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mafipy.html#module-mafipy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="mafipy.html">mafipy package</a> &raquo;</li>
+      
+    <li>mafipy.calibrator module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/mafipy.calibrator.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-mafipy.calibrator">
+<span id="mafipy-calibrator-module"></span><h1>mafipy.calibrator module<a class="headerlink" href="#module-mafipy.calibrator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mafipy.calibrator.Calibrator">
+<em class="property">class </em><code class="descclassname">mafipy.calibrator.</code><code class="descname">Calibrator</code><a class="reference internal" href="_modules/mafipy/calibrator.html#Calibrator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.Calibrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mafipy.calibrator.Calibrator.calibrate">
+<code class="descname">calibrate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/calibrator.html#Calibrator.calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.Calibrator.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mafipy.calibrator.SimpleSabrCalibrator">
+<em class="property">class </em><code class="descclassname">mafipy.calibrator.</code><code class="descname">SimpleSabrCalibrator</code><a class="reference internal" href="_modules/mafipy/calibrator.html#SimpleSabrCalibrator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.SimpleSabrCalibrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mafipy.calibrator.Calibrator" title="mafipy.calibrator.Calibrator"><code class="xref py py-class docutils literal"><span class="pre">mafipy.calibrator.Calibrator</span></code></a></p>
+<p>Calibrate Alpha, Rho, and Nu Directly</p>
+<dl class="method">
+<dt id="mafipy.calibrator.SimpleSabrCalibrator.calibrate">
+<code class="descname">calibrate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/calibrator.html#SimpleSabrCalibrator.calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.SimpleSabrCalibrator.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mafipy.calibrator.WestSabrCalibrator">
+<em class="property">class </em><code class="descclassname">mafipy.calibrator.</code><code class="descname">WestSabrCalibrator</code><a class="reference internal" href="_modules/mafipy/calibrator.html#WestSabrCalibrator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.WestSabrCalibrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mafipy.calibrator.Calibrator" title="mafipy.calibrator.Calibrator"><code class="xref py py-class docutils literal"><span class="pre">mafipy.calibrator.Calibrator</span></code></a></p>
+<p>Calibrate Rho and Nu by Implying Alpha from At-The-Money Volatility.
+West, G., &#8220;Calibration of the SABR Model in Illiquid Markets,&#8221; Applied Mathematical Finance, 12(4), pp. 371–385, 2004.</p>
+<dl class="method">
+<dt id="mafipy.calibrator.WestSabrCalibrator.calibrate">
+<code class="descname">calibrate</code><span class="sig-paren">(</span><em>strike_list</em>, <em>vol_list</em>, <em>beta</em>, <em>rho</em>, <em>nu</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/calibrator.html#WestSabrCalibrator.calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.WestSabrCalibrator.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mafipy.date_util.html" class="btn btn-neutral float-right" title="mafipy.date_util module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mafipy.analytic_formula.html" class="btn btn-neutral" title="mafipy.analytic_formula module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

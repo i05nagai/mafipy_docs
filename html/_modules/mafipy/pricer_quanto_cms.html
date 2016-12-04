@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.pricer_quanto_cms &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mafipy.html">mafipy package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>mafipy.pricer_quanto_cms</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for mafipy.pricer_quanto_cms</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">analytic_formula</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">math_formula</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">payoff</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">replication</span>
+
+
+<div class="viewcode-block" id="make_pdf_black_scholes_model"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_black_scholes_model">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_black_scholes_model</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span>
+        <span class="n">rate</span><span class="p">,</span>
+        <span class="n">maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;make_pdf_black_scholes_model</span>
+
+<span class="sd">    :param underlying:</span>
+<span class="sd">    :param rate:</span>
+<span class="sd">    :param maturity: non-negative.</span>
+<span class="sd">    :param vol: volatility. non-negative.</span>
+<span class="sd">    :return: p.d.f. of call price under black scholes model</span>
+<span class="sd">        as a function of strike.</span>
+<span class="sd">    :rtype: function with strike.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span><span class="n">strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_scholes_call_value_fhess_by_strike</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="o">=</span><span class="n">underlying</span><span class="p">,</span>
+            <span class="n">strike</span><span class="o">=</span><span class="n">strike</span><span class="p">,</span>
+            <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span>
+            <span class="n">maturity</span><span class="o">=</span><span class="n">maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pdf</span></div>
+
+
+<div class="viewcode-block" id="make_pdf_fprime_black_scholes_model"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes_model">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_fprime_black_scholes_model</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span>
+        <span class="n">rate</span><span class="p">,</span>
+        <span class="n">maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;make_pdf_fprime_black_scholes_model</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity: non-negative.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
+<span class="sd">    :return: p.d.f. of call price under black scholes model</span>
+<span class="sd">        as a function of strike.</span>
+<span class="sd">    :rtype: lambda</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pdf_fprime</span><span class="p">(</span><span class="n">strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_scholes_call_value_third_by_strike</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="o">=</span><span class="n">underlying</span><span class="p">,</span>
+            <span class="n">strike</span><span class="o">=</span><span class="n">strike</span><span class="p">,</span>
+            <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span>
+            <span class="n">maturity</span><span class="o">=</span><span class="n">maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pdf_fprime</span></div>
+
+
+<div class="viewcode-block" id="make_cdf_black_scholes_model"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_cdf_black_scholes_model">[docs]</a><span class="k">def</span> <span class="nf">make_cdf_black_scholes_model</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span>
+        <span class="n">rate</span><span class="p">,</span>
+        <span class="n">maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;make_cdf_black_scholes_model</span>
+
+<span class="sd">    :param underlying:</span>
+<span class="sd">    :param rate:</span>
+<span class="sd">    :param maturity:</span>
+<span class="sd">    :param vol:</span>
+<span class="sd">    :return: distribution of call price under black scholes model</span>
+<span class="sd">        as a funciton of strike.</span>
+<span class="sd">    :rtype: lambda</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">strike</span><span class="p">:</span> <span class="p">(</span>
+        <span class="mf">1.0</span> <span class="o">+</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_scholes_call_value_fprime_by_strike</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_calc_h</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">):</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
+
+    <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_h_fprime</span><span class="p">(</span><span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">h_fprime</span> <span class="o">=</span> <span class="n">swap_rate_pdf</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">RuntimeWarning</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;swap_rate:&quot;</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span>
+              <span class="s2">&quot;swap_rate_pdf(swap_rate):&quot;</span><span class="p">,</span> <span class="n">swap_rate_pdf</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">),</span>
+              <span class="s2">&quot;h:&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span>
+              <span class="s2">&quot;norm.pdf(h):&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">h_fprime</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_h_fhess</span><span class="p">(</span><span class="n">swap_rate_pdf_fprime</span><span class="p">,</span> <span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">h_fprime</span><span class="p">):</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
+    <span class="n">h_term1</span> <span class="o">=</span> <span class="n">swap_rate_pdf_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">h_term2</span> <span class="o">=</span> <span class="p">(</span><span class="n">swap_rate_pdf</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+               <span class="o">*</span> <span class="n">math_formula</span><span class="o">.</span><span class="n">norm_pdf_fprime</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">*</span> <span class="n">h_fprime</span><span class="p">)</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">h_term1</span> <span class="o">-</span> <span class="n">h_term2</span><span class="p">)</span> <span class="o">/</span> <span class="n">denominator</span>
+
+
+<span class="k">def</span> <span class="nf">_forward_fx_diffusion</span><span class="p">(</span>
+        <span class="n">swap_rate</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">,</span>
+        <span class="n">corr</span><span class="p">,</span>
+        <span class="n">swap_rate_cdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf_fprime</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_forward_fx_diffusion</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\tilde{\chi}(s)</span>
+<span class="sd">        := \exp</span>
+<span class="sd">            \left(</span>
+<span class="sd">                \\rho_{XS}\sigma_{X}\sqrt{T}\Phi^{-1}(\Psi^{A}(s))</span>
+<span class="sd">                    + \\frac{\sigma_{X}^{2}T}{2}(1 - \\rho_{XS}^{2})</span>
+<span class="sd">            \\right).</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`s` is :param swap_rate:,</span>
+<span class="sd">    :math:`\\rho_{XS}` is :param corr:,</span>
+<span class="sd">    :math:`\sigma_{X}` is :param vol:,</span>
+
+<span class="sd">    :param float swap_rate:</span>
+<span class="sd">    :param float time:</span>
+<span class="sd">    :param float vol:</span>
+<span class="sd">    :param float corr:</span>
+<span class="sd">    :param callable dist_func: distribution of foward swap rate</span>
+<span class="sd">        under annuity measure</span>
+<span class="sd">    :return: value of forward fx diffusion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">_calc_h</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">)</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">time</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">corr</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_forward_fx_diffusion_fprime</span><span class="p">(</span>
+        <span class="n">swap_rate</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">,</span>
+        <span class="n">corr</span><span class="p">,</span>
+        <span class="n">swap_rate_cdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf_fprime</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_forward_fx_diffusion_fprime</span>
+<span class="sd">    derivative of forward fx diffusion.</span>
+<span class="sd">    See :py:func:`_forward_fx_diffusion`.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">            &amp; = &amp; \\rho_{XS}\sigma_{X}\sqrt{T}h&#39;(s) \\tilde{\chi}(s)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`h(s) := \Phi^{-1}(\Psi^{A}(s))`</span>
+
+<span class="sd">    :param float swap_rate:</span>
+<span class="sd">    :param float time:</span>
+<span class="sd">    :param float vol:</span>
+<span class="sd">    :param float corr:</span>
+<span class="sd">    :param function swap_rate_cdf: distribution of forward swap rate</span>
+<span class="sd">        under annuity measure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">_forward_fx_diffusion</span><span class="p">(</span>
+        <span class="n">swap_rate</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">,</span>
+        <span class="n">corr</span><span class="p">,</span>
+        <span class="n">swap_rate_cdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">_calc_h</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">)</span>
+    <span class="n">h_fprime</span> <span class="o">=</span> <span class="n">_calc_h_fprime</span><span class="p">(</span><span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">h_fprime</span> <span class="o">*</span> <span class="n">forward_fx_diffusion</span>
+
+
+<span class="k">def</span> <span class="nf">_forward_fx_diffusion_fhess</span><span class="p">(</span>
+        <span class="n">swap_rate</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">,</span>
+        <span class="n">corr</span><span class="p">,</span>
+        <span class="n">swap_rate_cdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf_fprime</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_forward_fx_diffusion_fhess</span>
+<span class="sd">    Calculate second derivative of diffusion part of forward FX.</span>
+<span class="sd">    See :py:func:`_forward_fx_diffusion`</span>
+<span class="sd">    and :py:func:`_forward_fx_diffusion_fprime`.</span>
+
+<span class="sd">    :param float swap_rate:</span>
+<span class="sd">    :param float time: non-negative.</span>
+<span class="sd">    :param float vol: non-negative.</span>
+<span class="sd">    :param float corr: correlatiion. value must be from -1 to 1.</span>
+<span class="sd">    :param callable swap_rate_cdf: distribution of forward swap</span>
+<span class="sd">        rate under annuity measure</span>
+<span class="sd">    :param cllable swap_rate_pdf: probability density of forwrad swap rate</span>
+<span class="sd">        under annuity measure</span>
+<span class="sd">    :param callable swap_rate_pdf_fprime: derivative of probability density of</span>
+<span class="sd">        forward swap rate under annuity measure.</span>
+<span class="sd">    :return: second derivative of diffusion part of forward FX.</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">&lt;=</span> <span class="n">corr</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">h</span> <span class="o">=</span> <span class="n">_calc_h</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">)</span>
+    <span class="n">h_fprime</span> <span class="o">=</span> <span class="n">_calc_h_fprime</span><span class="p">(</span><span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">h_fhess</span> <span class="o">=</span> <span class="n">_calc_h_fhess</span><span class="p">(</span>
+        <span class="n">swap_rate_pdf_fprime</span><span class="p">,</span> <span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">h_fprime</span><span class="p">)</span>
+    <span class="c1"># fhess</span>
+    <span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">_forward_fx_diffusion</span><span class="p">(</span>
+        <span class="n">swap_rate</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">,</span>
+        <span class="n">corr</span><span class="p">,</span>
+        <span class="n">swap_rate_cdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf</span><span class="p">,</span>
+        <span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
+    <span class="n">factor1</span> <span class="o">=</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">forward_fx_diffusion</span>
+    <span class="n">factor2</span> <span class="o">=</span> <span class="n">h_fhess</span> <span class="o">+</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">h_fprime</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">factor1</span> <span class="o">*</span> <span class="n">factor2</span>
+
+
+<span class="k">class</span> <span class="nc">_ForwardFxDiffusionHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">time</span><span class="p">,</span>
+                 <span class="n">vol</span><span class="p">,</span>
+                 <span class="n">corr</span><span class="p">,</span>
+                 <span class="n">swap_rate_cdf</span><span class="p">,</span>
+                 <span class="n">swap_rate_pdf</span><span class="p">,</span>
+                 <span class="n">swap_rate_pdf_fprime</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vol</span> <span class="o">=</span> <span class="n">vol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corr</span> <span class="o">=</span> <span class="n">corr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_cdf</span> <span class="o">=</span> <span class="n">swap_rate_cdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf</span> <span class="o">=</span> <span class="n">swap_rate_pdf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span> <span class="o">=</span> <span class="n">swap_rate_pdf_fprime</span>
+
+    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">swap_rate</span><span class="p">:</span> <span class="n">_forward_fx_diffusion</span><span class="p">(</span>
+            <span class="n">swap_rate</span><span class="o">=</span><span class="n">swap_rate</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vol</span><span class="p">,</span>
+            <span class="n">corr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corr</span><span class="p">,</span>
+            <span class="n">swap_rate_cdf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_cdf</span><span class="p">,</span>
+            <span class="n">swap_rate_pdf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf</span><span class="p">,</span>
+            <span class="n">swap_rate_pdf_fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">swap_rate</span><span class="p">:</span> <span class="n">_forward_fx_diffusion_fprime</span><span class="p">(</span>
+            <span class="n">swap_rate</span><span class="o">=</span><span class="n">swap_rate</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vol</span><span class="p">,</span>
+            <span class="n">corr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corr</span><span class="p">,</span>
+            <span class="n">swap_rate_cdf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_cdf</span><span class="p">,</span>
+            <span class="n">swap_rate_pdf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf</span><span class="p">,</span>
+            <span class="n">swap_rate_pdf_fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">swap_rate</span><span class="p">:</span> <span class="n">_forward_fx_diffusion_fhess</span><span class="p">(</span>
+            <span class="n">swap_rate</span><span class="o">=</span><span class="n">swap_rate</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vol</span><span class="p">,</span>
+            <span class="n">corr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corr</span><span class="p">,</span>
+            <span class="n">swap_rate_cdf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_cdf</span><span class="p">,</span>
+            <span class="n">swap_rate_pdf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf</span><span class="p">,</span>
+            <span class="n">swap_rate_pdf_fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper">[docs]</a><span class="k">class</span> <span class="nc">SimpleQuantoCmsHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper.make_numerator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper.make_numerator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper.make_numerator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper.make_denominator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper.make_denominator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsHelper.make_denominator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper">[docs]</a><span class="k">class</span> <span class="nc">SimpleQuantoCmsLinearCallHelper</span><span class="p">(</span><span class="n">SimpleQuantoCmsHelper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;SimpleQuantoCmsLinearCallHelper&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">annuity_mapping_helper</span><span class="p">,</span>
+                 <span class="n">call_payoff_helper</span><span class="p">,</span>
+                 <span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
+                 <span class="n">call_pricer</span><span class="p">,</span>
+                 <span class="n">put_pricer</span><span class="p">,</span>
+                 <span class="n">payoff_strike</span><span class="p">):</span>
+        <span class="c1"># annutiy mapping funciton</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fhess</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
+        <span class="c1"># payoff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_strike</span>
+        <span class="c1"># forawad fx diffusion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
+        <span class="c1"># pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
+
+    <span class="k">def</span> <span class="nf">_make_numerator_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func3</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func4</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">,</span> <span class="n">func4</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func3</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_make_denominator_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func3</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SimpleQuantoCmsPricer"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer">[docs]</a><span class="k">class</span> <span class="nc">SimpleQuantoCmsPricer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;SimpleQuantoCmsPricer&quot;&quot;&quot;</span>
+
+    <span class="n">payoff_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;call&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;put&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;bull_spread&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">annuity_mapping_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;linear&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">annuity_mapping_type</span><span class="p">,</span>
+                 <span class="n">annuity_mapping_params</span><span class="p">,</span>
+                 <span class="n">payoff_type</span><span class="p">,</span>
+                 <span class="n">payoff_params</span><span class="p">,</span>
+                 <span class="n">forward_fx_diffusion_params</span><span class="p">,</span>
+                 <span class="n">call_pricer</span><span class="p">,</span>
+                 <span class="n">put_pricer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;__init__</span>
+
+<span class="sd">        :param annuity_mapping_type:</span>
+<span class="sd">        :param annuity_mapping_params:</span>
+<span class="sd">        :param payoff_type:</span>
+<span class="sd">        :param payoff_params:</span>
+<span class="sd">        :param forward_fx_diffusion_params:</span>
+<span class="sd">        :param call_pricer:</span>
+<span class="sd">        :param put_pricer:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_type</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_dict</span><span class="p">[</span><span class="n">annuity_mapping_type</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_dict</span><span class="p">[</span><span class="n">payoff_type</span><span class="p">]</span>
+        <span class="c1"># forward fx diffusion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_helper</span> <span class="o">=</span> <span class="n">_ForwardFxDiffusionHelper</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">forward_fx_diffusion_params</span><span class="p">)</span>
+        <span class="c1"># annuity mapping func</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_helper</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">replication</span><span class="o">.</span><span class="n">LinearAnnuityMappingFuncHelper</span><span class="p">(</span>
+                    <span class="o">**</span><span class="n">annuity_mapping_params</span><span class="p">))</span>
+        <span class="c1"># payoff</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">payoff_helper</span> <span class="o">=</span> <span class="n">payoff</span><span class="o">.</span><span class="n">CallUnderlyingPayoffHelper</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">payoff_params</span><span class="p">)</span>
+        <span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;strike&quot;</span><span class="p">]</span>
+        <span class="c1"># pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
+        <span class="c1"># quanto cms</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">quanto_cms_helper</span> <span class="o">=</span> <span class="n">SimpleQuantoCmsLinearCallHelper</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_helper</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">payoff_helper</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
+                <span class="n">call_pricer</span><span class="p">,</span>
+                <span class="n">put_pricer</span><span class="p">,</span>
+                <span class="n">payoff_strike</span><span class="p">)</span>
+        <span class="c1"># replication</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numerator_replication</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_replication</span><span class="p">(</span>
+            <span class="n">quanto_cms_helper</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">denominator_replication</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_replication</span><span class="p">(</span>
+            <span class="n">quanto_cms_helper</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_numerator_replication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quanto_cms_helper</span><span class="p">):</span>
+        <span class="n">put_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_put_integrands</span><span class="p">()</span>
+        <span class="n">call_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_call_integrands</span><span class="p">()</span>
+        <span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_analytic_funcs</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">replication</span><span class="o">.</span><span class="n">AnalyticReplication</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">,</span>
+            <span class="n">analytic_funcs</span><span class="p">,</span>
+            <span class="n">put_integrands</span><span class="p">,</span>
+            <span class="n">call_integrands</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_denominator_replication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quanto_cms_helper</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_make_denominator_replication</span>
+
+<span class="sd">        :param qunato_cms_helper:</span>
+<span class="sd">        :return: generated replication object</span>
+<span class="sd">        :rtype: :py:class:`AnalyticReplication`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">put_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_put_integrands</span><span class="p">()</span>
+        <span class="n">call_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_call_integrands</span><span class="p">()</span>
+        <span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_analytic_funcs</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">replication</span><span class="o">.</span><span class="n">AnalyticReplication</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">,</span>
+            <span class="n">analytic_funcs</span><span class="p">,</span>
+            <span class="n">put_integrands</span><span class="p">,</span>
+            <span class="n">call_integrands</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SimpleQuantoCmsPricer.eval"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">discount_factor</span><span class="p">,</span>
+             <span class="n">init_swap_rate</span><span class="p">,</span>
+             <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+             <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eval</span>
+
+<span class="sd">        :param float discount_factor: discount factor at payment date.</span>
+<span class="sd">        :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">        :param float min_put_range:</span>
+<span class="sd">        :param float max_call_range:</span>
+<span class="sd">        :return: value of quanto cms.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numerator_replication</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">min_put_range</span><span class="o">=</span><span class="n">min_put_range</span><span class="p">,</span>
+            <span class="n">max_call_range</span><span class="o">=</span><span class="n">max_call_range</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numerator&quot;</span><span class="p">,</span> <span class="n">numerator</span><span class="p">)</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator_replication</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">min_put_range</span><span class="o">=</span><span class="n">min_put_range</span><span class="p">,</span>
+            <span class="n">max_call_range</span><span class="o">=</span><span class="n">max_call_range</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;denominator&quot;</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">discount_factor</span> <span class="o">*</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.replication &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mafipy.html">mafipy package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>mafipy.replication</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for mafipy.replication</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">scipy.integrate</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
+
+
+<div class="viewcode-block" id="linear_annuity_mapping_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.linear_annuity_mapping_func">[docs]</a><span class="k">def</span> <span class="nf">linear_annuity_mapping_func</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;linear_annuity_mapping_func</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float alpha0:</span>
+<span class="sd">    :param float alpha1:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">underlying</span> <span class="o">*</span> <span class="n">alpha0</span> <span class="o">+</span> <span class="n">alpha1</span></div>
+
+
+<div class="viewcode-block" id="linear_annuity_mapping_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.linear_annuity_mapping_fprime">[docs]</a><span class="k">def</span> <span class="nf">linear_annuity_mapping_fprime</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;linear_annuity_mapping_fprime</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float alpha0:</span>
+<span class="sd">    :param float alpha1:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">alpha0</span></div>
+
+
+<div class="viewcode-block" id="linear_annuity_mapping_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.linear_annuity_mapping_fhess">[docs]</a><span class="k">def</span> <span class="nf">linear_annuity_mapping_fhess</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;linear_annuity_mapping_fhess</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float alpha0:</span>
+<span class="sd">    :param float alpha1:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">0.0</span></div>
+
+
+<div class="viewcode-block" id="AnnuityMappingFuncHelper"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper">[docs]</a><span class="k">class</span> <span class="nc">AnnuityMappingFuncHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payoff_params</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payoff_params</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payoff_params</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="LinearAnnuityMappingFuncHelper"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper">[docs]</a><span class="k">class</span> <span class="nc">LinearAnnuityMappingFuncHelper</span><span class="p">(</span><span class="n">AnnuityMappingFuncHelper</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;alpha0&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha1&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">check_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+
+<div class="viewcode-block" id="LinearAnnuityMappingFuncHelper.make_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">linear_annuity_mapping_func</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LinearAnnuityMappingFuncHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">linear_annuity_mapping_fprime</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LinearAnnuityMappingFuncHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">linear_annuity_mapping_fhess</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Replication"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.Replication">[docs]</a><span class="k">class</span> <span class="nc">Replication</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Replication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.Replication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="SimpleReplication"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.SimpleReplication">[docs]</a><span class="k">class</span> <span class="nc">SimpleReplication</span><span class="p">(</span><span class="n">Replication</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">call_pricer</span><span class="p">,</span>
+                 <span class="n">put_pricer</span><span class="p">,</span>
+                 <span class="n">payoff_func</span><span class="p">,</span>
+                 <span class="n">payoff_fhess</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span> <span class="o">=</span> <span class="n">payoff_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span>
+
+    <span class="k">def</span> <span class="nf">_first_integrand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_second_integrand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SimpleReplication.weight"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.SimpleReplication.weight">[docs]</a>    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SimpleReplication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.SimpleReplication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">):</span>
+        <span class="n">integrate</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span>
+
+        <span class="n">first_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+        <span class="n">second_term</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_first_integrand</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">)</span>
+        <span class="n">third_term</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_second_integrand</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">first_term</span> <span class="o">+</span> <span class="n">second_term</span> <span class="o">+</span> <span class="n">third_term</span></div></div>
+
+
+<div class="viewcode-block" id="AnalyticReplication"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnalyticReplication">[docs]</a><span class="k">class</span> <span class="nc">AnalyticReplication</span><span class="p">(</span><span class="n">Replication</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">call_pricer</span><span class="p">,</span>
+                 <span class="n">put_pricer</span><span class="p">,</span>
+                 <span class="n">analytic_funcs</span><span class="o">=</span><span class="p">[],</span>
+                 <span class="n">put_integrands</span><span class="o">=</span><span class="p">[],</span>
+                 <span class="n">call_integrands</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">analytic_funcs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_integrands</span> <span class="o">=</span> <span class="n">put_integrands</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_integrands</span> <span class="o">=</span> <span class="n">call_integrands</span>
+
+    <span class="k">def</span> <span class="nf">_calc_analytic_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analytic_funcs</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_calc_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">pricer</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+        <span class="n">integrate</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">pricer</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_calc_put_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_calc_integral</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">,</span>
+                                        <span class="n">min_put_range</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_integrands</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_calc_call_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_calc_integral</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">,</span>
+                                        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_integrands</span><span class="p">])</span>
+
+<div class="viewcode-block" id="AnalyticReplication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnalyticReplication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">init_swap_rate</span><span class="p">,</span>
+             <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+             <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
+        <span class="n">analytic_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_analytic_term</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+        <span class="n">put_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_put_integral</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">)</span>
+        <span class="n">call_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_call_integral</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">analytic_term</span> <span class="o">+</span> <span class="n">put_integral_term</span> <span class="o">+</span> <span class="n">call_integral_term</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

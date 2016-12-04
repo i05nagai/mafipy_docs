@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.calibrator &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mafipy.html">mafipy package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>mafipy.calibrator</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for mafipy.calibrator</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">analytic_formula</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">date_util</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">market_data</span>
+
+
+<div class="viewcode-block" id="Calibrator"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.Calibrator">[docs]</a><span class="k">class</span> <span class="nc">Calibrator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Calibrator.calibrate"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.Calibrator.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="SimpleSabrCalibrator"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.SimpleSabrCalibrator">[docs]</a><span class="k">class</span> <span class="nc">SimpleSabrCalibrator</span><span class="p">(</span><span class="n">Calibrator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calibrate Alpha, Rho, and Nu Directly</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SimpleSabrCalibrator.calibrate"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.SimpleSabrCalibrator.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="WestSabrCalibrator"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.WestSabrCalibrator">[docs]</a><span class="k">class</span> <span class="nc">WestSabrCalibrator</span><span class="p">(</span><span class="n">Calibrator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calibrate Rho and Nu by Implying Alpha from At-The-Money Volatility.</span>
+<span class="sd">    West, G., &quot;Calibration of the SABR Model in Illiquid Markets,&quot; Applied Mathematical Finance, 12(4), pp. 371–385, 2004.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_calc_poly_alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given rho and nu, then solve cubic polynominal with respecto alpha.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">underlying</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">atm_vol</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+        <span class="n">oneMinusBeta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span>
+        <span class="n">numerator1</span> <span class="o">=</span> <span class="p">(</span><span class="n">oneMinusBeta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">time</span>
+        <span class="n">denominator1</span> <span class="o">=</span> <span class="mf">24.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oneMinusBeta</span><span class="p">))</span>
+        <span class="n">term1</span> <span class="o">=</span> <span class="n">numerator1</span> <span class="o">/</span> <span class="n">denominator1</span>
+        <span class="n">numerator2</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">time</span>
+        <span class="n">denominator2</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span><span class="o">**</span><span class="n">oneMinusBeta</span><span class="p">)</span>
+        <span class="n">term2</span> <span class="o">=</span> <span class="n">numerator2</span> <span class="o">/</span> <span class="n">denominator2</span>
+        <span class="n">numerator3</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">time</span>
+        <span class="n">term3</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">numerator3</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span>
+        <span class="n">term4</span> <span class="o">=</span> <span class="n">atm_vol</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span><span class="o">**</span><span class="n">oneMinusBeta</span><span class="p">)</span>
+        <span class="n">coeff</span> <span class="o">=</span> <span class="p">[</span><span class="n">term1</span><span class="p">,</span> <span class="n">term2</span><span class="p">,</span> <span class="n">term3</span><span class="p">,</span> <span class="n">term4</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_solve_alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">complex_to_real</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+        <span class="n">roots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_poly_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">complex_to_real</span><span class="p">,</span> <span class="n">roots</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_make_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">,</span> <span class="n">strike_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        param:</span>
+<span class="sd">        vol_list:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">atm_strike</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_strike</span><span class="p">(</span><span class="n">strike_list</span><span class="p">)</span>
+        <span class="n">atm_vol</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_vol</span><span class="p">(</span><span class="n">vol_list</span><span class="p">)</span>
+        <span class="n">underlying</span> <span class="o">=</span> <span class="n">atm_strike</span>
+
+        <span class="k">def</span> <span class="nf">objective_function</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">nu</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solve_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">atm_strike</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">strike</span><span class="p">,</span> <span class="n">vol</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">strike_list</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">):</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="p">(</span><span class="n">vol</span> <span class="o">-</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">calc_sabr_model_implied_vol</span><span class="p">(</span>
+                    <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="k">return</span> <span class="n">total</span>
+        <span class="k">return</span> <span class="n">objective_function</span>
+
+<div class="viewcode-block" id="WestSabrCalibrator.calibrate"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.WestSabrCalibrator.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike_list</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">atm_strike</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_strike</span><span class="p">(</span><span class="n">strike_list</span><span class="p">)</span>
+        <span class="n">atm_vol</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_vol</span><span class="p">(</span><span class="n">vol_list</span><span class="p">)</span>
+        <span class="n">objective_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_objective_function</span><span class="p">(</span>
+            <span class="n">vol_list</span><span class="p">,</span> <span class="n">strike_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+        <span class="c1"># determine rho and nu</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="n">objective_function</span><span class="p">,</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;BFGS&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;optimization error!&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
+        <span class="c1"># determine alpha by rho and nu</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solve_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">atm_strike</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">market_reader</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;./tests/data/market_volatility.json&quot;</span>
+    <span class="n">market_date</span> <span class="o">=</span> <span class="s2">&quot;2013-06-12&quot;</span>
+    <span class="n">maturity_date</span> <span class="o">=</span> <span class="s2">&quot;2014-09-12&quot;</span>
+
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">nu</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">date_util</span><span class="o">.</span><span class="n">calc_day_count_fraction</span><span class="p">(</span><span class="n">market_date</span><span class="p">,</span> <span class="n">maturity_date</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">market_reader</span><span class="o">.</span><span class="n">VolatilityReader</span><span class="p">()</span>
+    <span class="n">reader</span><span class="o">.</span><span class="n">read_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">vol_list</span><span class="p">,</span> <span class="n">strike_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_volatility_and_strike</span><span class="p">(</span>
+        <span class="n">market_date</span><span class="p">,</span> <span class="n">maturity_date</span><span class="p">)</span>
+
+    <span class="n">calibrator</span> <span class="o">=</span> <span class="n">WestSabrCalibrator</span><span class="p">()</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">calibrator</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">strike_list</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
