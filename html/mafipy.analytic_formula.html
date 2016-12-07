@@ -156,10 +156,18 @@
 <dt id="mafipy.analytic_formula.BlackScholesPricerHelper">
 <em class="property">class </em><code class="descclassname">mafipy.analytic_formula.</code><code class="descname">BlackScholesPricerHelper</code><a class="reference internal" href="_modules/mafipy/analytic_formula.html#BlackScholesPricerHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.BlackScholesPricerHelper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Helper functions to generate a function with respect to a sigle variable.
+For instance, black formula as a function of volatility is needed to
+evaluate market smile by implied volatility.</p>
 <dl class="method">
 <dt id="mafipy.analytic_formula.BlackScholesPricerHelper.make_call_wrt_strike">
 <code class="descname">make_call_wrt_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em>, <em>today=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#BlackScholesPricerHelper.make_call_wrt_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.BlackScholesPricerHelper.make_call_wrt_strike" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>make function of black shcoles call formula with respect to function.
+This function return <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="mafipy.analytic_formula.calc_black_scholes_call_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_value()</span></code></a>
+as funciton of a single variable.</p>
+<div class="math">
+\[c(K; S, r, T, \sigma) := c(S, K, r, T, \sigma)\]</div>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -167,15 +175,15 @@
 <li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
 <li><strong>rate</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
-<li><strong>today</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility.</li>
+<li><strong>today</strong> (<em>float</em>) &#8211; default value is 0.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">call option pricer as a function of strike.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">func</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">LambdaType</p>
 </td>
 </tr>
 </tbody>
@@ -185,7 +193,12 @@
 <dl class="method">
 <dt id="mafipy.analytic_formula.BlackScholesPricerHelper.make_put_wrt_strike">
 <code class="descname">make_put_wrt_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em>, <em>today=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#BlackScholesPricerHelper.make_put_wrt_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.BlackScholesPricerHelper.make_put_wrt_strike" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>make function of black shcoles put formula with respect to function.
+This function return <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_put_value" title="mafipy.analytic_formula.calc_black_scholes_put_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_put_value()</span></code></a>
+as funciton of a single variable.</p>
+<div class="math">
+\[p(K; S, r, T, \sigma) := p(S, K, r, T, \sigma)\]</div>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -193,15 +206,15 @@
 <li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
 <li><strong>rate</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
-<li><strong>today</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility</li>
+<li><strong>today</strong> (<em>float</em>) &#8211; default value is 0.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">put option pricer as a function of strike.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">func</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">LambdaType.</p>
 </td>
 </tr>
 </tbody>
@@ -214,7 +227,31 @@
 <dt id="mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_value_fhess_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_value_fhess_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike" title="Permalink to this definition">¶</a></dt>
 <dd><p>Second derivative of value of call option with respect to strike
-under black scholes model.</p>
+under black scholes model.
+See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>
+and <a class="reference internal" href="#mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike" title="mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike"><code class="xref py py-func docutils literal"><span class="pre">black_scholes_call_value_fprime_by_strike()</span></code></a>.</p>
+<div class="math">
+\[\begin{split}\begin{array}{ccl}
+    \frac{\partial^{2}}{\partial K^{2}} c(0, S; T, K)
+        &amp; = &amp;
+        S\phi^{\prime}(d_{1}(K))(d_{1}^{\prime}(K))^{2}
+        + S\phi(d_{1}(K))d_{1}^{\prime\prime}(K)
+        - 2\phi(d_{2}(K))d_{2}^{\prime}(K)
+        \\
+        &amp; &amp;
+        - K\phi^{\prime}(d_{2}(K))(d_{2}^{\prime}(K))^{2}
+        - K\phi(d_{2}(K))d_{2}^{\prime\prime}(K))
+\end{array}\end{split}\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is vol,
+<span class="math">\(d_{1}, d_{2}\)</span> is defined
+in <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>,
+<span class="math">\(\Phi(\cdot)\)</span> is c.d.f. of standard normal distribution,
+<span class="math">\(\phi(\cdot)\)</span> is p.d.f. of standard normal distribution.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -268,95 +305,11 @@ in <a class="reference internal" href="#mafipy.analytic_formula.calc_black_schol
 <li><strong>strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>rate</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. must be non-negative.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of derivative.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.analytic_formula.black_scholes_call_value_third_by_strike">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_value_third_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_value_third_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_value_third_by_strike" title="Permalink to this definition">¶</a></dt>
-<dd><p>Third derivative of value of call option with respect to strike
-under black scholes model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
-<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
-<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
-<li><strong>maturity</strong> (<em>float</em>) &#8211; non-negative.</li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. non-negative.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of third derivative.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.analytic_formula.calc_black_model_payers_swaption_value">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_black_model_payers_swaption_value</code><span class="sig-paren">(</span><em>swap_rate</em>, <em>strike</em>, <em>option_maturity</em>, <em>vol</em>, <em>swap_annuity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_black_model_payers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_black_model_payers_swaption_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate value of payer&#8217;s swaption under assumption
-that swap rate is black scholes model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>swap_rate</strong> (<em>float</em>) &#8211; </li>
-<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
-<li><strong>option_maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; must be non-negative.</li>
-<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of payer&#8217;s swaption.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.analytic_formula.calc_black_model_recievers_swaption_value">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_black_model_recievers_swaption_value</code><span class="sig-paren">(</span><em>swap_rate</em>, <em>strike</em>, <em>option_maturity</em>, <em>vol</em>, <em>swap_annuity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_black_model_recievers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_black_model_recievers_swaption_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate value of reciever&#8217;s swaption under assumption
-that swap rate is black scholes model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>swap_rate</strong> (<em>float</em>) &#8211; </li>
-<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
-<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
-<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of reciever&#8217;s swaption.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
@@ -418,7 +371,7 @@ and <span class="math">\(d_{1}\)</span> and <span class="math">\(d_{2}\)</span> 
 <dt id="mafipy.analytic_formula.calc_black_scholes_call_value">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_black_scholes_call_value</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em>, <em>today=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_black_scholes_call_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate call value in the case of today is not zero.
-:param maturity: - today is time to expiry.
+(<cite>maturity</cite> - <cite>today</cite>) is treated as time to expiry.
 See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -518,64 +471,53 @@ by <a class="reference internal" href="#mafipy.analytic_formula.calc_black_schol
 </dd></dl>
 
 <dl class="function">
-<dt id="mafipy.analytic_formula.calc_hunt_kennedy_cms_option_value">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_hunt_kennedy_cms_option_value</code><span class="sig-paren">(</span><em>swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>swap_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_hunt_kennedy_cms_option_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_hunt_kennedy_cms_option_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>From chapter14 in Financial Derivatives in Theory and Practice.</p>
+<dt id="mafipy.analytic_formula.calc_local_vol_model_implied_vol">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_local_vol_model_implied_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>local_vol_func</em>, <em>local_vol_fhess</em>, <em>today=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_local_vol_model_implied_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_local_vol_model_implied_vol" title="Permalink to this definition">¶</a></dt>
+<dd><p>implied volatility function under following local volatility model:</p>
+<div class="math">
+\[dF_{t} = \sigma_{loc}(F_{t}) F dW_{t},
+\quad
+F_{0} = f.\]</div>
+<p>where
+<span class="math">\(F\)</span> is underlying,
+<span class="math">\(\sigma_{loc}(\cdot)\)</span> is local volatility funciton,
+<span class="math">\(W\)</span> is brownian motion,
+<span class="math">\(f\)</span> is initial value of underlying.</p>
+<p>Implied volatility function of the model is defined as follows:</p>
+<div class="math">
+\[\sigma_{B}(K, f)
+    = \sigma_{loc}(\frac{1}{2}(f + K))
+    \left(
+        1
+        + \frac{1}{24} \frac{
+            \sigma_{loc}^{\prime\prime}(\frac{1}{2}(f + K))
+        }{
+            \sigma_{loc}(\frac{1}{2}(f + K))
+        }(f - K)^{2} + \cdots
+    \right).\]</div>
+<p>See
+Hagan, P. S., Kumar, D., Lesniewski, A. S., &amp; Woodward, D. E. (2002).
+Managing smile risk. Wilmott Magazine, m, 84–108.
+Retrieved from <a class="reference external" href="http://www.math.columbia.edu/~lrb/sabrAll.pdf">http://www.math.columbia.edu/~lrb/sabrAll.pdf</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>swap_rate</strong> (<em>float</em>) &#8211; </li>
-<li><strong>option_strike</strong> (<em>float</em>) &#8211; </li>
-<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>swap_maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.analytic_formula.calc_local_vol_model_implied_vol">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_local_vol_model_implied_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>local_vol_func</em>, <em>second_derivative_local_vol_func</em>, <em>today=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_local_vol_model_implied_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_local_vol_model_implied_vol" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
 <li><strong>strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>local_vol_func</strong> (<em>object</em>) &#8211; </li>
-<li><strong>second_derivative_local_vol_func</strong> (<em>object</em>) &#8211; </li>
+<li><strong>local_vol_func</strong> (<em>callable</em>) &#8211; local volatility function <span class="math">\(\sigma_{loc}\)</span> .</li>
+<li><strong>local_vol_fhess</strong> (<em>callable</em>) &#8211; second derivative of
+local vol function <span class="math">\(\sigma_{loc}^{\prime\prime}\)</span></li>
 <li><strong>today</strong> (<em>float</em>) &#8211; </li>
 </ul>
 </td>
 </tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.analytic_formula.calc_sabr_model_atm_implied_vol">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_sabr_model_atm_implied_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_sabr_model_atm_implied_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_sabr_model_atm_implied_vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate implied volatility under SABR model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
-<li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; </li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; </li>
-<li><strong>rho</strong> (<em>float</em>) &#8211; </li>
-<li><strong>nu</strong> (<em>float</em>) &#8211; </li>
-</ul>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">implied volatility.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
 </td>
 </tr>
 </tbody>
@@ -583,23 +525,140 @@ by <a class="reference internal" href="#mafipy.analytic_formula.calc_black_schol
 </dd></dl>
 
 <dl class="function">
-<dt id="mafipy.analytic_formula.calc_sabr_model_implied_normal_vol">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_sabr_model_implied_normal_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_sabr_model_implied_normal_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_sabr_model_implied_normal_vol" title="Permalink to this definition">¶</a></dt>
+<dt id="mafipy.analytic_formula.calc_sabr_atm_implied_vol">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_sabr_atm_implied_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_sabr_atm_implied_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_sabr_atm_implied_vol" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate implied volatility under SABR model at the money.</p>
+<div class="math">
+\[\sigma_{ATM}(S; T)
+    := \sigma_{B}(S, S; T)
+    \approx
+    \frac{\alpha}{S^{(1-\beta)}}
+    \left[
+        1
+        +
+        \left(
+            \frac{(1 - \beta)^{2}}{24}
+                \frac{\alpha^{2}}{S^{2 - 2\beta}}
+            + \frac{1}{4}
+                \frac{\rho \beta \alpha \nu}{S^{1-\beta}}
+            + \frac{2 - 3\rho^{2}}{24} \nu^{2}
+        \right) T
+    \right]\]</div>
+<p>See
+Hagan, P. S., Kumar, D., Lesniewski, A. S., &amp; Woodward, D. E. (2002).
+Managing smile risk. Wilmott Magazine, m, 84–108.
+Retrieved from <a class="reference external" href="http://www.math.columbia.edu/~lrb/sabrAll.pdf">http://www.math.columbia.edu/~lrb/sabrAll.pdf</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; must be within <span class="math">\([0, 1]\)</span>.</li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; must be greater than 0.</li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; must be within <span class="math">\([-1, 1]\)</span>.</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; volatility of volatility. This must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">implied volatility.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.calc_sabr_implied_vol">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_sabr_implied_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_sabr_implied_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_sabr_implied_vol" title="Permalink to this definition">¶</a></dt>
 <dd><p>calc_sabr_model_implied_vol
 calculate implied volatility under SABR model.</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+    \sigma_{B}(K, S; T)
+        &amp; \approx &amp;
+        \frac{
+            \alpha
+        }{
+        (SK)^{(1-\beta)/2}
+        \left(
+            1
+            + \frac{(1 - \beta)^{2}}{24}\log^{2}
+                \frac{S}{K}
+            + \frac{(1 - \beta)^{4}}{1920}
+                \log^{4}\frac{S}{K}
+        \right)
+        }
+        \left(
+            \frac{z}{x(z)}
+        \right)
+        \\
+        &amp; &amp;
+        \left[
+            1
+            +
+            \left(
+                \frac{(1 - \beta)^{2}}{24}
+                    \frac{\alpha^{2}}{(SK)^{1-\beta}}
+                + \frac{1}{4}
+                    \frac{\rho\beta\nu\alpha}{(SK)^{(1-\beta)/2}}
+                + \frac{2 - 3\rho^{2}}{24}\nu^{2}
+            \right) T
+        \right],
+        \\
+    z
+        &amp; := &amp;
+        \frac{\nu}{\alpha}
+            (SK)^{(1-\beta)/2}
+            \log\left( \frac{S}{K} \right),
+        \\
+    x(z)
+        &amp; := &amp;
+        \log
+        \left(
+            \frac{
+                \sqrt{1 - 2\rho z + z^{2}} + z - \rho
+            }{
+                1 - \rho
+            }
+        \right)
+\end{eqnarray}\end{split}\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\alpha\)</span> is alpha,
+<span class="math">\(\beta\)</span> is beta,
+<span class="math">\(\rho\)</span> is rho,
+<span class="math">\(\nu\)</span> is nu.</p>
+<p>See
+Hagan, P. S., Kumar, D., Lesniewski, A. S., &amp; Woodward, D. E. (2002).
+Managing smile risk. Wilmott Magazine, m, 84–108.
+Retrieved from <a class="reference external" href="http://www.math.columbia.edu/~lrb/sabrAll.pdf">http://www.math.columbia.edu/~lrb/sabrAll.pdf</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
 <li><strong>strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; </li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; alpha is <span class="math">\([0, 1]\)</span>.</li>
 <li><strong>beta</strong> (<em>float</em>) &#8211; </li>
-<li><strong>rho</strong> (<em>float</em>) &#8211; </li>
-<li><strong>nu</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; correlation of brownian motion.
+value is in <span class="math">\([-1, 1]\)</span>.</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; volatility of volatility. This must be greater than 0.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">implied volatility.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
 </td>
 </tr>
 </tbody>
@@ -607,31 +666,8 @@ calculate implied volatility under SABR model.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="mafipy.analytic_formula.calc_sabr_model_implied_vol">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_sabr_model_implied_vol</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_sabr_model_implied_vol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_sabr_model_implied_vol" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate implied volatility under SABR model.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
-<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
-<li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; </li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; </li>
-<li><strong>rho</strong> (<em>float</em>) &#8211; </li>
-<li><strong>nu</strong> (<em>float</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.analytic_formula.derivative2_d_by_strike">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">derivative2_d_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>vol</em>, <em>maturity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#derivative2_d_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.derivative2_d_by_strike" title="Permalink to this definition">¶</a></dt>
+<dt id="mafipy.analytic_formula.d_fhess_by_strike">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">d_fhess_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#d_fhess_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.d_fhess_by_strike" title="Permalink to this definition">¶</a></dt>
 <dd><p>second derivative of <span class="math">\(d_{i}\ (i = 1, 2)\)</span> with respect to <span class="math">\(K\)</span>,
 where <span class="math">\(K\)</span> is strike.</p>
 <div class="math">
@@ -649,8 +685,8 @@ where <span class="math">\(K\)</span> is strike.</p>
 <li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
 <li><strong>strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>rate</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
 </ul>
 </td>
 </tr>
@@ -665,8 +701,8 @@ where <span class="math">\(K\)</span> is strike.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="mafipy.analytic_formula.derivative_d_by_strike">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">derivative_d_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>vol</em>, <em>maturity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#derivative_d_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.derivative_d_by_strike" title="Permalink to this definition">¶</a></dt>
+<dt id="mafipy.analytic_formula.d_fprime_by_strike">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">d_fprime_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#d_fprime_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.d_fprime_by_strike" title="Permalink to this definition">¶</a></dt>
 <dd><p>derivative of <span class="math">\(d_{1}\)</span> with respect to <span class="math">\(K\)</span>
 where <span class="math">\(K\)</span> is strike.
 See <a class="reference internal" href="#mafipy.analytic_formula.func_d1" title="mafipy.analytic_formula.func_d1"><code class="xref py py-func docutils literal"><span class="pre">func_d1()</span></code></a>.</p>
@@ -686,8 +722,8 @@ That is</p>
 <li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
 <li><strong>strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>rate</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
 </ul>
 </td>
 </tr>
