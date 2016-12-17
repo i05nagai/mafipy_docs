@@ -136,140 +136,266 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">scipy.integrate</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
 
 
 <div class="viewcode-block" id="linear_annuity_mapping_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.linear_annuity_mapping_func">[docs]</a><span class="k">def</span> <span class="nf">linear_annuity_mapping_func</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;linear_annuity_mapping_func</span>
+<span class="sd">    calculate linear annuity mapping function.</span>
+<span class="sd">    Annuity mapping function is model of $P(t, T) / A(t)$</span>
+<span class="sd">    so that it&#39;s value is positive.</span>
+<span class="sd">    linear annuity mapping function calculates following formula:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\alpha(S) := S \\alpha_{0} + \\alpha_{1}.</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is underlying,</span>
+<span class="sd">    :math:`\\alpha_{0}` is alpha0,</span>
+<span class="sd">    :math:`\\alpha_{1}` is alpha1.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float alpha0:</span>
 <span class="sd">    :param float alpha1:</span>
+<span class="sd">    :return: value of linear annuity mapping function.</span>
+<span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">underlying</span> <span class="o">*</span> <span class="n">alpha0</span> <span class="o">+</span> <span class="n">alpha1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">underlying</span> <span class="o">*</span> <span class="n">alpha0</span> <span class="o">+</span> <span class="n">alpha1</span></div>
 
 
 <div class="viewcode-block" id="linear_annuity_mapping_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.linear_annuity_mapping_fprime">[docs]</a><span class="k">def</span> <span class="nf">linear_annuity_mapping_fprime</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;linear_annuity_mapping_fprime</span>
+<span class="sd">    first derivative of linear annuity mapping function.</span>
+<span class="sd">    See :py:func:`linear_annuity_mapping_func`.</span>
+<span class="sd">    The function calculates following formula:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\alpha^{\prime}(S) := \\alpha_{0.}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is underlying,</span>
+<span class="sd">    :math:`\\alpha_{0}` is alpha0.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float alpha0:</span>
-<span class="sd">    :param float alpha1:</span>
+<span class="sd">    :param float alpha1: not used.</span>
+<span class="sd">    :return: value of first derivative of linear annuity mapping function.</span>
+<span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">alpha0</span></div>
 
 
 <div class="viewcode-block" id="linear_annuity_mapping_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.linear_annuity_mapping_fhess">[docs]</a><span class="k">def</span> <span class="nf">linear_annuity_mapping_fhess</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;linear_annuity_mapping_fhess</span>
+<span class="sd">    second derivative of linear annuity mapping function.</span>
+<span class="sd">    See :py:func:`linear_annuity_mapping_func`</span>
+<span class="sd">    and :py:func:`linear_annuity_mapping_fprime`.</span>
+<span class="sd">    The value is 0.</span>
 
-<span class="sd">    :param float underlying:</span>
-<span class="sd">    :param float alpha0:</span>
-<span class="sd">    :param float alpha1:</span>
+<span class="sd">    :param float underlying</span>
+<span class="sd">    :param float alpha0: not used.</span>
+<span class="sd">    :param float alpha1: not used.</span>
+<span class="sd">    :return: return 0. value of second derivative.</span>
+<span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mf">0.0</span></div>
 
 
 <div class="viewcode-block" id="AnnuityMappingFuncHelper"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper">[docs]</a><span class="k">class</span> <span class="nc">AnnuityMappingFuncHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;AnnuityMappingFuncHelper</span>
+<span class="sd">    Interface to generate annuity mapping function</span>
+<span class="sd">    and it&#39;s first and second derivative.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payoff_params</span><span class="p">):</span>
+<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payoff_params</span><span class="p">):</span>
+<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payoff_params</span><span class="p">):</span>
+<div class="viewcode-block" id="AnnuityMappingFuncHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnnuityMappingFuncHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
 <div class="viewcode-block" id="LinearAnnuityMappingFuncHelper"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper">[docs]</a><span class="k">class</span> <span class="nc">LinearAnnuityMappingFuncHelper</span><span class="p">(</span><span class="n">AnnuityMappingFuncHelper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;LinearAnnuityMappingFuncHelper</span>
+<span class="sd">    Helper class to generate linear annuity mappiing function</span>
+<span class="sd">    and it&#39;s first and second derivative as a function of swap rate.</span>
+
+<span class="sd">    :param float alpha0: required.</span>
+<span class="sd">    :param float alpha1: required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;alpha0&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha1&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">check_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 
 <div class="viewcode-block" id="LinearAnnuityMappingFuncHelper.make_func"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_func</span>
+<span class="sd">        returns linear annuity mapping function.</span>
+<span class="sd">        See :py:func:`linear_annuity_mapping_func`.</span>
+
+<span class="sd">        :return: linear annuity mapping function as a function of swap rate.</span>
+<span class="sd">        :rtype: FuncionType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">linear_annuity_mapping_func</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="LinearAnnuityMappingFuncHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fpirme</span>
+<span class="sd">        returns first derivative of linear annuity mapping function.</span>
+<span class="sd">        See :py:func:`linear_annuity_mapping_fprime`.</span>
+
+<span class="sd">        :return: first derivative of linear annuity mapping function</span>
+<span class="sd">            as a function of swap rate.</span>
+<span class="sd">        :rtype: FuncionType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">linear_annuity_mapping_fprime</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="LinearAnnuityMappingFuncHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.LinearAnnuityMappingFuncHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fhess</span>
+<span class="sd">        returns first derivative of linear annuity mapping function.</span>
+<span class="sd">        See :py:func:`linear_annuity_mapping_fprime`.</span>
+
+<span class="sd">        :return: first derivative of linear annuity mapping function</span>
+<span class="sd">            as a function of swap rate.</span>
+<span class="sd">        :rtype: FuncionType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">linear_annuity_mapping_fhess</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Replication"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.Replication">[docs]</a><span class="k">class</span> <span class="nc">Replication</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replication</span>
+<span class="sd">    Interface class to the class which uses replication method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Replication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.Replication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eval</span>
+<span class="sd">        evaluates value of derivative by replication methods.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \mathrm{E}</span>
+<span class="sd">            \left[</span>
+<span class="sd">                f(S(T))</span>
+<span class="sd">            \\right]</span>
+<span class="sd">            = f(S(0))</span>
+<span class="sd">                + \int_{-\infty}^{S(0)} f^{\prime\prime}(K)p(K)\ d K</span>
+<span class="sd">                + \int_{S(0)}^{\infty} f^{\prime\prime}(K)c(K)\ d K</span>
+
+<span class="sd">        where</span>
+<span class="sd">        :math:`S(t)` is value of underlying at time :math:`t`,</span>
+<span class="sd">        :math:`f(\cdot)` is payoff function</span>
+<span class="sd">            as a function of underlying,</span>
+<span class="sd">        :math:`p(K; S(0), T, \sigma)` is value of put pricer</span>
+<span class="sd">            with strike :math:`K`.</span>
+<span class="sd">        :math:`c(K; S(0), T, \sigma)` is value of call pricer</span>
+<span class="sd">            with strike :math:`K`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
-<div class="viewcode-block" id="SimpleReplication"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.SimpleReplication">[docs]</a><span class="k">class</span> <span class="nc">SimpleReplication</span><span class="p">(</span><span class="n">Replication</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">call_pricer</span><span class="p">,</span>
-                 <span class="n">put_pricer</span><span class="p">,</span>
-                 <span class="n">payoff_func</span><span class="p">,</span>
-                 <span class="n">payoff_fhess</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span> <span class="o">=</span> <span class="n">payoff_func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span>
-
-    <span class="k">def</span> <span class="nf">_first_integrand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_second_integrand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span>
-
-<div class="viewcode-block" id="SimpleReplication.weight"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.SimpleReplication.weight">[docs]</a>    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="SimpleReplication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.SimpleReplication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">):</span>
-        <span class="n">integrate</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span>
-
-        <span class="n">first_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
-        <span class="n">second_term</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_first_integrand</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">)</span>
-        <span class="n">third_term</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_second_integrand</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">first_term</span> <span class="o">+</span> <span class="n">second_term</span> <span class="o">+</span> <span class="n">third_term</span></div></div>
-
-
 <div class="viewcode-block" id="AnalyticReplication"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnalyticReplication">[docs]</a><span class="k">class</span> <span class="nc">AnalyticReplication</span><span class="p">(</span><span class="n">Replication</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;AnalyticReplication</span>
+<span class="sd">    This class calculates replication methods using knowledge of derivative.</span>
+<span class="sd">    In mathmetical finance, payoff function is discontinuous function</span>
+<span class="sd">    or the function which is diffentialble but cannot differentiate twice.</span>
+<span class="sd">    Replication method calculates integration with stochastic weight</span>
+<span class="sd">    which may contains derivative of payoff funciton.</span>
+<span class="sd">    If integrands have dirac delta function or discontinuous function,</span>
+<span class="sd">    numerical integration does not work properly.</span>
+
+<span class="sd">    This class calculates numerical integration with</span>
+<span class="sd">    pre-calculation of stochastic weight.</span>
+
+<span class="sd">    :param callable call_pricer:</span>
+<span class="sd">    :param callable put_pricer:</span>
+<span class="sd">    :param list analytic_funcs:</span>
+<span class="sd">    :param list call_integrands:</span>
+<span class="sd">    :param list put_integrands:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">call_pricer</span><span class="p">,</span>
                  <span class="n">put_pricer</span><span class="p">,</span>
                  <span class="n">analytic_funcs</span><span class="o">=</span><span class="p">[],</span>
-                 <span class="n">put_integrands</span><span class="o">=</span><span class="p">[],</span>
-                 <span class="n">call_integrands</span><span class="o">=</span><span class="p">[]):</span>
+                 <span class="n">call_integrands</span><span class="o">=</span><span class="p">[],</span>
+                 <span class="n">put_integrands</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">analytic_funcs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">put_integrands</span> <span class="o">=</span> <span class="n">put_integrands</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call_integrands</span> <span class="o">=</span> <span class="n">call_integrands</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_integrands</span> <span class="o">=</span> <span class="n">put_integrands</span>
 
     <span class="k">def</span> <span class="nf">_calc_analytic_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_calc_analytic_term</span>
+
+<span class="sd">        :param init_swap_rate:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analytic_funcs</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_calc_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">pricer</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_calc_integral</span>
+<span class="sd">        calculates following equation:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \int_{L{\mathrm{lower}}}^{L_{\mathrm{upper}}} f(x) g(x)\ dx,</span>
+
+<span class="sd">        where</span>
+<span class="sd">        :math:`f(\cdot)` is `func`,</span>
+<span class="sd">        :math:`g(\cdot)` is `pricer`,</span>
+<span class="sd">        :math:`L_{\mathrm{lower}}` is `lower`,</span>
+<span class="sd">        :math:`L_{\mathrm{upper}}` is `upper`.</span>
+
+<span class="sd">        :param callable func:</span>
+<span class="sd">        :param callable pricer: call option pricer or put option pricer.</span>
+<span class="sd">        :param float lower: lower bound of integral.</span>
+<span class="sd">        :param float upper: upper bound of integral.</span>
+<span class="sd">        :return: integral value.</span>
+<span class="sd">        :rtype: float.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">integrate</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">pricer</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_calc_put_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_calc_put_integral</span>
+<span class="sd">        integrate function with put pricer.</span>
+
+<span class="sd">        :param init_swap_rate:</span>
+<span class="sd">        :param min_put_range:</span>
+<span class="sd">        :return: integal value.</span>
+<span class="sd">        :rtype: float.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_calc_integral</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">,</span>
                                         <span class="n">min_put_range</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_integrands</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_calc_call_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_calc_call_integral</span>
+<span class="sd">        integrate function with put pricer.</span>
+
+<span class="sd">        :param init_swap_rate:</span>
+<span class="sd">        :param max_call_range:</span>
+<span class="sd">        :return: integal value.</span>
+<span class="sd">        :rtype: float.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_calc_integral</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">,</span>
                                         <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_integrands</span><span class="p">])</span>
 
 <div class="viewcode-block" id="AnalyticReplication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnalyticReplication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eval</span>
+<span class="sd">        evaluates expectation by the replication method.</span>
+
+<span class="sd">        :param init_swap_rate:</span>
+<span class="sd">        :param min_put_range:</span>
+<span class="sd">        :param max_call_range:</span>
+<span class="sd">        :return: value of expectation.</span>
+<span class="sd">        :rtype: float.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">analytic_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_analytic_term</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
         <span class="n">put_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_put_integral</span><span class="p">(</span>
             <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">)</span>

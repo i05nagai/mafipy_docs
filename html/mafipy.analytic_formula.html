@@ -220,6 +220,172 @@ as funciton of a single variable.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="mafipy.analytic_formula.black_scholes_call_delta">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_delta</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates black scholes delta.</p>
+<div class="math">
+\[\frac{\partial}{\partial S} c(S, K, r, T, \sigma)
+    = \Phi(d_{1}(S))\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is volatility,
+<span class="math">\(\Phi\)</span> is standard normal c.d.f,
+<span class="math">\(d_{1}\)</span> is defined in
+<a class="reference internal" href="#mafipy.analytic_formula.func_d1" title="mafipy.analytic_formula.func_d1"><code class="xref py py-func docutils literal"><span class="pre">func_d1()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. This must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of delta.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_scholes_call_gamma">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_gamma</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_gamma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates black scholes gamma.</p>
+<div class="math">
+\[\frac{\partial^{2}}{\partial S^{2}} c(S, K, r, T, \sigma)
+    = -\phi(d_{1}(S, K, r, T, \sigma))
+        \frac{1}{S^{2}\sigma\sqrt{T}}\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is volatility,
+<span class="math">\(\Phi\)</span> is standard normal c.d.f,
+<span class="math">\(d_{1}\)</span> is defined in
+<a class="reference internal" href="#mafipy.analytic_formula.func_d1" title="mafipy.analytic_formula.func_d1"><code class="xref py py-func docutils literal"><span class="pre">func_d1()</span></code></a>.</p>
+<p>See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="mafipy.analytic_formula.calc_black_scholes_call_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_value()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. This must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of gamma.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_scholes_call_rho">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_rho</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em>, <em>today</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_rho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_rho" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates black scholes rho.</p>
+<div class="math">
+\[\frac{\partial}{\partial t} c(t, S, K, r, T, \sigma)
+    = (T - t)
+        e^{-r (T - t)}
+        K \Phi(d_{2})\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is volatility,
+<span class="math">\(\phi\)</span> is standard normal p.d.f,
+<span class="math">\(d_{2}\)</span> is defined in
+<a class="reference internal" href="#mafipy.analytic_formula.func_d2" title="mafipy.analytic_formula.func_d2"><code class="xref py py-func docutils literal"><span class="pre">func_d2()</span></code></a>.</p>
+<p>See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="mafipy.analytic_formula.calc_black_scholes_call_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_value()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. This must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of rho.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_scholes_call_theta">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_theta</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em>, <em>today</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_theta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates black scholes theta.</p>
+<div class="math">
+\[\frac{\partial}{\partial t} c(t, S, K, r, T, \sigma)
+    = - S * \phi(d_{1})
+        \left(
+            \frac{\sigma}{2\sqrt{T - t}}
+        \right)
+        - r e^{-r(T - t)} K \Phi(d_{2})\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is volatility,
+<span class="math">\(\phi\)</span> is standard normal p.d.f,
+<span class="math">\(d_{1}\)</span> is defined in
+<a class="reference internal" href="#mafipy.analytic_formula.func_d1" title="mafipy.analytic_formula.func_d1"><code class="xref py py-func docutils literal"><span class="pre">func_d1()</span></code></a>.</p>
+<p>See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="mafipy.analytic_formula.calc_black_scholes_call_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_value()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. This must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of theta.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_value_fhess_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_value_fhess_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike" title="Permalink to this definition">¶</a></dt>
 <dd><p>Second derivative of value of call option with respect to strike
@@ -369,6 +535,46 @@ in <a class="reference internal" href="#mafipy.analytic_formula.calc_black_schol
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of third derivative.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_scholes_call_vega">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_vega</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_vega"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_vega" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates black scholes vega.</p>
+<div class="math">
+\[\frac{\partial}{\partial \sigma} c(S, K, r, T, \sigma)
+    = -\sqrt{T}S\phi(d_{1}(S, K, r, T, \sigma))\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is volatility,
+<span class="math">\(\phi\)</span> is standard normal p.d.f,
+<span class="math">\(d_{1}\)</span> is defined in
+<a class="reference internal" href="#mafipy.analytic_formula.func_d1" title="mafipy.analytic_formula.func_d1"><code class="xref py py-func docutils literal"><span class="pre">func_d1()</span></code></a>.</p>
+<p>See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="mafipy.analytic_formula.calc_black_scholes_call_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_value()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; must be non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. This must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of vega.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
