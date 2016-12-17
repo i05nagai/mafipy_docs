@@ -89,11 +89,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="mafipy.analytic_formula.html">mafipy.analytic_formula module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.calibrator.html">mafipy.calibrator module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.date_util.html">mafipy.date_util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.error.html">mafipy.error module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.market_data.html">mafipy.market_data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.market_reader.html">mafipy.market_reader module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.math_formula.html">mafipy.math_formula module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.payoff.html">mafipy.payoff module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.pricer_quanto_cms module</a></li>
@@ -156,119 +152,95 @@
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper">
 <em class="property">class </em><code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">SimpleQuantoCmsHelper</code><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Interface of helper class to generate integrands of replication method
+to expectation of numerator and denominator.
+See <code class="xref py py-func docutils literal"><span class="pre">SimpleQuantoCmsPricer()</span></code>.
+The integrands are part of terms of stochastic weight.
+Stochastic weight of numerator are</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray*}
+    w(s)
+        &amp; := &amp;
+            \frac{d^{2} }{d s^{2}} (g(s) \alpha(s) \tilde{\chi}(s))
+        \\
+        &amp; = &amp;
+        g^{\prime\prime}(s)\alpha(s)\tilde{\chi}(s)
+            + g(s)\alpha^{\prime\prime}(s)\tilde{\chi}(s)
+            + g(s)\alpha(s)\tilde{\chi}^{\prime\prime}(s)
+        \\
+        &amp; &amp;
+            + 2g^{\prime}(s)\alpha^{\prime}(s)\tilde{\chi}(s)
+            + 2g^{\prime}(s)\alpha(s)\tilde{\chi}^{\prime}(s)
+            + 2g(s)\alpha^{\prime}(s)\tilde{\chi}^{\prime}(s).
+\end{eqnarray*}\end{split}\]</div>
+<p>where
+<span class="math">\(g\)</span> is payoff function,
+<span class="math">\(\alpha\)</span> is annuity mapping function,
+<span class="math">\(\tilde{\chi}(s)\)</span> is forward fx diffusion,
+see <code class="xref py py-func docutils literal"><span class="pre">_forward_fx_diffusion()</span></code>.</p>
+<p>The stochastic weight of denominator is</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray*}
+    w(s)
+        &amp; := &amp;
+            \frac{d^{2} }{d s^{2}} (\alpha(s) \tilde{\chi}(s))
+        \\
+        &amp; = &amp;
+            \alpha^{\prime\prime}(s)\tilde{\chi}(s)
+            + \alpha(s)\tilde{\chi}^{\prime\prime}(s)
+            + 2\alpha^{\prime}(s)\tilde{\chi}^{\prime}(s).
+\end{eqnarray*}\end{split}\]</div>
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_analytic_funcs">
 <code class="descname">make_denominator_analytic_funcs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_denominator_analytic_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_analytic_funcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Interface of analytically computable terms in replication method.
+The terms depedend on the model of forward FX rate
+and forward swap rate.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_call_integrands">
 <code class="descname">make_denominator_call_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_denominator_call_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_call_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Interface of integrands which are integrated with call pricer
+in replication method in the denominator.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_put_integrands">
 <code class="descname">make_denominator_put_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_denominator_put_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_put_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Interface of integrands which are integrated with put pricer
+in replication method in the denominator.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_analytic_funcs">
 <code class="descname">make_numerator_analytic_funcs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_numerator_analytic_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_analytic_funcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Interface of analytically computable terms in replication method.
+The terms depedend on the model of forward FX rate
+and forward swap rate.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_call_integrands">
 <code class="descname">make_numerator_call_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_numerator_call_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_call_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Interface of integrands which are integrated with call pricer
+in replication method in the numerator.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_put_integrands">
 <code class="descname">make_numerator_put_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_numerator_put_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_put_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dd><p>Interface of integrands which are integrated with put pricer
+in replication method in the numerator.</p>
 </dd></dl>
-
-<dl class="class">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper">
-<em class="property">class </em><code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">SimpleQuantoCmsLinearCallHelper</code><span class="sig-paren">(</span><em>annuity_mapping_helper</em>, <em>call_payoff_helper</em>, <em>forward_fx_diffusion_helper</em>, <em>call_pricer</em>, <em>put_pricer</em>, <em>payoff_strike</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper" title="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper"><code class="xref py py-class docutils literal"><span class="pre">mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper</span></code></a></p>
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs">
-<code class="descname">make_denominator_analytic_funcs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands">
-<code class="descname">make_denominator_call_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands">
-<code class="descname">make_denominator_put_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs">
-<code class="descname">make_numerator_analytic_funcs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands">
-<code class="descname">make_numerator_call_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands">
-<code class="descname">make_numerator_put_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer">
-<em class="property">class </em><code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">SimpleQuantoCmsPricer</code><span class="sig-paren">(</span><em>annuity_mapping_type</em>, <em>annuity_mapping_params</em>, <em>payoff_type</em>, <em>payoff_params</em>, <em>forward_fx_diffusion_params</em>, <em>call_pricer</em>, <em>put_pricer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsPricer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.annuity_mapping_dict">
-<code class="descname">annuity_mapping_dict</code><em class="property"> = {'linear': 1}</em><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.annuity_mapping_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.eval">
-<code class="descname">eval</code><span class="sig-paren">(</span><em>discount_factor</em>, <em>init_swap_rate</em>, <em>min_put_range=-inf</em>, <em>max_call_range=inf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsPricer.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.eval" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>discount_factor</strong> (<em>float</em>) &#8211; discount factor at payment date.</li>
-<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; initial swap rate.</li>
-<li><strong>min_put_range</strong> (<em>float</em>) &#8211; </li>
-<li><strong>max_call_range</strong> (<em>float</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of quanto cms.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.payoff_dict">
-<code class="descname">payoff_dict</code><em class="property"> = {'bull_spread': 3, 'call': 1, 'put': 2}</em><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.payoff_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
-<dt id="mafipy.pricer_quanto_cms.make_cdf_black_scholes_model">
-<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">make_cdf_black_scholes_model</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#make_cdf_black_scholes_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.make_cdf_black_scholes_model" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dt id="mafipy.pricer_quanto_cms.make_cdf_black_scholes">
+<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">make_cdf_black_scholes</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#make_cdf_black_scholes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.make_cdf_black_scholes" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns c.d.f. of black scholes model.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -284,7 +256,7 @@
 as a funciton of strike.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">lambda</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">function</p>
 </td>
 </tr>
 </tbody>
@@ -292,35 +264,19 @@ as a funciton of strike.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="mafipy.pricer_quanto_cms.make_pdf_black_scholes_model">
-<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">make_pdf_black_scholes_model</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#make_pdf_black_scholes_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.make_pdf_black_scholes_model" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>underlying</strong> &#8211; </li>
-<li><strong>rate</strong> &#8211; </li>
-<li><strong>maturity</strong> &#8211; non-negative.</li>
-<li><strong>vol</strong> &#8211; volatility. non-negative.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">p.d.f. of call price under black scholes model
-as a function of strike.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">function with strike.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes_model">
-<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">make_pdf_fprime_black_scholes_model</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#make_pdf_fprime_black_scholes_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes_model" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dt id="mafipy.pricer_quanto_cms.make_pdf_black_scholes">
+<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">make_pdf_black_scholes</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#make_pdf_black_scholes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.make_pdf_black_scholes" title="Permalink to this definition">¶</a></dt>
+<dd><p>return p.d.f. of black scholes model</p>
+<div class="math">
+\[\Phi_{S}(k) := \frac{\partial}{\partial K^{2}} c(0, S; T, K)\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(\Phi_{S}(k)\)</span> is p.d.f. of <span class="math">\(S\)</span>,
+<span class="math">\(c(0, S; T, K)\)</span> is value of call option
+with strike <span class="math">\(K\)</span> and <span class="math">\(T\)</span> maturity at time 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -336,7 +292,98 @@ as a function of strike.</p>
 as a function of strike.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">lambda</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">function with strike.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes">
+<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">make_pdf_fprime_black_scholes</code><span class="sig-paren">(</span><em>underlying</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#make_pdf_fprime_black_scholes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes" title="Permalink to this definition">¶</a></dt>
+<dd><p>make_pdf_fprime_black_scholes_model
+return first derivative of p.d.f. of black scholes.
+See <a class="reference internal" href="#mafipy.pricer_quanto_cms.make_pdf_black_scholes" title="mafipy.pricer_quanto_cms.make_pdf_black_scholes"><code class="xref py py-func docutils literal"><span class="pre">make_pdf_black_scholes()</span></code></a>.</p>
+<div class="math">
+\[\Phi_{S}^{\prime}(k)
+:= \frac{\partial}{\partial K^{2}} c(0, S; T, K)\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(\Phi_{S}(k)\)</span> is p.d.f. of <span class="math">\(S\)</span>,
+<span class="math">\(c(0, S; T, K)\)</span> is value of call option
+with strike <span class="math">\(K\)</span> and <span class="math">\(T\)</span> maturity at time 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. non-negative.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">first derivative of p.d.f. of call price under black scholes model
+as a function of strike.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">function</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.pricer_quanto_cms.replicate">
+<code class="descclassname">mafipy.pricer_quanto_cms.</code><code class="descname">replicate</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>discount_factor</em>, <em>call_pricer</em>, <em>put_pricer</em>, <em>payoff_type</em>, <em>payoff_params</em>, <em>forward_fx_diffusion_params</em>, <em>annuity_mapping_type</em>, <em>annuity_mapping_params</em>, <em>min_put_range=-inf</em>, <em>max_call_range=inf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#replicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.replicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple qunato cms pricer.</p>
+<div class="math">
+\[V_{\mathrm{QuantoCMS}}(0)
+\approx
+    P_{f}(0, T_{p})
+    \frac{\mathrm{E}^{A,d}
+    \left[
+        g(S(T)) \alpha(S(T)) \tilde{\chi}(S(T))
+    \right]
+    }{\mathrm{E}^{A,d}
+    \left[
+        \alpha(S(T)) \tilde{\chi}(S(T))
+    \right]
+    }\]</div>
+<p>where
+<span class="math">\(T_{p}\)</span> is payment date of Quanto CMS,
+<span class="math">\(P_{f}(0, T)\)</span> is value of foreign currency zero coupon bond
+with maturity <span class="math">\(T\)</span> at time 0.
+<span class="math">\(\mathrm{E}^{A,d}\)</span> is expectation under domestic annuity measure.
+<span class="math">\(g\)</span> is payoff function,
+<span class="math">\(\alpha(\cdot)\)</span> is annuity mapping function,
+<span class="math">\(\tilde{\chi}(\cdot)\)</span> is forward fx diffusion,
+<span class="math">\(S(T)\)</span> is time <span class="math">\(T\)</span> forward swap rate.</p>
+<p>See
+<cite>Interest Rate Modeling. Volume 3: Products and Risk Management, Chap16</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>discount_factor</strong> (<em>float</em>) &#8211; </li>
+<li><strong>call_pricer</strong> (<em>callable</em>) &#8211; </li>
+<li><strong>put_pricer</strong> (<em>callable</em>) &#8211; </li>
+<li><strong>payoff_type</strong> (<em>str</em>) &#8211; Specify type of payoff function as a string
+(&#8220;call&#8221;, &#8220;put&#8221;, &#8220;bull_spread&#8221;).</li>
+<li><strong>payoff_params</strong> (<em>dict</em>) &#8211; </li>
+<li><strong>forward_fx_diffusion_params</strong> (<em>dict</em>) &#8211; </li>
+<li><strong>annuity_mapping_type</strong> (<em>str</em>) &#8211; Specify type of annuity mapping function as a string (&#8220;linear&#8221;).</li>
+<li><strong>annuity_mapping_params</strong> (<em>dict</em>) &#8211; </li>
+<li><strong>min_put_range</strong> (<em>float</em>) &#8211; </li>
+<li><strong>max_call_range</strong> (<em>float</em>) &#8211; </li>
+</ul>
 </td>
 </tr>
 </tbody>

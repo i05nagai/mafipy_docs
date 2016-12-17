@@ -35,7 +35,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="mafipy 0.0.1 documentation" href="index.html"/>
         <link rel="up" title="mafipy package" href="mafipy.html"/>
-        <link rel="next" title="mafipy.calibrator module" href="mafipy.calibrator.html"/>
+        <link rel="next" title="mafipy.error module" href="mafipy.error.html"/>
         <link rel="prev" title="mafipy package" href="mafipy.html"/> 
 
   
@@ -89,11 +89,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.analytic_formula module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.calibrator.html">mafipy.calibrator module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.date_util.html">mafipy.date_util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.error.html">mafipy.error module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.market_data.html">mafipy.market_data module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.market_reader.html">mafipy.market_reader module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.math_formula.html">mafipy.math_formula module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.payoff.html">mafipy.payoff module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.pricer_quanto_cms.html">mafipy.pricer_quanto_cms module</a></li>
@@ -313,6 +309,69 @@ in <a class="reference internal" href="#mafipy.analytic_formula.calc_black_schol
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_scholes_call_value_third_by_strike">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_value_third_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_value_third_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_value_third_by_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Third derivative of value of call option with respect to strike
+under black scholes model.
+See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>
+and <a class="reference internal" href="#mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike" title="mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike"><code class="xref py py-func docutils literal"><span class="pre">black_scholes_call_value_fprime_by_strike()</span></code></a>,
+and <a class="reference internal" href="#mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike" title="mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike"><code class="xref py py-func docutils literal"><span class="pre">black_scholes_call_value_fhess_by_strike()</span></code></a>.</p>
+<div class="math">
+\[\begin{split}\begin{array}{ccl}
+    \frac{\partial^{3}}{\partial K^{3}} c(0, S; T, K)
+    &amp; = &amp;
+    \left(
+        S\phi^{\prime\prime}(d_{1}(K))
+        - K\phi^{\prime\prime}(d_{2}(K))
+    \right)
+    (d^{\prime}(K))^{3}
+    \\
+    &amp; &amp;
+    +
+    \left(
+        S\phi^{\prime}(d_{1}(K))
+        - K\phi^{\prime}(d_{2}(K))
+    \right)
+    3d^{\prime}(K)d^{\prime\prime}
+    \\
+    &amp; &amp;
+    - 3\phi(d_{2}(K))d^{\prime\prime}
+    - 3\phi^{\prime}(d_{2}(K))(d^{\prime}(K))^{2}
+\end{array}\end{split}\]</div>
+<p>where
+<span class="math">\(S\)</span> is underlying,
+<span class="math">\(K\)</span> is strike,
+<span class="math">\(r\)</span> is rate,
+<span class="math">\(T\)</span> is maturity,
+<span class="math">\(\sigma\)</span> is vol,
+<span class="math">\(d_{1}, d_{2}\)</span> is defined
+in <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>,
+<span class="math">\(\Phi(\cdot)\)</span> is c.d.f. of standard normal distribution,
+<span class="math">\(\phi(\cdot)\)</span> is p.d.f. of standard normal distribution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; non-negative.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. non-negative.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of third derivative.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
 </td>
 </tr>
 </tbody>
@@ -802,7 +861,7 @@ See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scho
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mafipy.calibrator.html" class="btn btn-neutral float-right" title="mafipy.calibrator module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mafipy.error.html" class="btn btn-neutral float-right" title="mafipy.error module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="mafipy.html" class="btn btn-neutral" title="mafipy package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

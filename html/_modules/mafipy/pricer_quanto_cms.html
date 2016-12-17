@@ -144,17 +144,29 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">replication</span>
 
 
-<div class="viewcode-block" id="make_pdf_black_scholes_model"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_black_scholes_model">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_black_scholes_model</span><span class="p">(</span>
+<div class="viewcode-block" id="make_pdf_black_scholes"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_black_scholes">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_black_scholes</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">rate</span><span class="p">,</span>
         <span class="n">maturity</span><span class="p">,</span>
         <span class="n">vol</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;make_pdf_black_scholes_model</span>
+    <span class="sd">&quot;&quot;&quot;make_pdf_black_scholes</span>
+<span class="sd">    return p.d.f. of black scholes model</span>
 
-<span class="sd">    :param underlying:</span>
-<span class="sd">    :param rate:</span>
-<span class="sd">    :param maturity: non-negative.</span>
-<span class="sd">    :param vol: volatility. non-negative.</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        \Phi_{S}(k) := \\frac{\partial}{\partial K^{2}} c(0, S; T, K)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is underlying,</span>
+<span class="sd">    :math:`T` is maturity,</span>
+<span class="sd">    :math:`K` is strike,</span>
+<span class="sd">    :math:`\Phi_{S}(k)` is p.d.f. of :math:`S`,</span>
+<span class="sd">    :math:`c(0, S; T, K)` is value of call option</span>
+<span class="sd">    with strike :math:`K` and :math:`T` maturity at time 0.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity: non-negative.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
 <span class="sd">    :return: p.d.f. of call price under black scholes model</span>
 <span class="sd">        as a function of strike.</span>
 <span class="sd">    :rtype: function with strike.</span>
@@ -173,20 +185,34 @@
     <span class="k">return</span> <span class="n">pdf</span></div>
 
 
-<div class="viewcode-block" id="make_pdf_fprime_black_scholes_model"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes_model">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_fprime_black_scholes_model</span><span class="p">(</span>
+<div class="viewcode-block" id="make_pdf_fprime_black_scholes"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_fprime_black_scholes">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_fprime_black_scholes</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">rate</span><span class="p">,</span>
         <span class="n">maturity</span><span class="p">,</span>
         <span class="n">vol</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;make_pdf_fprime_black_scholes_model</span>
+<span class="sd">    return first derivative of p.d.f. of black scholes.</span>
+<span class="sd">    See :py:func:`make_pdf_black_scholes`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \Phi_{S}^{\prime}(k)</span>
+<span class="sd">        := \\frac{\partial}{\partial K^{2}} c(0, S; T, K)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is underlying,</span>
+<span class="sd">    :math:`T` is maturity,</span>
+<span class="sd">    :math:`K` is strike,</span>
+<span class="sd">    :math:`\Phi_{S}(k)` is p.d.f. of :math:`S`,</span>
+<span class="sd">    :math:`c(0, S; T, K)` is value of call option</span>
+<span class="sd">    with strike :math:`K` and :math:`T` maturity at time 0.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float rate:</span>
 <span class="sd">    :param float maturity: non-negative.</span>
 <span class="sd">    :param float vol: volatility. non-negative.</span>
-<span class="sd">    :return: p.d.f. of call price under black scholes model</span>
+<span class="sd">    :return: first derivative of p.d.f. of call price under black scholes model</span>
 <span class="sd">        as a function of strike.</span>
-<span class="sd">    :rtype: lambda</span>
+<span class="sd">    :rtype: function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
@@ -202,12 +228,13 @@
     <span class="k">return</span> <span class="n">pdf_fprime</span></div>
 
 
-<div class="viewcode-block" id="make_cdf_black_scholes_model"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_cdf_black_scholes_model">[docs]</a><span class="k">def</span> <span class="nf">make_cdf_black_scholes_model</span><span class="p">(</span>
+<div class="viewcode-block" id="make_cdf_black_scholes"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_cdf_black_scholes">[docs]</a><span class="k">def</span> <span class="nf">make_cdf_black_scholes</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">rate</span><span class="p">,</span>
         <span class="n">maturity</span><span class="p">,</span>
         <span class="n">vol</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;make_cdf_black_scholes_model</span>
+    <span class="sd">&quot;&quot;&quot;make_cdf_black_scholes</span>
+<span class="sd">    returns c.d.f. of black scholes model.</span>
 
 <span class="sd">    :param underlying:</span>
 <span class="sd">    :param rate:</span>
@@ -215,21 +242,63 @@
 <span class="sd">    :param vol:</span>
 <span class="sd">    :return: distribution of call price under black scholes model</span>
 <span class="sd">        as a funciton of strike.</span>
-<span class="sd">    :rtype: lambda</span>
-
+<span class="sd">    :rtype: function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">strike</span><span class="p">:</span> <span class="p">(</span>
         <span class="mf">1.0</span> <span class="o">+</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_scholes_call_value_fprime_by_strike</span><span class="p">(</span>
             <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">))</span></div>
 
 
 <span class="k">def</span> <span class="nf">_calc_h</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_calc_h</span>
+<span class="sd">    calculates following value:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        h(s) := \Phi^{-1}(\Phi^{A}(s))</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`\Phi^{-1}(\cdot)` is inverse function of standard gaussian c.d.f,</span>
+<span class="sd">    :math:`\Phi^{A}(s)` is c.d.f. of swap rate under annuity measure.</span>
+
+<span class="sd">    There is no meaning of this value</span>
+<span class="sd">    because of simplification to calculate forward fx diffusion</span>
+<span class="sd">    See :py:func:`_forward_fx_diffusion`.</span>
+
+<span class="sd">    :param float swap_rate_cdf:</span>
+<span class="sd">    :param float swap_rate:</span>
+<span class="sd">    :return: :math:`\Phi^{-1}(\Phi^{A}(s))`.</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
 
     <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_calc_h_fprime</span><span class="p">(</span><span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_calc_h_fprime</span>
+<span class="sd">    calculates derivative of :py:func:`_calc_h`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        h^{\prime}(s)</span>
+<span class="sd">        = \\frac{1}{\phi(h(s))} \psi^{A}(s),</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`\phi^{-1}(\cdot)` is inverse function of standard gaussian p.d.f.,</span>
+<span class="sd">    :math:`\psi^{A}(s)` is p.d.f. of swap rate under annuity measure,</span>
+<span class="sd">    :math:`s` is swap_rate.</span>
+
+<span class="sd">    There is no meaning of this value</span>
+<span class="sd">    because of simplification to calculate forward fx diffusion</span>
+<span class="sd">    See :py:func:`_forward_fx_diffusion_fprime`.</span>
+
+<span class="sd">    :param float swap_rate_pdf:</span>
+<span class="sd">    :param float swap_rate:</span>
+<span class="sd">    :param float h: value of :math:`h(s)`.</span>
+<span class="sd">    :return: :math:`h^{\prime}(s)`.</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -244,6 +313,33 @@
 
 
 <span class="k">def</span> <span class="nf">_calc_h_fhess</span><span class="p">(</span><span class="n">swap_rate_pdf_fprime</span><span class="p">,</span> <span class="n">swap_rate_pdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">h_fprime</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_calc_h_fhess</span>
+<span class="sd">    calculates second derivative of :py:func:`_calc_h`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        h^{\prime\prime}(s)</span>
+<span class="sd">        &amp; = &amp; \\frac{</span>
+<span class="sd">            (\psi^{A})^{\prime}(s) \phi(h(s)) - \psi^{A}(s) \phi^{\prime}(h(s)) h^{\prime}(s)</span>
+<span class="sd">        }{</span>
+<span class="sd">            \phi(h(s))^{2}</span>
+<span class="sd">        }</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`\phi^{-1}(\cdot)` is inverse function of standard gaussian p.d.f.,</span>
+<span class="sd">    :math:`\psi^{A}(s)` is p.d.f. of swap rate under annuity measure,</span>
+<span class="sd">    :math:`s` is swap_rate.</span>
+
+<span class="sd">    There is no meaning of this value</span>
+<span class="sd">    because of simplification to calculate forward fx diffusion</span>
+<span class="sd">    See :py:func:`_forward_fx_diffusion_fhess`.</span>
+
+<span class="sd">    :param float swap_rate_pdf:</span>
+<span class="sd">    :param float swap_rate:</span>
+<span class="sd">    :param float h: value of :math:`h(s)`.</span>
+<span class="sd">    :param float h_prime: value of :math:`h^{\prime}(s)`.</span>
+<span class="sd">    :return: :math:`h^{\prime\prime}(s)`.</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
     <span class="n">h_term1</span> <span class="o">=</span> <span class="n">swap_rate_pdf_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="n">h_term2</span> <span class="o">=</span> <span class="p">(</span><span class="n">swap_rate_pdf</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
@@ -261,6 +357,7 @@
         <span class="n">swap_rate_pdf</span><span class="p">,</span>
         <span class="n">swap_rate_pdf_fprime</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;_forward_fx_diffusion</span>
+<span class="sd">    calculate following value:</span>
 
 <span class="sd">    .. math::</span>
 
@@ -269,21 +366,29 @@
 <span class="sd">            \left(</span>
 <span class="sd">                \\rho_{XS}\sigma_{X}\sqrt{T}\Phi^{-1}(\Psi^{A}(s))</span>
 <span class="sd">                    + \\frac{\sigma_{X}^{2}T}{2}(1 - \\rho_{XS}^{2})</span>
-<span class="sd">            \\right).</span>
+<span class="sd">            \\right),</span>
 
 <span class="sd">    where</span>
-<span class="sd">    :math:`s` is :param swap_rate:,</span>
-<span class="sd">    :math:`\\rho_{XS}` is :param corr:,</span>
-<span class="sd">    :math:`\sigma_{X}` is :param vol:,</span>
+<span class="sd">    :math:`s` is swap_rate,</span>
+<span class="sd">    :math:`\\rho_{XS}` is corr,</span>
+<span class="sd">    :math:`\sigma_{X}` is vol,</span>
+<span class="sd">    :math:`\Psi^{A}(\cdot)` is c.d.f. of swap_rate under annuity measure.</span>
 
 <span class="sd">    :param float swap_rate:</span>
 <span class="sd">    :param float time:</span>
-<span class="sd">    :param float vol:</span>
-<span class="sd">    :param float corr:</span>
-<span class="sd">    :param callable dist_func: distribution of foward swap rate</span>
-<span class="sd">        under annuity measure</span>
+<span class="sd">    :param float vol: must be positive. volatility.</span>
+<span class="sd">    :param float corr: must be within [-1, 1]. correlation.</span>
+<span class="sd">    :param callable swap_rate_cdf: c.d.f. of foward swap rate</span>
+<span class="sd">        under annuity measure.</span>
+<span class="sd">    :param callable swap_rate_pdf: not used. p.d.f. of foward swap rate</span>
+<span class="sd">        under annuity measure.</span>
+<span class="sd">    :param callable swap_rate_pdf_fprime: not used. derivative of p.d.f.</span>
+<span class="sd">        of foward swap rate under annuity measure.</span>
 <span class="sd">    :return: value of forward fx diffusion.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">&lt;=</span> <span class="n">corr</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">)</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">_calc_h</span><span class="p">(</span><span class="n">swap_rate_cdf</span><span class="p">,</span> <span class="n">swap_rate</span><span class="p">)</span>
     <span class="n">term1</span> <span class="o">=</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">h</span>
     <span class="n">term2</span> <span class="o">=</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">time</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">corr</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
@@ -308,15 +413,27 @@
 <span class="sd">            &amp; = &amp; \\rho_{XS}\sigma_{X}\sqrt{T}h&#39;(s) \\tilde{\chi}(s)</span>
 
 <span class="sd">    where</span>
-<span class="sd">    :math:`h(s) := \Phi^{-1}(\Psi^{A}(s))`</span>
+<span class="sd">    :math:`h(s) := \Phi^{-1}(\Psi^{A}(s))`,</span>
+<span class="sd">    :math:`\\rho_{XS}` is corr,</span>
+<span class="sd">    :math:`\sigma_{X}` is vol.</span>
+
+<span class="sd">    See :py:func:`_forward_fx_diffusion`.</span>
 
 <span class="sd">    :param float swap_rate:</span>
 <span class="sd">    :param float time:</span>
-<span class="sd">    :param float vol:</span>
-<span class="sd">    :param float corr:</span>
-<span class="sd">    :param function swap_rate_cdf: distribution of forward swap rate</span>
-<span class="sd">        under annuity measure</span>
+<span class="sd">    :param float vol: must be positive. volatility</span>
+<span class="sd">    :param float corr: must be within [-1, 1]. correlation.</span>
+<span class="sd">    :param callable swap_rate_cdf: c.d.f. of foward swap rate</span>
+<span class="sd">        under annuity measure.</span>
+<span class="sd">    :param callable swap_rate_pdf: not used. p.d.f. of foward swap rate</span>
+<span class="sd">        under annuity measure.</span>
+<span class="sd">    :param callable swap_rate_pdf_fprime: not used. derivative of p.d.f.</span>
+<span class="sd">        of foward swap rate under annuity measure.</span>
+<span class="sd">    :return: value of derivative of forward fx diffusion.</span>
+<span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">&lt;=</span> <span class="n">corr</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">)</span>
     <span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">_forward_fx_diffusion</span><span class="p">(</span>
         <span class="n">swap_rate</span><span class="p">,</span>
         <span class="n">time</span><span class="p">,</span>
@@ -342,6 +459,15 @@
 <span class="sd">    Calculate second derivative of diffusion part of forward FX.</span>
 <span class="sd">    See :py:func:`_forward_fx_diffusion`</span>
 <span class="sd">    and :py:func:`_forward_fx_diffusion_fprime`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">            &amp; = &amp; \\rho_{XS}\sigma_{X}\sqrt{T}</span>
+<span class="sd">            \left(</span>
+<span class="sd">               h^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                + \\rho_{XS}\sigma_{X}\sqrt{T}</span>
+<span class="sd">                    h^{\prime}(s)^{2} \\tilde{\chi}(s)</span>
+<span class="sd">            \\right)</span>
 
 <span class="sd">    :param float swap_rate:</span>
 <span class="sd">    :param float time: non-negative.</span>
@@ -379,6 +505,12 @@
 
 
 <span class="k">class</span> <span class="nc">_ForwardFxDiffusionHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_ForwardFxDiffusionHelper</span>
+<span class="sd">    Generate forward FX diffusion under simple qunato cms model.</span>
+<span class="sd">    This helper class makes forward FX diffusion,</span>
+<span class="sd">    differential of the diffusion</span>
+<span class="sd">    and second derivative of the diffusion as a function of swap rate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">time</span><span class="p">,</span>
@@ -387,6 +519,18 @@
                  <span class="n">swap_rate_cdf</span><span class="p">,</span>
                  <span class="n">swap_rate_pdf</span><span class="p">,</span>
                  <span class="n">swap_rate_pdf_fprime</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;__init__</span>
+
+<span class="sd">        :param float time:</span>
+<span class="sd">        :param float vol: must be positive. volatility.</span>
+<span class="sd">        :param float corr: must be within [-1, 1]. correlation.</span>
+<span class="sd">        :param callable swap_rate_cdf:</span>
+<span class="sd">        :param callable swap_rate_pdf:</span>
+<span class="sd">        :param callable swap_rate_pdf_fprime:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">time</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">&lt;=</span> <span class="n">corr</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vol</span> <span class="o">=</span> <span class="n">vol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">corr</span> <span class="o">=</span> <span class="n">corr</span>
@@ -395,6 +539,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span> <span class="o">=</span> <span class="n">swap_rate_pdf_fprime</span>
 
     <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_func</span>
+<span class="sd">        makes forward FX diffusion as a function of swap rate.</span>
+<span class="sd">        See :py:func:`_forward_fx_diffusion`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">swap_rate</span><span class="p">:</span> <span class="n">_forward_fx_diffusion</span><span class="p">(</span>
             <span class="n">swap_rate</span><span class="o">=</span><span class="n">swap_rate</span><span class="p">,</span>
             <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
@@ -405,6 +553,10 @@
             <span class="n">swap_rate_pdf_fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fprime</span>
+<span class="sd">        makes derivative of forward FX diffusion as a function of swap rate.</span>
+<span class="sd">        See :py:func:`_forward_fx_diffusion_fprime`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">swap_rate</span><span class="p">:</span> <span class="n">_forward_fx_diffusion_fprime</span><span class="p">(</span>
             <span class="n">swap_rate</span><span class="o">=</span><span class="n">swap_rate</span><span class="p">,</span>
             <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
@@ -415,6 +567,11 @@
             <span class="n">swap_rate_pdf_fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swap_rate_pdf_fprime</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fhess</span>
+<span class="sd">        makes second derivative of forward FX diffusion</span>
+<span class="sd">        as a function of swap rate.</span>
+<span class="sd">        See :py:func:`_forward_fx_diffusion_fhess`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">swap_rate</span><span class="p">:</span> <span class="n">_forward_fx_diffusion_fhess</span><span class="p">(</span>
             <span class="n">swap_rate</span><span class="o">=</span><span class="n">swap_rate</span><span class="p">,</span>
             <span class="n">time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
@@ -426,28 +583,172 @@
 
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper">[docs]</a><span class="k">class</span> <span class="nc">SimpleQuantoCmsHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;SimpleQuantoCmsHelper</span>
+<span class="sd">    Interface of helper class to generate integrands of replication method</span>
+<span class="sd">    to expectation of numerator and denominator.</span>
+<span class="sd">    See :py:func:`SimpleQuantoCmsPricer`.</span>
+<span class="sd">    The integrands are part of terms of stochastic weight.</span>
+<span class="sd">    Stochastic weight of numerator are</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{eqnarray*}</span>
+<span class="sd">            w(s)</span>
+<span class="sd">                &amp; := &amp;</span>
+<span class="sd">                    \\frac{d^{2} }{d s^{2}} (g(s) \\alpha(s) \\tilde{\chi}(s))</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                g^{\prime\prime}(s)\\alpha(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    + g(s)\\alpha^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    + g(s)\\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                &amp; &amp;</span>
+<span class="sd">                    + 2g^{\prime}(s)\\alpha^{\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    + 2g^{\prime}(s)\\alpha(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                    + 2g(s)\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s).</span>
+<span class="sd">        \end{eqnarray*}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`g` is payoff function,</span>
+<span class="sd">    :math:`\\alpha` is annuity mapping function,</span>
+<span class="sd">    :math:`\\tilde{\chi}(s)` is forward fx diffusion,</span>
+<span class="sd">    see :py:func:`_forward_fx_diffusion`.</span>
+
+<span class="sd">    The stochastic weight of denominator is</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{eqnarray*}</span>
+<span class="sd">            w(s)</span>
+<span class="sd">                &amp; := &amp;</span>
+<span class="sd">                    \\frac{d^{2} }{d s^{2}} (\\alpha(s) \\tilde{\chi}(s))</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                    \\alpha^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    + \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">                    + 2\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s).</span>
+<span class="sd">        \end{eqnarray*}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper.make_numerator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_call_integrands</span>
+<span class="sd">        Interface of integrands which are integrated with call pricer</span>
+<span class="sd">        in replication method in the numerator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper.make_numerator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_put_integrands</span>
+<span class="sd">        Interface of integrands which are integrated with put pricer</span>
+<span class="sd">        in replication method in the numerator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper.make_numerator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_analytic_funcs</span>
+<span class="sd">        Interface of analytically computable terms in replication method.</span>
+<span class="sd">        The terms depedend on the model of forward FX rate</span>
+<span class="sd">        and forward swap rate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper.make_denominator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_call_integrands</span>
+<span class="sd">        Interface of integrands which are integrated with call pricer</span>
+<span class="sd">        in replication method in the denominator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper.make_denominator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_put_integrands</span>
+<span class="sd">        Interface of integrands which are integrated with put pricer</span>
+<span class="sd">        in replication method in the denominator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="SimpleQuantoCmsHelper.make_denominator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_analytic_funcs</span>
+<span class="sd">        Interface of analytically computable terms in replication method.</span>
+<span class="sd">        The terms depedend on the model of forward FX rate</span>
+<span class="sd">        and forward swap rate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper">[docs]</a><span class="k">class</span> <span class="nc">SimpleQuantoCmsLinearCallHelper</span><span class="p">(</span><span class="n">SimpleQuantoCmsHelper</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;SimpleQuantoCmsLinearCallHelper&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">_SimpleQuantoCmsLinearCallHelper</span><span class="p">(</span><span class="n">SimpleQuantoCmsHelper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_SimpleQuantoCmsLinearCallHelper</span>
+<span class="sd">    In linear TSR model with call payoff,</span>
+<span class="sd">    stochastic weight in the numerator is</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\begin{eqnarray}</span>
+<span class="sd">                g_{\mathrm{call}}^{\prime\prime}(s; K)\\alpha(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    &amp; = &amp;</span>
+<span class="sd">                    \delta(s - K)\\alpha(s)\\tilde{\chi}(s),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                g_{\mathrm{call}}(s; K)\\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">                    &amp; = &amp;</span>
+<span class="sd">                    (s - K)^{+}</span>
+<span class="sd">                    (\\alpha_{1}s + \\alpha_{2})</span>
+<span class="sd">                    \\rho_{XS}\sigma_{X}\sqrt{T}</span>
+<span class="sd">                    \left(</span>
+<span class="sd">                       h^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                        + \\rho_{XS}\sigma_{X}\sqrt{T} h^{\prime}(s)^{2} \\tilde{\chi}(s)</span>
+<span class="sd">                    \\right),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                2g_{\mathrm{call}}^{\prime}(s; K)\\alpha^{\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    &amp; = &amp; 2 1_{[K, \infty)}(s) \\alpha_{1}</span>
+<span class="sd">                        \exp</span>
+<span class="sd">                        \left(</span>
+<span class="sd">                            \\rho_{XS}\sigma_{X}\sqrt{T}\Phi^{-1}(\Psi^{A}(s))</span>
+<span class="sd">                                + \\frac{\sigma_{X}^{2}T}{2}(1 - \\rho_{XS}^{2})</span>
+<span class="sd">                        \\right),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                2g_{\mathrm{call}}^{\prime}(s; K)\\alpha(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                    &amp; = &amp; 2 1_{[K, \infty)}(s)</span>
+<span class="sd">                        (\\alpha_{1}s + \\alpha_{2})</span>
+<span class="sd">                        \\rho_{XS}\sigma_{X}\sqrt{T}h^{\prime}(s)\\tilde{\chi}(s),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                2g_{\mathrm{call}}(s; K)\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                    &amp; = &amp;</span>
+<span class="sd">                        2(s - K)^{+} \\alpha_{1}</span>
+<span class="sd">                            \\rho_{XS}\sigma_{X}\sqrt{T}h^{\prime}(s)\\tilde{\chi}(s),</span>
+<span class="sd">            \end{eqnarray}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`g_{\mathrm{callplet}}` is payoff function,</span>
+<span class="sd">    :math:`\\alpha` is annuity mapping function,</span>
+<span class="sd">    :math:`\\tilde{\chi}(s)` is forward fx diffusion,</span>
+<span class="sd">    see :py:func:`_forward_fx_diffusion`.</span>
+
+<span class="sd">    Stochastic weight in the denominator is</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{eqnarray}</span>
+<span class="sd">            \\alpha^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                &amp; = &amp; 0</span>
+<span class="sd">                \\\\</span>
+<span class="sd">            \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                (\\alpha_{1}s + \\alpha_{2})</span>
+<span class="sd">                \\rho_{XS}\sigma_{X}\sqrt{T}</span>
+<span class="sd">                \left(</span>
+<span class="sd">                       h^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    + \\rho_{XS}\sigma_{X}\sqrt{T} h^{\prime}(s)^{2} \\tilde{\chi}(s)</span>
+<span class="sd">                \\right),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">            2\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                    2\\alpha_{1}</span>
+<span class="sd">                    \\rho_{XS}\sigma_{X}\sqrt{T}h^{\prime}(s)\\tilde{\chi}(s),</span>
+<span class="sd">        \end{eqnarray}</span>
+
+<span class="sd">    :param AnnuityMappingFuncHelper annuity_mapping_helper:</span>
+<span class="sd">    :param PayoffHelper call_payoff_helper:</span>
+<span class="sd">    :param _ForwardFxDiffusionHelper forward_fx_diffusion_helper:</span>
+<span class="sd">    :param call_pricer: call option pricer.</span>
+<span class="sd">    :param put_pricer: put option pricer.</span>
+<span class="sd">    :param float payoff_strike: strike of call option payoff function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">annuity_mapping_helper</span><span class="p">,</span>
@@ -455,7 +756,13 @@
                  <span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
                  <span class="n">call_pricer</span><span class="p">,</span>
                  <span class="n">put_pricer</span><span class="p">,</span>
-                 <span class="n">payoff_strike</span><span class="p">):</span>
+                 <span class="n">payoff_strike</span><span class="p">,</span>
+                 <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                 <span class="n">max_put_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                 <span class="n">min_call_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                 <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># annutiy mapping funciton</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
@@ -466,15 +773,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_strike</span>
         <span class="c1"># forawad fx diffusion</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
+        <span class="n">fwd_fx_helper</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">fwd_fx_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span> <span class="o">=</span> <span class="n">fwd_fx_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span> <span class="o">=</span> <span class="n">fwd_fx_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
         <span class="c1"># pricer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
+        <span class="c1"># range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_put_range</span> <span class="o">=</span> <span class="n">min_put_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_put_range</span> <span class="o">=</span> <span class="n">max_put_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_call_range</span> <span class="o">=</span> <span class="n">min_call_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_call_range</span> <span class="o">=</span> <span class="n">max_call_range</span>
 
     <span class="k">def</span> <span class="nf">_make_numerator_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_make_numerator_integrands</span>
+<span class="sd">        Returns following functions:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            g_{\mathrm{call}}(s; K)\\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2g_{\mathrm{call}}^{\prime}(s; K)\\alpha^{\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2g_{\mathrm{call}}^{\prime}(s; K)\\alpha(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2g_{\mathrm{call}}(s; K)\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;func1</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
@@ -499,13 +829,58 @@
 
         <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">,</span> <span class="n">func4</span><span class="p">]</span>
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">make_numerator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_call_integrands</span>
+<span class="sd">        See :py:func:`_make_numerator_integrands`.</span>
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span></div>
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span>
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_numerator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_numerator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_numerator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_put_integrands</span>
+<span class="sd">        See :py:func:`_make_numerator_integrands`.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">make_numerator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_analytic_funcs</span>
+<span class="sd">        There are 3 functions which is calculated analytically.</span>
+<span class="sd">        First is constant term in replication method.</span>
+<span class="sd">        Second and third is the term</span>
+<span class="sd">        which contains dirac delta function as integrands.</span>
+<span class="sd">        Specifically, the second and third term are</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            p(K) \\alpha(K)\\tilde{\chi}(K)</span>
+<span class="sd">            1_{(L_{\min}^{\mathrm{put}},L_{\max}^{\mathrm{put}})}(K)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            c(K) \\alpha(K)\\tilde{\chi}(K)1_{(L_{\min},L_{\max})}(K)</span>
+<span class="sd">            1_{(L_{\min}^{\mathrm{call}},L_{\max}^{\mathrm{call}})}(K)</span>
+
+<span class="sd">        where</span>
+<span class="sd">        :math:`p(K) := p(0, S(0); K, T)`,</span>
+<span class="sd">        :math:`c(K) := c(0, S(0); K, T)`,</span>
+<span class="sd">        :math:`L_{\min}^{\mathrm{put}}`</span>
+<span class="sd">        is lower bound of integral range for put,</span>
+<span class="sd">        :math:`L_{\max}^{\mathrm{put}}`</span>
+<span class="sd">        is upper bound of integral range for put.</span>
+<span class="sd">        :math:`L_{\min}^{\mathrm{call}}`</span>
+<span class="sd">        is lower bound of integral range for call,</span>
+<span class="sd">        :math:`L_{\max}^{\mathrm{call}}`</span>
+<span class="sd">        is upper bound of integral range for call.</span>
+
+<span class="sd">        This term contains dirac delta function</span>
+<span class="sd">        (second derivative of payoff function)</span>
+<span class="sd">        so that can be calculated analytically.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
@@ -514,15 +889,34 @@
         <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
-                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">))</span>
 
         <span class="k">def</span> <span class="nf">func3</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">)</span>
-                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">]</span></div>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span><span class="p">))</span>
+
+        <span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_put_range</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_put_range</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_call_range</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_call_range</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">terms</span>
 
     <span class="k">def</span> <span class="nf">_make_denominator_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`_make_denominator_integrands`</span>
+<span class="sd">        Returns following functions:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\alpha^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
@@ -537,137 +931,180 @@
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">]</span>
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_call_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">make_denominator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_call_integrands</span>
+<span class="sd">        See :py:func:`_make_denominator_integrands`.</span>
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_put_integrands">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span></div>
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span>
 
-<div class="viewcode-block" id="SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsLinearCallHelper.make_denominator_analytic_funcs">[docs]</a>    <span class="k">def</span> <span class="nf">make_denominator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_denominator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_put_integrands</span>
+<span class="sd">        See :py:func:`_make_denominator_integrands`.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">make_denominator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_analytic_funcs</span>
+<span class="sd">        Return constant term in replication method.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="SimpleQuantoCmsPricer"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer">[docs]</a><span class="k">class</span> <span class="nc">SimpleQuantoCmsPricer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;SimpleQuantoCmsPricer&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">_make_numerator_replication</span><span class="p">(</span><span class="n">quanto_cms_helper</span><span class="p">,</span> <span class="n">call_pricer</span><span class="p">,</span> <span class="n">put_pricer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_make_numerator_replication</span>
 
+<span class="sd">    :param SimpleQuantoCmsHelper quanto_cms_helper:</span>
+<span class="sd">    :param call_pricer:</span>
+<span class="sd">    :param put_pricer:</span>
+<span class="sd">    :return: generated replication object</span>
+<span class="sd">    :rtype: :py:class:`AnalyticReplication`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">put_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_put_integrands</span><span class="p">()</span>
+    <span class="n">call_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_call_integrands</span><span class="p">()</span>
+    <span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_analytic_funcs</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">replication</span><span class="o">.</span><span class="n">AnalyticReplication</span><span class="p">(</span>
+        <span class="n">call_pricer</span><span class="p">,</span>
+        <span class="n">put_pricer</span><span class="p">,</span>
+        <span class="n">analytic_funcs</span><span class="p">,</span>
+        <span class="n">put_integrands</span><span class="p">,</span>
+        <span class="n">call_integrands</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_denominator_replication</span><span class="p">(</span><span class="n">quanto_cms_helper</span><span class="p">,</span> <span class="n">call_pricer</span><span class="p">,</span> <span class="n">put_pricer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_make_denominator_replication</span>
+
+<span class="sd">    :param qunato_cms_helper:</span>
+<span class="sd">    :param call_pricer:</span>
+<span class="sd">    :param put_pricer:</span>
+<span class="sd">    :return: generated replication object</span>
+<span class="sd">    :rtype: :py:class:`AnalyticReplication`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">put_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_put_integrands</span><span class="p">()</span>
+    <span class="n">call_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_call_integrands</span><span class="p">()</span>
+    <span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_analytic_funcs</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">replication</span><span class="o">.</span><span class="n">AnalyticReplication</span><span class="p">(</span>
+        <span class="n">call_pricer</span><span class="p">,</span>
+        <span class="n">put_pricer</span><span class="p">,</span>
+        <span class="n">analytic_funcs</span><span class="p">,</span>
+        <span class="n">put_integrands</span><span class="p">,</span>
+        <span class="n">call_integrands</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="replicate"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.replicate">[docs]</a><span class="k">def</span> <span class="nf">replicate</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span>
+              <span class="n">discount_factor</span><span class="p">,</span>
+              <span class="n">call_pricer</span><span class="p">,</span>
+              <span class="n">put_pricer</span><span class="p">,</span>
+              <span class="n">payoff_type</span><span class="p">,</span>
+              <span class="n">payoff_params</span><span class="p">,</span>
+              <span class="n">forward_fx_diffusion_params</span><span class="p">,</span>
+              <span class="n">annuity_mapping_type</span><span class="p">,</span>
+              <span class="n">annuity_mapping_params</span><span class="p">,</span>
+              <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+              <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;replicate</span>
+<span class="sd">    Simple qunato cms pricer.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        V_{\mathrm{QuantoCMS}}(0)</span>
+<span class="sd">        \\approx</span>
+<span class="sd">            P_{f}(0, T_{p})</span>
+<span class="sd">            \\frac{\mathrm{E}^{A,d}</span>
+<span class="sd">            \left[</span>
+<span class="sd">                g(S(T)) \\alpha(S(T)) \\tilde{\chi}(S(T))</span>
+<span class="sd">            \\right]</span>
+<span class="sd">            }{\mathrm{E}^{A,d}</span>
+<span class="sd">            \left[</span>
+<span class="sd">                \\alpha(S(T)) \\tilde{\chi}(S(T))</span>
+<span class="sd">            \\right]</span>
+<span class="sd">            }</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`T_{p}` is payment date of Quanto CMS,</span>
+<span class="sd">    :math:`P_{f}(0, T)` is value of foreign currency zero coupon bond</span>
+<span class="sd">    with maturity :math:`T` at time 0.</span>
+<span class="sd">    :math:`\mathrm{E}^{A,d}` is expectation under domestic annuity measure.</span>
+<span class="sd">    :math:`g` is payoff function,</span>
+<span class="sd">    :math:`\\alpha(\cdot)` is annuity mapping function,</span>
+<span class="sd">    :math:`\\tilde{\chi}(\cdot)` is forward fx diffusion,</span>
+<span class="sd">    :math:`S(T)` is time :math:`T` forward swap rate.</span>
+
+<span class="sd">    See</span>
+<span class="sd">    `Interest Rate Modeling. Volume 3: Products and Risk Management, Chap16`.</span>
+
+<span class="sd">    :param float init_swap_rate:</span>
+<span class="sd">    :param float discount_factor:</span>
+<span class="sd">    :param callable call_pricer:</span>
+<span class="sd">    :param callable put_pricer:</span>
+<span class="sd">    :param str payoff_type:</span>
+<span class="sd">        Specify type of payoff function as a string</span>
+<span class="sd">        (&quot;call&quot;, &quot;put&quot;, &quot;bull_spread&quot;).</span>
+<span class="sd">    :param dict payoff_params:</span>
+<span class="sd">    :param dict forward_fx_diffusion_params:</span>
+<span class="sd">    :param str annuity_mapping_type:</span>
+<span class="sd">        Specify type of annuity mapping function as a string (&quot;linear&quot;).</span>
+<span class="sd">    :param dict annuity_mapping_params:</span>
+<span class="sd">    :param float min_put_range:</span>
+<span class="sd">    :param float max_call_range:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">payoff_dict</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;call&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
         <span class="s2">&quot;put&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
         <span class="s2">&quot;bull_spread&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
     <span class="p">}</span>
-
     <span class="n">annuity_mapping_dict</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;linear&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">annuity_mapping_type</span><span class="p">,</span>
-                 <span class="n">annuity_mapping_params</span><span class="p">,</span>
-                 <span class="n">payoff_type</span><span class="p">,</span>
-                 <span class="n">payoff_params</span><span class="p">,</span>
-                 <span class="n">forward_fx_diffusion_params</span><span class="p">,</span>
-                 <span class="n">call_pricer</span><span class="p">,</span>
-                 <span class="n">put_pricer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;__init__</span>
-
-<span class="sd">        :param annuity_mapping_type:</span>
-<span class="sd">        :param annuity_mapping_params:</span>
-<span class="sd">        :param payoff_type:</span>
-<span class="sd">        :param payoff_params:</span>
-<span class="sd">        :param forward_fx_diffusion_params:</span>
-<span class="sd">        :param call_pricer:</span>
-<span class="sd">        :param put_pricer:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_type</span> <span class="o">=</span> \
-            <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_dict</span><span class="p">[</span><span class="n">annuity_mapping_type</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_dict</span><span class="p">[</span><span class="n">payoff_type</span><span class="p">]</span>
-        <span class="c1"># forward fx diffusion</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_helper</span> <span class="o">=</span> <span class="n">_ForwardFxDiffusionHelper</span><span class="p">(</span>
-            <span class="o">**</span><span class="n">forward_fx_diffusion_params</span><span class="p">)</span>
-        <span class="c1"># annuity mapping func</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_helper</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">replication</span><span class="o">.</span><span class="n">LinearAnnuityMappingFuncHelper</span><span class="p">(</span>
-                    <span class="o">**</span><span class="n">annuity_mapping_params</span><span class="p">))</span>
-        <span class="c1"># payoff</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">payoff_helper</span> <span class="o">=</span> <span class="n">payoff</span><span class="o">.</span><span class="n">CallUnderlyingPayoffHelper</span><span class="p">(</span>
-                <span class="o">**</span><span class="n">payoff_params</span><span class="p">)</span>
-        <span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;strike&quot;</span><span class="p">]</span>
-        <span class="c1"># pricer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
-        <span class="c1"># quanto cms</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">quanto_cms_helper</span> <span class="o">=</span> <span class="n">SimpleQuantoCmsLinearCallHelper</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_helper</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">payoff_helper</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
-                <span class="n">call_pricer</span><span class="p">,</span>
-                <span class="n">put_pricer</span><span class="p">,</span>
-                <span class="n">payoff_strike</span><span class="p">)</span>
-        <span class="c1"># replication</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">numerator_replication</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_replication</span><span class="p">(</span>
-            <span class="n">quanto_cms_helper</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">denominator_replication</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_replication</span><span class="p">(</span>
-            <span class="n">quanto_cms_helper</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_make_numerator_replication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quanto_cms_helper</span><span class="p">):</span>
-        <span class="n">put_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_put_integrands</span><span class="p">()</span>
-        <span class="n">call_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_call_integrands</span><span class="p">()</span>
-        <span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_numerator_analytic_funcs</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">replication</span><span class="o">.</span><span class="n">AnalyticReplication</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">,</span>
-            <span class="n">analytic_funcs</span><span class="p">,</span>
-            <span class="n">put_integrands</span><span class="p">,</span>
-            <span class="n">call_integrands</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_make_denominator_replication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quanto_cms_helper</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;_make_denominator_replication</span>
-
-<span class="sd">        :param qunato_cms_helper:</span>
-<span class="sd">        :return: generated replication object</span>
-<span class="sd">        :rtype: :py:class:`AnalyticReplication`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">put_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_put_integrands</span><span class="p">()</span>
-        <span class="n">call_integrands</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_call_integrands</span><span class="p">()</span>
-        <span class="n">analytic_funcs</span> <span class="o">=</span> <span class="n">quanto_cms_helper</span><span class="o">.</span><span class="n">make_denominator_analytic_funcs</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">replication</span><span class="o">.</span><span class="n">AnalyticReplication</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">,</span>
-            <span class="n">analytic_funcs</span><span class="p">,</span>
-            <span class="n">put_integrands</span><span class="p">,</span>
-            <span class="n">call_integrands</span><span class="p">)</span>
-
-<div class="viewcode-block" id="SimpleQuantoCmsPricer.eval"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.SimpleQuantoCmsPricer.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-             <span class="n">discount_factor</span><span class="p">,</span>
-             <span class="n">init_swap_rate</span><span class="p">,</span>
-             <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
-             <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;eval</span>
-
-<span class="sd">        :param float discount_factor: discount factor at payment date.</span>
-<span class="sd">        :param float init_swap_rate: initial swap rate.</span>
-<span class="sd">        :param float min_put_range:</span>
-<span class="sd">        :param float max_call_range:</span>
-<span class="sd">        :return: value of quanto cms.</span>
-<span class="sd">        :rtype: float</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">numerator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numerator_replication</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span>
-            <span class="n">init_swap_rate</span><span class="p">,</span>
-            <span class="n">min_put_range</span><span class="o">=</span><span class="n">min_put_range</span><span class="p">,</span>
-            <span class="n">max_call_range</span><span class="o">=</span><span class="n">max_call_range</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numerator&quot;</span><span class="p">,</span> <span class="n">numerator</span><span class="p">)</span>
-        <span class="n">denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator_replication</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span>
-            <span class="n">init_swap_rate</span><span class="p">,</span>
-            <span class="n">min_put_range</span><span class="o">=</span><span class="n">min_put_range</span><span class="p">,</span>
-            <span class="n">max_call_range</span><span class="o">=</span><span class="n">max_call_range</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;denominator&quot;</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">discount_factor</span> <span class="o">*</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span></div></div>
+    <span class="n">annuity_mapping_type</span> <span class="o">=</span> <span class="n">annuity_mapping_dict</span><span class="p">[</span><span class="n">annuity_mapping_type</span><span class="p">]</span>
+    <span class="n">payoff_type</span> <span class="o">=</span> <span class="n">payoff_dict</span><span class="p">[</span><span class="n">payoff_type</span><span class="p">]</span>
+    <span class="c1"># forward fx diffusion</span>
+    <span class="n">forward_fx_diffusion_helper</span> <span class="o">=</span> <span class="n">_ForwardFxDiffusionHelper</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">forward_fx_diffusion_params</span><span class="p">)</span>
+    <span class="c1"># annuity mapping func</span>
+    <span class="k">if</span> <span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">annuity_mapping_helper</span> <span class="o">=</span> <span class="n">replication</span><span class="o">.</span><span class="n">LinearAnnuityMappingFuncHelper</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">annuity_mapping_params</span><span class="p">)</span>
+    <span class="c1"># payoff</span>
+    <span class="k">if</span> <span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">payoff_helper</span> <span class="o">=</span> <span class="n">payoff</span><span class="o">.</span><span class="n">CallUnderlyingPayoffHelper</span><span class="p">(</span><span class="o">**</span><span class="n">payoff_params</span><span class="p">)</span>
+    <span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;strike&quot;</span><span class="p">]</span>
+    <span class="c1"># pricer</span>
+    <span class="c1"># quanto cms helper</span>
+    <span class="k">if</span> <span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">quanto_cms_helper</span> <span class="o">=</span> <span class="n">_SimpleQuantoCmsLinearCallHelper</span><span class="p">(</span>
+            <span class="n">annuity_mapping_helper</span><span class="p">,</span>
+            <span class="n">payoff_helper</span><span class="p">,</span>
+            <span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
+            <span class="n">call_pricer</span><span class="p">,</span>
+            <span class="n">put_pricer</span><span class="p">,</span>
+            <span class="n">payoff_strike</span><span class="p">,</span>
+            <span class="n">min_put_range</span><span class="p">,</span>
+            <span class="n">max_call_range</span><span class="p">)</span>
+    <span class="c1"># replication</span>
+    <span class="n">numerator_replication</span> <span class="o">=</span> <span class="n">_make_numerator_replication</span><span class="p">(</span>
+        <span class="n">quanto_cms_helper</span><span class="p">,</span> <span class="n">call_pricer</span><span class="p">,</span> <span class="n">put_pricer</span><span class="p">)</span>
+    <span class="n">denominator_replication</span> <span class="o">=</span> <span class="n">_make_denominator_replication</span><span class="p">(</span>
+        <span class="n">quanto_cms_helper</span><span class="p">,</span> <span class="n">call_pricer</span><span class="p">,</span> <span class="n">put_pricer</span><span class="p">)</span>
+    <span class="c1"># calculate</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">numerator_replication</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numerator&quot;</span><span class="p">,</span> <span class="n">numerator</span><span class="p">)</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">denominator_replication</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;denominator&quot;</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">discount_factor</span> <span class="o">*</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span></div>
 </pre></div>
 
            </div>

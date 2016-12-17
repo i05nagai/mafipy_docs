@@ -518,6 +518,87 @@
     <span class="k">return</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">-</span> <span class="n">term3</span> <span class="o">-</span> <span class="n">term4</span> <span class="o">-</span> <span class="n">term5</span></div>
 
 
+<div class="viewcode-block" id="black_scholes_call_value_third_by_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_value_third_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_value_third_by_strike</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span>
+        <span class="n">strike</span><span class="p">,</span>
+        <span class="n">rate</span><span class="p">,</span>
+        <span class="n">maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_call_value_third_by_strike</span>
+<span class="sd">    Third derivative of value of call option with respect to strike</span>
+<span class="sd">    under black scholes model.</span>
+<span class="sd">    See :py:func:`calc_black_scholes_call_formula`</span>
+<span class="sd">    and :py:func:`black_scholes_call_value_fprime_by_strike`,</span>
+<span class="sd">    and :py:func:`black_scholes_call_value_fhess_by_strike`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{array}{ccl}</span>
+<span class="sd">            \\frac{\partial^{3}}{\partial K^{3}} c(0, S; T, K)</span>
+<span class="sd">            &amp; = &amp;</span>
+<span class="sd">            \left(</span>
+<span class="sd">                S\phi^{\prime\prime}(d_{1}(K))</span>
+<span class="sd">                - K\phi^{\prime\prime}(d_{2}(K))</span>
+<span class="sd">            \\right)</span>
+<span class="sd">            (d^{\prime}(K))^{3}</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            &amp; &amp;</span>
+<span class="sd">            +</span>
+<span class="sd">            \left(</span>
+<span class="sd">                S\phi^{\prime}(d_{1}(K))</span>
+<span class="sd">                - K\phi^{\prime}(d_{2}(K))</span>
+<span class="sd">            \\right)</span>
+<span class="sd">            3d^{\prime}(K)d^{\prime\prime}</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            &amp; &amp;</span>
+<span class="sd">            - 3\phi(d_{2}(K))d^{\prime\prime}</span>
+<span class="sd">            - 3\phi^{\prime}(d_{2}(K))(d^{\prime}(K))^{2}</span>
+<span class="sd">        \end{array}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is underlying,</span>
+<span class="sd">    :math:`K` is strike,</span>
+<span class="sd">    :math:`r` is rate,</span>
+<span class="sd">    :math:`T` is maturity,</span>
+<span class="sd">    :math:`\sigma` is vol,</span>
+<span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
+<span class="sd">    in :py:func:`calc_black_scholes_call_formula`,</span>
+<span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
+<span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity: non-negative.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
+<span class="sd">    :return: value of third derivative.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">func_d1</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">func_d2</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">d_fprime</span> <span class="o">=</span> <span class="n">d_fprime_by_strike</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">d_fhess</span> <span class="o">=</span> <span class="n">d_fhess_by_strike</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">d1_density_fprime</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">math_formula</span><span class="o">.</span><span class="n">norm_pdf_fprime</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d1_density_fhess</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">math_formula</span><span class="o">.</span><span class="n">norm_pdf_fhess</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2_density</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+    <span class="n">d2_density_fprime</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">math_formula</span><span class="o">.</span><span class="n">norm_pdf_fprime</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+    <span class="n">d2_density_fhess</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">math_formula</span><span class="o">.</span><span class="n">norm_pdf_fhess</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="c1"># term1</span>
+    <span class="n">factor11</span> <span class="o">=</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">*</span> <span class="n">d1_density_fhess</span> <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">d2_density_fhess</span><span class="p">)</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="n">factor11</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_fprime</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="c1"># term2</span>
+    <span class="n">factor21</span> <span class="o">=</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">*</span> <span class="n">d1_density_fprime</span> <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">d2_density_fprime</span><span class="p">)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">factor21</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">d_fprime</span> <span class="o">*</span> <span class="n">d_fhess</span>
+    <span class="c1"># term3, term4</span>
+    <span class="n">term3</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">d2_density</span> <span class="o">*</span> <span class="n">d_fhess</span>
+    <span class="n">term4</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">d2_density_fprime</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_fprime</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">-</span> <span class="n">term3</span> <span class="o">-</span> <span class="n">term4</span></div>
+
+
 <div class="viewcode-block" id="calc_local_vol_model_implied_vol"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_local_vol_model_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">calc_local_vol_model_implied_vol</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">strike</span><span class="p">,</span>

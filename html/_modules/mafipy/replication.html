@@ -269,13 +269,12 @@
                                         <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_integrands</span><span class="p">])</span>
 
-<div class="viewcode-block" id="AnalyticReplication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnalyticReplication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-             <span class="n">init_swap_rate</span><span class="p">,</span>
-             <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
-             <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalyticReplication.eval"><a class="viewcode-back" href="../../mafipy.replication.html#mafipy.replication.AnalyticReplication.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">):</span>
         <span class="n">analytic_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_analytic_term</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
-        <span class="n">put_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_put_integral</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">)</span>
-        <span class="n">call_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_call_integral</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
+        <span class="n">put_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_put_integral</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">min_put_range</span><span class="p">)</span>
+        <span class="n">call_integral_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_call_integral</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">max_call_range</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">analytic_term</span> <span class="o">+</span> <span class="n">put_integral_term</span> <span class="o">+</span> <span class="n">call_integral_term</span></div></div>
 </pre></div>
