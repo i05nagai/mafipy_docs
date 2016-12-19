@@ -149,6 +149,41 @@
   <div class="section" id="module-mafipy.payoff">
 <span id="mafipy-payoff-module"></span><h1>mafipy.payoff module<a class="headerlink" href="#module-mafipy.payoff" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
+<dt id="mafipy.payoff.BullSpreadUnderlyingPayoffHelper">
+<em class="property">class </em><code class="descclassname">mafipy.payoff.</code><code class="descname">BullSpreadUnderlyingPayoffHelper</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/payoff.html#BullSpreadUnderlyingPayoffHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.payoff.BullSpreadUnderlyingPayoffHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mafipy.payoff.PayoffHelper" title="mafipy.payoff.PayoffHelper"><code class="xref py py-class docutils literal"><span class="pre">mafipy.payoff.PayoffHelper</span></code></a></p>
+<p>generate bull-spread option payoff as a funciton of underlying.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lower_strike</strong> (<em>float</em>) &#8211; required.</li>
+<li><strong>upper_strike</strong> (<em>float</em>) &#8211; required.</li>
+<li><strong>gearing</strong> (<em>float</em>) &#8211; required.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_fhess">
+<code class="descname">make_fhess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/payoff.html#BullSpreadUnderlyingPayoffHelper.make_fhess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_fhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_fprime">
+<code class="descname">make_fprime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/payoff.html#BullSpreadUnderlyingPayoffHelper.make_fprime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_fprime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_func">
+<code class="descname">make_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/payoff.html#BullSpreadUnderlyingPayoffHelper.make_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="mafipy.payoff.CallStrikePayoffHelper">
 <em class="property">class </em><code class="descclassname">mafipy.payoff.</code><code class="descname">CallStrikePayoffHelper</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/payoff.html#CallStrikePayoffHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.payoff.CallStrikePayoffHelper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mafipy.payoff.PayoffHelper" title="mafipy.payoff.PayoffHelper"><code class="xref py py-class docutils literal"><span class="pre">mafipy.payoff.PayoffHelper</span></code></a></p>

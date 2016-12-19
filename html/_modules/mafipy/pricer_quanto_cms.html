@@ -770,7 +770,6 @@
         <span class="c1"># payoff</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fhess</span> <span class="o">=</span> <span class="n">call_payoff_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_strike</span>
         <span class="c1"># forawad fx diffusion</span>
         <span class="n">fwd_fx_helper</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span>
@@ -962,6 +961,334 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span>
 
 
+<span class="k">class</span> <span class="nc">_SimpleQuantoCmsLinearBullSpreadHelper</span><span class="p">(</span><span class="n">SimpleQuantoCmsHelper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_SimpleQuantoCmsLinearBullSpreadHelper</span>
+<span class="sd">    In linear TSR model with bull-spread payoff,</span>
+<span class="sd">    stochastic weight in the numerator is</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\begin{eqnarray}</span>
+<span class="sd">                g_{\mathrm{bullspread}}^{\prime\prime}(s; K)</span>
+<span class="sd">                \\alpha(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    &amp; = &amp;</span>
+<span class="sd">                    \delta(s - K)\\alpha(s)\\tilde{\chi}(s),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                g_{\mathrm{bullspread}}(s; K)</span>
+<span class="sd">                \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">                    &amp; = &amp;</span>
+<span class="sd">                    (s - K)^{+}</span>
+<span class="sd">                    (\\alpha_{1}s + \\alpha_{2})</span>
+<span class="sd">                    \\rho_{XS}\sigma_{X}\sqrt{T}</span>
+<span class="sd">                    \left(</span>
+<span class="sd">                       h^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                        + \\rho_{XS}\sigma_{X}\sqrt{T} h^{\prime}(s)^{2}</span>
+<span class="sd">                            \\tilde{\chi}(s)</span>
+<span class="sd">                    \\right),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                2g_{\mathrm{bullspread}}^{\prime}(s; K)</span>
+<span class="sd">                \\alpha^{\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    &amp; = &amp; 2 1_{[K, \infty)}(s) \\alpha_{1}</span>
+<span class="sd">                        \exp</span>
+<span class="sd">                        \left(</span>
+<span class="sd">                            \\rho_{XS}\sigma_{X}\sqrt{T}\Phi^{-1}(\Psi^{A}(s))</span>
+<span class="sd">                                + \\frac{\sigma_{X}^{2}T}{2}(1 - \\rho_{XS}^{2})</span>
+<span class="sd">                        \\right),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                2g_{\mathrm{bullspread}}^{\prime}(s; K)</span>
+<span class="sd">                \\alpha(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                    &amp; = &amp; 2 1_{[K, \infty)}(s)</span>
+<span class="sd">                        (\\alpha_{1}s + \\alpha_{2})</span>
+<span class="sd">                        \\rho_{XS}\sigma_{X}\sqrt{T}h^{\prime}(s)</span>
+<span class="sd">                        \\tilde{\chi}(s),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">                2g_{\mathrm{bullspread}}(s; K)</span>
+<span class="sd">                \\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                    &amp; = &amp;</span>
+<span class="sd">                        2(s - K)^{+} \\alpha_{1}</span>
+<span class="sd">                            \\rho_{XS}\sigma_{X}\sqrt{T}h^{\prime}(s)</span>
+<span class="sd">                            \\tilde{\chi}(s),</span>
+<span class="sd">            \end{eqnarray}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`g_{\mathrm{bullspread}}` is payoff function,</span>
+<span class="sd">    :math:`\\alpha` is annuity mapping function,</span>
+<span class="sd">    :math:`\\tilde{\chi}(s)` is forward fx diffusion,</span>
+<span class="sd">    see :py:func:`_forward_fx_diffusion`.</span>
+
+<span class="sd">    Stochastic weight in the denominator is</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{eqnarray}</span>
+<span class="sd">            \\alpha^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                &amp; = &amp; 0</span>
+<span class="sd">                \\\\</span>
+<span class="sd">            \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                (\\alpha_{1}s + \\alpha_{2})</span>
+<span class="sd">                \\rho_{XS}\sigma_{X}\sqrt{T}</span>
+<span class="sd">                \left(</span>
+<span class="sd">                       h^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">                    + \\rho_{XS}\sigma_{X}\sqrt{T} h^{\prime}(s)^{2} \\tilde{\chi}(s)</span>
+<span class="sd">                \\right),</span>
+<span class="sd">                \\\\</span>
+<span class="sd">            2\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                    2\\alpha_{1}</span>
+<span class="sd">                    \\rho_{XS}\sigma_{X}\sqrt{T}h^{\prime}(s)\\tilde{\chi}(s),</span>
+<span class="sd">        \end{eqnarray}</span>
+
+<span class="sd">    :param AnnuityMappingFuncHelper annuity_mapping_helper:</span>
+<span class="sd">    :param PayoffHelper bull_spread_payoff_helper:</span>
+<span class="sd">    :param _ForwardFxDiffusionHelper forward_fx_diffusion_helper:</span>
+<span class="sd">    :param call_pricer: call option pricer.</span>
+<span class="sd">    :param put_pricer: put option pricer.</span>
+<span class="sd">    :param float payoff_lower_strike: lower strike of</span>
+<span class="sd">        bull spread option payoff function.</span>
+<span class="sd">    :param float payoff_upper_strike: upper strike of</span>
+<span class="sd">        bull spread option payoff function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">annuity_mapping_helper</span><span class="p">,</span>
+                 <span class="n">bull_spread_payoff_helper</span><span class="p">,</span>
+                 <span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
+                 <span class="n">call_pricer</span><span class="p">,</span>
+                 <span class="n">put_pricer</span><span class="p">,</span>
+                 <span class="n">payoff_lower_strike</span><span class="p">,</span>
+                 <span class="n">payoff_upper_strike</span><span class="p">,</span>
+                 <span class="n">min_put_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                 <span class="n">max_put_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                 <span class="n">min_call_range</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+                 <span class="n">max_call_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># annutiy mapping funciton</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fhess</span> <span class="o">=</span> <span class="n">annuity_mapping_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
+        <span class="c1"># payoff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span> <span class="o">=</span> <span class="n">bull_spread_payoff_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span> <span class="o">=</span> <span class="n">bull_spread_payoff_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span> <span class="o">=</span> <span class="n">payoff_lower_strike</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span> <span class="o">=</span> <span class="n">payoff_upper_strike</span>
+        <span class="c1"># forawad fx diffusion</span>
+        <span class="n">fwd_fx_helper</span> <span class="o">=</span> <span class="n">forward_fx_diffusion_helper</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span> <span class="o">=</span> <span class="n">fwd_fx_helper</span><span class="o">.</span><span class="n">make_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span> <span class="o">=</span> <span class="n">fwd_fx_helper</span><span class="o">.</span><span class="n">make_fprime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span> <span class="o">=</span> <span class="n">fwd_fx_helper</span><span class="o">.</span><span class="n">make_fhess</span><span class="p">()</span>
+        <span class="c1"># pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span> <span class="o">=</span> <span class="n">call_pricer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span> <span class="o">=</span> <span class="n">put_pricer</span>
+        <span class="c1"># range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_put_range</span> <span class="o">=</span> <span class="n">min_put_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_put_range</span> <span class="o">=</span> <span class="n">max_put_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_call_range</span> <span class="o">=</span> <span class="n">min_call_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_call_range</span> <span class="o">=</span> <span class="n">max_call_range</span>
+
+    <span class="k">def</span> <span class="nf">_make_numerator_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_make_numerator_integrands</span>
+<span class="sd">        Returns following functions:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            g_{\mathrm{bullspread}}(s; K_{l}, K_{u})</span>
+<span class="sd">                \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2g_{\mathrm{bullspread}}^{\prime}(s; K_{l}, K_{u})</span>
+<span class="sd">                \\alpha^{\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2g_{\mathrm{bullspread}}^{\prime}(s; K_{l}, K_{u})</span>
+<span class="sd">                \\alpha(s)\\tilde{\chi}^{\prime}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2g_{\mathrm{bullspread}}(s; K_{l}, K_{u})</span>
+<span class="sd">                \\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;func1</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func3</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func4</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">,</span> <span class="n">func4</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">make_numerator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_call_integrands</span>
+<span class="sd">        See :py:func:`_make_numerator_integrands`.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">make_numerator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_put_integrands</span>
+<span class="sd">        See :py:func:`_make_numerator_integrands`.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_numerator_integrands</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">make_numerator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_numerator_analytic_funcs</span>
+<span class="sd">        There are 3 functions which is calculated analytically.</span>
+<span class="sd">        First is constant term in replication method.</span>
+<span class="sd">        Second and third is the term</span>
+<span class="sd">        which contains dirac delta function as integrands.</span>
+<span class="sd">        Specifically, the second and third term are</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            p(K_{f}) \\alpha(K_{f})\\tilde{\chi}(K_{f})</span>
+<span class="sd">            1_{(L_{\min}^{\mathrm{put}},L_{\max}^{\mathrm{put}})}(K_{f})</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            p(K_{c}) \\alpha(K_{c})\\tilde{\chi}(K_{c})</span>
+<span class="sd">            1_{(L_{\min}^{\mathrm{put}},L_{\max}^{\mathrm{put}})}(K_{c})</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            c(K_{f}) \\alpha(K_{f})\\tilde{\chi}(K_{f})</span>
+<span class="sd">            1_{(L_{\min}^{\mathrm{call}},L_{\max}^{\mathrm{call}})}(K_{f})</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            c(K_{c}) \\alpha(K_{c})\\tilde{\chi}(K_{c})</span>
+<span class="sd">            1_{(L_{\min}^{\mathrm{call}},L_{\max}^{\mathrm{call}})}(K_{c})</span>
+
+<span class="sd">        where</span>
+<span class="sd">        :math:`p(K) := p(0, S(0); K, T)`,</span>
+<span class="sd">        :math:`c(K) := c(0, S(0); K, T)`,</span>
+<span class="sd">        :math:`L_{\min}^{\mathrm{put}}`</span>
+<span class="sd">        is lower bound of integral range for put,</span>
+<span class="sd">        :math:`L_{\max}^{\mathrm{put}}`</span>
+<span class="sd">        is upper bound of integral range for put.</span>
+<span class="sd">        :math:`L_{\min}^{\mathrm{call}}`</span>
+<span class="sd">        is lower bound of integral range for call,</span>
+<span class="sd">        :math:`L_{\max}^{\mathrm{call}}`</span>
+<span class="sd">        is upper bound of integral range for call.</span>
+
+<span class="sd">        This term contains dirac delta function</span>
+<span class="sd">        (second derivative of payoff function)</span>
+<span class="sd">        so that can be calculated analytically.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">))</span>
+
+        <span class="c1"># put term1</span>
+        <span class="k">def</span> <span class="nf">func21</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span><span class="p">))</span>
+
+        <span class="c1"># put term2</span>
+        <span class="k">def</span> <span class="nf">func22</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">put_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span><span class="p">))</span>
+
+        <span class="c1"># call term1</span>
+        <span class="k">def</span> <span class="nf">func31</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span><span class="p">))</span>
+
+        <span class="c1"># call term2</span>
+        <span class="k">def</span> <span class="nf">func32</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">call_pricer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span><span class="p">))</span>
+
+        <span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_put_range</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_put_range</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func21</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_put_range</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_put_range</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func22</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_call_range</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_lower_strike</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_call_range</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func31</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_call_range</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">payoff_upper_strike</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_call_range</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func32</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">terms</span>
+
+    <span class="k">def</span> <span class="nf">_make_denominator_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`_make_denominator_integrands`</span>
+<span class="sd">        Returns following functions:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\alpha^{\prime\prime}(s)\\tilde{\chi}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            \\alpha(s)\\tilde{\chi}^{\prime\prime}(s)</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            2\\alpha^{\prime}(s)\\tilde{\chi}^{\prime}(s)</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func2</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fhess</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">func3</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mf">2.0</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion_fprime</span><span class="p">(</span><span class="n">swap_rate</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">,</span> <span class="n">func2</span><span class="p">,</span> <span class="n">func3</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">make_denominator_call_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_call_integrands</span>
+<span class="sd">        See :py:func:`_make_denominator_integrands`.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">make_denominator_put_integrands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_put_integrands</span>
+<span class="sd">        See :py:func:`_make_denominator_integrands`.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_denominator_integrands</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">make_denominator_analytic_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_denominator_analytic_funcs</span>
+<span class="sd">        Return constant term in replication method.</span>
+
+<span class="sd">        :return: array of function.</span>
+<span class="sd">        :rtype: array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annuity_mapping_func</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_fx_diffusion</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">func1</span><span class="p">]</span>
+
+
 <span class="k">def</span> <span class="nf">_make_numerator_replication</span><span class="p">(</span><span class="n">quanto_cms_helper</span><span class="p">,</span> <span class="n">call_pricer</span><span class="p">,</span> <span class="n">put_pricer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;_make_numerator_replication</span>
 
@@ -1079,7 +1406,9 @@
     <span class="c1"># payoff</span>
     <span class="k">if</span> <span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">payoff_helper</span> <span class="o">=</span> <span class="n">payoff</span><span class="o">.</span><span class="n">CallUnderlyingPayoffHelper</span><span class="p">(</span><span class="o">**</span><span class="n">payoff_params</span><span class="p">)</span>
-    <span class="n">payoff_strike</span> <span class="o">=</span> <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;strike&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">payoff_helper</span> <span class="o">=</span> <span class="n">payoff</span><span class="o">.</span><span class="n">BullSpreadUnderlyingPayoffHelper</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">payoff_params</span><span class="p">)</span>
     <span class="c1"># pricer</span>
     <span class="c1"># quanto cms helper</span>
     <span class="k">if</span> <span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -1089,9 +1418,21 @@
             <span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
             <span class="n">call_pricer</span><span class="p">,</span>
             <span class="n">put_pricer</span><span class="p">,</span>
-            <span class="n">payoff_strike</span><span class="p">,</span>
+            <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;strike&quot;</span><span class="p">],</span>
             <span class="n">min_put_range</span><span class="p">,</span>
             <span class="n">max_call_range</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">payoff_type</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">annuity_mapping_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">quanto_cms_helper</span> <span class="o">=</span> <span class="n">_SimpleQuantoCmsLinearBullSpreadHelper</span><span class="p">(</span>
+            <span class="n">annuity_mapping_helper</span><span class="p">,</span>
+            <span class="n">payoff_helper</span><span class="p">,</span>
+            <span class="n">forward_fx_diffusion_helper</span><span class="p">,</span>
+            <span class="n">call_pricer</span><span class="p">,</span>
+            <span class="n">put_pricer</span><span class="p">,</span>
+            <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;lower_strike&quot;</span><span class="p">],</span>
+            <span class="n">payoff_params</span><span class="p">[</span><span class="s2">&quot;upper_strike&quot;</span><span class="p">],</span>
+            <span class="n">min_put_range</span><span class="p">,</span>
+            <span class="n">max_call_range</span><span class="p">)</span>
+
     <span class="c1"># replication</span>
     <span class="n">numerator_replication</span> <span class="o">=</span> <span class="n">_make_numerator_replication</span><span class="p">(</span>
         <span class="n">quanto_cms_helper</span><span class="p">,</span> <span class="n">call_pricer</span><span class="p">,</span> <span class="n">put_pricer</span><span class="p">)</span>

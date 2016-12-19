@@ -136,6 +136,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">pytest</span> <span class="k">import</span> <span class="n">approx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">mafipy.analytic_formula</span> <span class="k">as</span> <span class="nn">target</span>
 <span class="kn">import</span> <span class="nn">mafipy.math_formula</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -242,18 +243,8 @@
             <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.678817974887</span><span class="p">),</span>
             <span class="c1"># underlying &gt; strike</span>
             <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.646647107929</span><span class="p">),</span>
-            <span class="c1"># underlying &lt; maturity</span>
+            <span class="c1"># underlying &lt; strike</span>
             <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.478587969669</span><span class="p">),</span>
-            <span class="c1"># maturity &lt; 0</span>
-            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
-            <span class="c1"># underlying &lt; 0</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.478587969669</span><span class="p">),</span>
-            <span class="c1"># underlying = 0</span>
-            <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
-            <span class="c1"># strike &lt; 0</span>
-            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
-            <span class="c1"># vol &lt; 0</span>
-            <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
         <span class="p">])</span>
 <div class="viewcode-block" id="TestAnalytic.test_calc_black_scholes_call_formula"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_calc_black_scholes_call_formula">[docs]</a>    <span class="k">def</span> <span class="nf">test_calc_black_scholes_call_formula</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">expect</span><span class="p">):</span>
@@ -264,22 +255,8 @@
     <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
         <span class="s2">&quot;underlying, strike, rate, maturity, vol&quot;</span><span class="p">,</span>
         <span class="p">[</span>
-            <span class="c1"># underlying = strike</span>
-            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
             <span class="c1"># underlying &gt; strike</span>
             <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="c1"># underlying &lt; maturity</span>
-            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="c1"># maturity &lt; 0</span>
-            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="c1"># underlying &lt; 0</span>
-            <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="c1"># underlying = 0</span>
-            <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="c1"># strike &lt; 0</span>
-            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-            <span class="c1"># vol &lt; 0</span>
-            <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">),</span>
         <span class="p">])</span>
 <div class="viewcode-block" id="TestAnalytic.test_calc_black_scholes_put_formula"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_calc_black_scholes_put_formula">[docs]</a>    <span class="k">def</span> <span class="nf">test_calc_black_scholes_put_formula</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
@@ -294,28 +271,64 @@
     <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
         <span class="s2">&quot;underlying, strike, rate, maturity, vol, today&quot;</span><span class="p">,</span>
         <span class="p">[</span>
+            <span class="c1"># maturity &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="c1"># maturity = 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="c1"># underlying &gt; 0, strike &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="c1"># underlying &lt; 0, strike &gt; 0</span>
+            <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="c1"># underlying &lt; 0, stirke &lt; 0</span>
+            <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="c1"># vol &lt; 0</span>
+            <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="c1"># today &gt; 0</span>
             <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
         <span class="p">])</span>
 <div class="viewcode-block" id="TestAnalytic.test_calc_black_scholes_call_value"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_calc_black_scholes_call_value">[docs]</a>    <span class="k">def</span> <span class="nf">test_calc_black_scholes_call_value</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">):</span>
-        <span class="n">expect</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
-            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
-        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
-            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">expect</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">vol</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">):</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+                    <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+                <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+                <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+            <span class="c1"># never below strike</span>
+            <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">strike</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">expect</span> <span class="o">=</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span>
+                <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+            <span class="c1"># never beyond strike</span>
+            <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">strike</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+            <span class="c1"># underlying and strike are negative</span>
+            <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">expect</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.478587969669</span>
+                <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">expect</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+                    <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
 
     <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
         <span class="s2">&quot;underlying, strike, rate, maturity, vol, today&quot;</span><span class="p">,</span>
         <span class="p">[</span>
-            <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
         <span class="p">])</span>
 <div class="viewcode-block" id="TestAnalytic.test_calc_black_scholes_put_value"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_calc_black_scholes_put_value">[docs]</a>    <span class="k">def</span> <span class="nf">test_calc_black_scholes_put_value</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">):</span>
-        <span class="n">expect</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_put_formula</span><span class="p">(</span>
-            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+        <span class="n">call_value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+        <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">))</span>
+        <span class="n">expect</span> <span class="o">=</span> <span class="n">call_value</span> <span class="o">-</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">discount</span> <span class="o">*</span> <span class="n">strike</span><span class="p">)</span>
         <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_put_value</span><span class="p">(</span>
             <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">actual</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">expect</span><span class="p">)</span></div>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
 
     <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
         <span class="s2">&quot;underlying, strike, rate, maturity, vol, today&quot;</span><span class="p">,</span>

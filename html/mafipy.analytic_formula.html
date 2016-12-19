@@ -638,6 +638,36 @@ and <span class="math">\(d_{1}\)</span> and <span class="math">\(d_{2}\)</span> 
 <dd><p>calculate call value in the case of today is not zero.
 (<cite>maturity</cite> - <cite>today</cite>) is treated as time to expiry.
 See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>.</p>
+<ul>
+<li><p class="first">case <span class="math">\(S &gt; 0, K &lt; 0\)</span></p>
+<blockquote>
+<div><ul class="simple">
+<li>return <span class="math">\(S - e^{-rT} K\)</span></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">case <span class="math">\(S &lt; 0, K &gt; 0\)</span></p>
+<blockquote>
+<div><ul class="simple">
+<li>return 0</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">case <span class="math">\(S &lt; 0, K &lt; 0\)</span></p>
+<blockquote>
+<div><ul class="simple">
+<li>return <span class="math">\(S - e^{-rT}K + E[(-(S - K))^{+}]\)</span></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">case <span class="math">\(T \le 0\)</span></p>
+<blockquote>
+<div><ul class="simple">
+<li>return 0</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -647,7 +677,7 @@ See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scho
 <li><strong>strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>rate</strong> (<em>float</em>) &#8211; </li>
 <li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>vol</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. This must be positive.</li>
 <li><strong>today</strong> (<em>float</em>) &#8211; </li>
 </ul>
 </td>
@@ -711,7 +741,10 @@ by <a class="reference internal" href="#mafipy.analytic_formula.calc_black_schol
 <dl class="function">
 <dt id="mafipy.analytic_formula.calc_black_scholes_put_value">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">calc_black_scholes_put_value</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em>, <em>today=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#calc_black_scholes_put_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.calc_black_scholes_put_value" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>evaluates value of put option using put-call parity so that
+this function calls <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_value" title="mafipy.analytic_formula.calc_black_scholes_call_value"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_value()</span></code></a>.
+See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_put_formula" title="mafipy.analytic_formula.calc_black_scholes_put_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_put_formula()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

@@ -373,13 +373,52 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">check_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 
 <div class="viewcode-block" id="CallUnderlyingPayoffHelper.make_func"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.CallUnderlyingPayoffHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_func</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">payoff_call</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CallUnderlyingPayoffHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.CallUnderlyingPayoffHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fprime</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">payoff_call_fprime</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CallUnderlyingPayoffHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.CallUnderlyingPayoffHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dirac delta function&quot;</span><span class="p">)</span></div></div>
+        <span class="sd">&quot;&quot;&quot;make_fhess</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dirac delta function&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="BullSpreadUnderlyingPayoffHelper"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.BullSpreadUnderlyingPayoffHelper">[docs]</a><span class="k">class</span> <span class="nc">BullSpreadUnderlyingPayoffHelper</span><span class="p">(</span><span class="n">PayoffHelper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BullSpreadUnderlyingPayoffHelper</span>
+<span class="sd">    generate bull-spread option payoff as a funciton of underlying.</span>
+
+<span class="sd">    :param float lower_strike: required.</span>
+<span class="sd">    :param float upper_strike: required.</span>
+<span class="sd">    :param float gearing: required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lower_strike&quot;</span><span class="p">,</span> <span class="s2">&quot;upper_strike&quot;</span><span class="p">,</span> <span class="s2">&quot;gearing&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">check_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;lower_strike&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;upper_strike&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;lower strike must be greater than upper strike&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BullSpreadUnderlyingPayoffHelper.make_func"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_func">[docs]</a>    <span class="k">def</span> <span class="nf">make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_func</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">payoff_bull_spread</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BullSpreadUnderlyingPayoffHelper.make_fprime"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fprime</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">payoff_bull_spread_fprime</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BullSpreadUnderlyingPayoffHelper.make_fhess"><a class="viewcode-back" href="../../mafipy.payoff.html#mafipy.payoff.BullSpreadUnderlyingPayoffHelper.make_fhess">[docs]</a>    <span class="k">def</span> <span class="nf">make_fhess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_fhess</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dirac delta function&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

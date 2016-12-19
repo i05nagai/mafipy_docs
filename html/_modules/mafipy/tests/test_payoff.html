@@ -136,6 +136,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">mafipy.payoff</span> <span class="k">as</span> <span class="nn">target</span>
+<span class="kn">import</span> <span class="nn">mafipy.tests.util</span> <span class="k">as</span> <span class="nn">util</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">from</span> <span class="nn">pytest</span> <span class="k">import</span> <span class="n">approx</span>
 
@@ -388,6 +389,67 @@
         <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">payoff_risk_reversal</span><span class="p">(</span>
             <span class="n">underlying</span><span class="p">,</span> <span class="n">lower_strike</span><span class="p">,</span> <span class="n">upper_strike</span><span class="p">,</span> <span class="n">gearing</span><span class="p">)</span>
         <span class="k">assert</span><span class="p">(</span><span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper">[docs]</a><span class="k">class</span> <span class="nc">TestBullSpreadUnderlyingPayoffHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1"># before all tests starts</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper.setup_class"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># after all tests finish</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper.teardown_class"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper.teardown_class">[docs]</a>    <span class="k">def</span> <span class="nf">teardown_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># before each test start</span>
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper.setup"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_real</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_strike</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_strike</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_real</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gearing</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lower_strike&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_strike</span><span class="p">,</span>
+            <span class="s2">&quot;upper_strike&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_strike</span><span class="p">,</span>
+            <span class="s2">&quot;gearing&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">gearing</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">BullSpreadUnderlyingPayoffHelper</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+    <span class="c1"># after each test finish</span>
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper.teardown"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper.test_make_func"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper.test_make_func">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">case1</span><span class="p">():</span>
+            <span class="n">swap_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_strike</span>
+            <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">make_func</span><span class="p">()(</span><span class="n">swap_rate</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="mf">0.0</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+        <span class="n">case1</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">case2</span><span class="p">():</span>
+            <span class="n">swap_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_strike</span>
+            <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">make_func</span><span class="p">()(</span><span class="n">swap_rate</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_strike</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_strike</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gearing</span>
+            <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+        <span class="n">case2</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">case3</span><span class="p">():</span>
+            <span class="n">swap_rate</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_real</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">make_func</span><span class="p">()(</span><span class="n">swap_rate</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">payoff_bull_spread</span><span class="p">(</span>
+                <span class="n">swap_rate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_strike</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_strike</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gearing</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+        <span class="n">case3</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestBullSpreadUnderlyingPayoffHelper.test_make_fprime"><a class="viewcode-back" href="../../../mafipy.tests.test_payoff.html#mafipy.tests.test_payoff.TestBullSpreadUnderlyingPayoffHelper.test_make_fprime">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_fprime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">swap_rate</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_real</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">make_func</span><span class="p">()(</span><span class="n">swap_rate</span><span class="p">)</span>
+        <span class="n">expect</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">payoff_bull_spread</span><span class="p">(</span>
+            <span class="n">swap_rate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_strike</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_strike</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gearing</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

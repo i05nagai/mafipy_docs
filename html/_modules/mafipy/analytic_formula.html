@@ -296,18 +296,6 @@
 <span class="sd">    :return: call value.</span>
 <span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># option is expired</span>
-    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mf">0.0</span>
-    <span class="k">if</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="c1"># max(S - K, 0) = (S - K) + max(-(S - K), 0)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
-            <span class="o">-</span><span class="n">underlying</span><span class="p">,</span> <span class="o">-</span><span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span>
-    <span class="c1"># underlying is positive</span>
-    <span class="k">if</span> <span class="n">_is_d1_or_d2_infinity</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
     <span class="n">d1</span> <span class="o">=</span> <span class="n">func_d1</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
     <span class="n">d2</span> <span class="o">=</span> <span class="n">func_d2</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
@@ -367,15 +355,47 @@
 <span class="sd">    (`maturity` - `today`) is treated as time to expiry.</span>
 <span class="sd">    See :py:func:`calc_black_scholes_call_formula`.</span>
 
+<span class="sd">    * case :math:`S &gt; 0, K &lt; 0`</span>
+
+<span class="sd">        * return :math:`S - e^{-rT} K`</span>
+
+<span class="sd">    * case :math:`S &lt; 0, K &gt; 0`</span>
+
+<span class="sd">        * return 0</span>
+
+<span class="sd">    * case :math:`S &lt; 0, K &lt; 0`</span>
+
+<span class="sd">        * return :math:`S - e^{-rT}K + E[(-(S - K))^{+}]`</span>
+
+<span class="sd">    * case :math:`T \le 0`</span>
+
+<span class="sd">        * return 0</span>
+
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
 <span class="sd">    :param float rate:</span>
 <span class="sd">    :param float maturity:</span>
-<span class="sd">    :param float vol:</span>
+<span class="sd">    :param float vol: volatility. This must be positive.</span>
 <span class="sd">    :param float today:</span>
 <span class="sd">    :return: call value.</span>
 <span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="c1"># never below strike</span>
+    <span class="k">elif</span> <span class="n">strike</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span>
+    <span class="c1"># never beyond strike</span>
+    <span class="k">elif</span> <span class="n">strike</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="c1"># max(S - K, 0) = (S - K) + max(-(S - K), 0)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">underlying</span><span class="p">,</span> <span class="o">-</span><span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span>
+
     <span class="k">return</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span></div>
 
@@ -388,6 +408,9 @@
         <span class="n">vol</span><span class="p">,</span>
         <span class="n">today</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;calc_black_scholes_put_value</span>
+<span class="sd">    evaluates value of put option using put-call parity so that</span>
+<span class="sd">    this function calls :py:func:`calc_black_scholes_call_value`.</span>
+<span class="sd">    See :py:func:`calc_black_scholes_put_formula`.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
@@ -398,8 +421,10 @@
 <span class="sd">    :return: put value.</span>
 <span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">calc_black_scholes_put_formula</span><span class="p">(</span>
-        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span></div>
+    <span class="n">call_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+    <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">call_value</span> <span class="o">-</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">discount</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="black_scholes_call_value_fprime_by_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_value_fprime_by_strike</span><span class="p">(</span>
