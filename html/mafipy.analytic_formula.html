@@ -393,17 +393,12 @@ under black scholes model.
 See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>
 and <a class="reference internal" href="#mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike" title="mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike"><code class="xref py py-func docutils literal"><span class="pre">black_scholes_call_value_fprime_by_strike()</span></code></a>.</p>
 <div class="math">
-\[\begin{split}\begin{array}{ccl}
+\[\begin{array}{ccl}
     \frac{\partial^{2}}{\partial K^{2}} c(0, S; T, K)
         &amp; = &amp;
-        S\phi^{\prime}(d_{1}(K))(d_{1}^{\prime}(K))^{2}
-        + S\phi(d_{1}(K))d_{1}^{\prime\prime}(K)
-        - 2\phi(d_{2}(K))d_{2}^{\prime}(K)
-        \\
-        &amp; &amp;
-        - K\phi^{\prime}(d_{2}(K))(d_{2}^{\prime}(K))^{2}
-        - K\phi(d_{2}(K))d_{2}^{\prime\prime}(K))
-\end{array}\end{split}\]</div>
+            -e^{-rT}
+            \phi(d_{2}(K)) d^{\prime}(K)
+\end{array}\]</div>
 <p>where
 <span class="math">\(S\)</span> is underlying,
 <span class="math">\(K\)</span> is strike,
@@ -445,9 +440,7 @@ under black scholes model.
 See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scholes_call_formula" title="mafipy.analytic_formula.calc_black_scholes_call_formula"><code class="xref py py-func docutils literal"><span class="pre">calc_black_scholes_call_formula()</span></code></a>.</p>
 <div class="math">
 \[\frac{\partial }{\partial K} c(K; S, r, T, \sigma)
-= S \phi(d_{1}(K)) d^{\prime}(K)
-- e^{-rT} \Phi(d_{1}(K))
-- K e^{-rT} \phi(d_{1}(K)) d^{\prime}(K)\]</div>
+= - e^{-rT} \Phi(d_{1}(K))\]</div>
 <p>where
 <span class="math">\(S\)</span> is underlying,
 <span class="math">\(K\)</span> is strike,
@@ -490,27 +483,15 @@ See <a class="reference internal" href="#mafipy.analytic_formula.calc_black_scho
 and <a class="reference internal" href="#mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike" title="mafipy.analytic_formula.black_scholes_call_value_fprime_by_strike"><code class="xref py py-func docutils literal"><span class="pre">black_scholes_call_value_fprime_by_strike()</span></code></a>,
 and <a class="reference internal" href="#mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike" title="mafipy.analytic_formula.black_scholes_call_value_fhess_by_strike"><code class="xref py py-func docutils literal"><span class="pre">black_scholes_call_value_fhess_by_strike()</span></code></a>.</p>
 <div class="math">
-\[\begin{split}\begin{array}{ccl}
+\[\begin{array}{ccl}
     \frac{\partial^{3}}{\partial K^{3}} c(0, S; T, K)
     &amp; = &amp;
-    \left(
-        S\phi^{\prime\prime}(d_{1}(K))
-        - K\phi^{\prime\prime}(d_{2}(K))
-    \right)
-    (d^{\prime}(K))^{3}
-    \\
-    &amp; &amp;
-    +
-    \left(
-        S\phi^{\prime}(d_{1}(K))
-        - K\phi^{\prime}(d_{2}(K))
-    \right)
-    3d^{\prime}(K)d^{\prime\prime}
-    \\
-    &amp; &amp;
-    - 3\phi(d_{2}(K))d^{\prime\prime}
-    - 3\phi^{\prime}(d_{2}(K))(d^{\prime}(K))^{2}
-\end{array}\end{split}\]</div>
+        -e^{-rT}
+        \left(
+            \phi^{\prime}(d_{2}(K))(d^{\prime}(K))^{2}
+                + \phi(d_{2}(K))d^{\prime\prime}(K)
+        \right)
+\end{array}\]</div>
 <p>where
 <span class="math">\(S\)</span> is underlying,
 <span class="math">\(K\)</span> is strike,
