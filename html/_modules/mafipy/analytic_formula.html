@@ -142,6 +142,9 @@
 <span class="kn">import</span> <span class="nn">mafipy.math_formula</span>
 
 
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Black scholes european call/put</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 <span class="k">def</span> <span class="nf">_is_d1_or_d2_infinity</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;is_d1_or_d2_infinity</span>
 
@@ -379,23 +382,24 @@
 <span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span>
     <span class="c1"># option is expired</span>
-    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
         <span class="k">return</span> <span class="mf">0.0</span>
     <span class="c1"># never below strike</span>
     <span class="k">elif</span> <span class="n">strike</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span>
+        <span class="k">return</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span>
     <span class="c1"># never beyond strike</span>
     <span class="k">elif</span> <span class="n">strike</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">0.0</span>
     <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="c1"># max(S - K, 0) = (S - K) + max(-(S - K), 0)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
-            <span class="o">-</span><span class="n">underlying</span><span class="p">,</span> <span class="o">-</span><span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="o">-</span><span class="n">underlying</span><span class="p">,</span> <span class="o">-</span><span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span>
 
     <span class="k">return</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
-        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span></div>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="calc_black_scholes_put_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_black_scholes_put_value">[docs]</a><span class="k">def</span> <span class="nf">calc_black_scholes_put_value</span><span class="p">(</span>
@@ -419,9 +423,14 @@
 <span class="sd">    :return: put value.</span>
 <span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
     <span class="n">call_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
-    <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span><span class="p">))</span>
+    <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">call_value</span> <span class="o">-</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">discount</span><span class="p">)</span></div>
 
 
@@ -576,6 +585,260 @@
     <span class="k">return</span> <span class="o">-</span><span class="n">discount</span> <span class="o">*</span> <span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span><span class="p">)</span></div>
 
 
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Black payers/receivers swaption</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="black_payers_swaption_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_payers_swaption_value">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_value</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_payers_swaption_value</span>
+<span class="sd">    calculates value of payer&#39;s swaptions under black model.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{eqnarray}</span>
+<span class="sd">            V_{\mathrm{payersswap}}(t)</span>
+<span class="sd">            &amp; = &amp;</span>
+<span class="sd">                A(t)</span>
+<span class="sd">                \mathrm{E}_{t}^{A}</span>
+<span class="sd">                \left[</span>
+<span class="sd">                    (S(T) - K)^{+}</span>
+<span class="sd">                \\right]</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            &amp; = &amp;</span>
+<span class="sd">                A(t)(S(t)N(d_{1}) - KN(d_{2})),</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            d_{1}</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                    \\frac{</span>
+<span class="sd">                        \ln\left(\\frac{S(t)}{K} \\right)</span>
+<span class="sd">                            + \\frac{1}{2}\sigma^{2}(T - t)</span>
+<span class="sd">                    }{</span>
+<span class="sd">                        \sigma \sqrt{T - t}</span>
+<span class="sd">                    },</span>
+<span class="sd">            \\\\</span>
+<span class="sd">            d_{2}</span>
+<span class="sd">                &amp; = &amp;</span>
+<span class="sd">                    \\frac{</span>
+<span class="sd">                        \ln\left(\\frac{S(t)}{K} \\right)</span>
+<span class="sd">                            - \\frac{1}{2}\sigma^{2}(T - t)</span>
+<span class="sd">                    }{</span>
+<span class="sd">                        \sigma \sqrt{T - t}</span>
+<span class="sd">                    }</span>
+<span class="sd">        \end{eqnarray}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`A(t)` is `swap_annuity`,</span>
+<span class="sd">    :math:`S(t)` is `init_swap_rate`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`\sigma` is `vol`.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike: swaption strike.</span>
+<span class="sd">    :param float swap_annuity: annuity of referencing swap</span>
+<span class="sd">    :param float option_maturity: swaption maturity.</span>
+<span class="sd">    :param float vol: volatilty. this must be positive.</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">option_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">option_value</span></div>
+
+
+<div class="viewcode-block" id="black_receivers_swaption_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_receivers_swaption_value">[docs]</a><span class="k">def</span> <span class="nf">black_receivers_swaption_value</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_receivers_swaption_value</span>
+<span class="sd">    calculates value of receiver&#39;s swaptions under black model.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{eqnarray}</span>
+<span class="sd">            V_{\mathrm{receiver}}(t; S(t), K, A(t), T, \sigma)</span>
+<span class="sd">            &amp; = &amp;</span>
+<span class="sd">                A(t)</span>
+<span class="sd">                \mathrm{E}_{t}^{A}</span>
+<span class="sd">                \left[</span>
+<span class="sd">                    (K - S(T))^{+}</span>
+<span class="sd">                \\right]</span>
+<span class="sd">        \end{eqnarray}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S(t)` is `init_swap_rate`,</span>
+<span class="sd">    :math:`A(t)` is `swap_annuity`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`T` is `option_maturity`,</span>
+<span class="sd">    :math:`\sigma` is `vol`.</span>
+<span class="sd">    :math:`d_{1}, d_{2}` are defined in :py:func:`black_payers_swaption_value`.</span>
+
+<span class="sd">    :param init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param option_strike: strike of swaption.</span>
+<span class="sd">    :param swap_annuity: annuity of referencing swap.</span>
+<span class="sd">    :param option_maturity: maturity of swaption.</span>
+<span class="sd">    :param vol: volatility. This must be non-negative.</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">option_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_put_formula</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">option_value</span></div>
+
+
+<div class="viewcode-block" id="black_payers_swaption_value_fprime_by_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_payers_swaption_value_fprime_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">option_strike</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_payers_swaption_value_fprime_by_strike</span>
+<span class="sd">    First derivative of value of payer&#39;s swaption with respect to strike</span>
+<span class="sd">    under black model.</span>
+<span class="sd">    See :py:func:`black_payers_swaption_value`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\frac{\partial }{\partial K}</span>
+<span class="sd">            V_{\mathrm{payer}}(K; S, A, T, \sigma)</span>
+<span class="sd">            = - A\Phi(d_{2}(K))</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is `init_swap_rate`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`A` is `swap_annuity`,</span>
+<span class="sd">    :math:`T` is `option_maturity`,</span>
+<span class="sd">    :math:`\sigma` is `vol`,</span>
+<span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
+<span class="sd">    in :py:func:`black_payers_swaption_value`,</span>
+<span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
+<span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
+
+<span class="sd">    :param float init_swap_rate:</span>
+<span class="sd">    :param float option_strike:</span>
+<span class="sd">    :param float swap_annuity:</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float vol: volatility. must be non-negative.</span>
+<span class="sd">    :return: value of derivative.</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">black_scholes_call_value_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="black_payers_swaption_value_fhess_by_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_payers_swaption_value_fhess_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_value_fhess_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">option_strike</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_payers_swaption_value_fhess_by_strike</span>
+<span class="sd">    Second derivative of value of payer&#39;s swaption with respect to strike</span>
+<span class="sd">    under black model.</span>
+<span class="sd">    See :py:func:`black_payers_swaption_value`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\frac{\partial^{2} }{\partial K^{2}}</span>
+<span class="sd">            V_{\mathrm{payer}}(K; S, A, T, \sigma)</span>
+<span class="sd">                = - A\phi(d_{2}(K)) d_{2}^{\prime}(K)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is `init_swap_rate`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`A` is `swap_annuity`,</span>
+<span class="sd">    :math:`T` is `option_maturity`,</span>
+<span class="sd">    :math:`\sigma` is `vol`,</span>
+<span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
+<span class="sd">    in :py:func:`black_payers_swaption_value`,</span>
+<span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
+<span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike:</span>
+<span class="sd">    :param float swap_annuity:</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float vol: volatility. must be non-negative.</span>
+<span class="sd">    :return: value of derivative.</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">black_scholes_call_value_fhess_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="black_payers_swaption_value_third_by_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_payers_swaption_value_third_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_value_third_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">option_strike</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_payers_swaption_value_third_by_strike</span>
+<span class="sd">    Third derivative of value of payer&#39;s swaption with respect to strike</span>
+<span class="sd">    under black model.</span>
+<span class="sd">    See :py:func:`black_payers_swaption_value`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\frac{\partial^{3} }{\partial K^{3}}</span>
+<span class="sd">        V_{\mathrm{payer}}(K; S, A, T, \sigma)</span>
+<span class="sd">            = - A</span>
+<span class="sd">            \left(</span>
+<span class="sd">                \phi^{\prime}(d_{2}(K)) (d_{2}^{\prime}(K))^{2}</span>
+<span class="sd">                    + \phi(d_{2}(K)) d_{2}^{\prime\prime}(K)</span>
+<span class="sd">            \\right)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is `init_swap_rate`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`A` is `swap_annuity`,</span>
+<span class="sd">    :math:`T` is `option_maturity`,</span>
+<span class="sd">    :math:`\sigma` is `vol`,</span>
+<span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
+<span class="sd">    in :py:func:`black_payers_swaption_value`,</span>
+<span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
+<span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike: strike of swaption.</span>
+<span class="sd">    :param float swap_annuity: annuity of referencing swap.</span>
+<span class="sd">    :param float option_maturity: maturity of swaption.</span>
+<span class="sd">    :param float vol: volatility. must be non-negative.</span>
+<span class="sd">    :return: value of derivative.</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">black_scholes_call_value_third_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span></div>
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Black scholes greeks</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="black_scholes_call_delta"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_delta">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_delta</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">strike</span><span class="p">,</span>
@@ -786,6 +1049,9 @@
     <span class="k">return</span> <span class="n">time</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span></div>
 
 
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># Local volatility model</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="calc_local_vol_model_implied_vol"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_local_vol_model_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">calc_local_vol_model_implied_vol</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">strike</span><span class="p">,</span>
@@ -1093,6 +1359,76 @@
             <span class="n">maturity</span><span class="o">=</span><span class="n">maturity</span><span class="p">,</span>
             <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">,</span>
             <span class="n">today</span><span class="o">=</span><span class="n">today</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="BlackSwaptionPricerHelper"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.BlackSwaptionPricerHelper">[docs]</a><span class="k">class</span> <span class="nc">BlackSwaptionPricerHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;BlackSwaptionPricerHelper</span>
+<span class="sd">    Helper functions to generate a function with respect to a sigle variable.</span>
+<span class="sd">    For instance, black formula as a function of volatility is needed to</span>
+<span class="sd">    evaluate market smile by implied volatility.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BlackSwaptionPricerHelper.make_payers_swaption_wrt_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.BlackSwaptionPricerHelper.make_payers_swaption_wrt_strike">[docs]</a>    <span class="k">def</span> <span class="nf">make_payers_swaption_wrt_strike</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_payers_swaption_wrt_strike</span>
+<span class="sd">        make function of black payer&#39;s swaption formula</span>
+<span class="sd">        with respect to function.</span>
+<span class="sd">        This function return :py:func:`black_receivers_swaption_value`</span>
+<span class="sd">        as funciton of a single variable.</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            V_{\mathrm{payers}}(K; S, A, T, \sigma)</span>
+<span class="sd">                := V_{\mathrm{payers}}(S, K, A, T, \sigma)</span>
+
+<span class="sd">        :param float init_swap_rate:</span>
+<span class="sd">        :param float swap_annuity:</span>
+<span class="sd">        :param float option_maturity:</span>
+<span class="sd">        :param float vol: volatility.</span>
+<span class="sd">        :return: payer&#39;s swaption pricer as a function of strike.</span>
+<span class="sd">        :rtype: LambdaType</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">option_strike</span><span class="p">:</span> <span class="n">black_payers_swaption_value</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="o">=</span><span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="o">=</span><span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="o">=</span><span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="o">=</span><span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BlackSwaptionPricerHelper.make_receivers_swaption_wrt_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.BlackSwaptionPricerHelper.make_receivers_swaption_wrt_strike">[docs]</a>    <span class="k">def</span> <span class="nf">make_receivers_swaption_wrt_strike</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;make_put_wrt_strike</span>
+<span class="sd">        make function of black receiver&#39;s swaption formula</span>
+<span class="sd">        with respect to strike.</span>
+<span class="sd">        This function return :py:func:`black_receivers_swaption_value`</span>
+<span class="sd">        as funciton of a single variable.</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            V_{\mathrm{receivers}}(K; S, A, T, \sigma)</span>
+<span class="sd">                := V_{\mathrm{receiver}}(S, K, A, T, \sigma)</span>
+
+<span class="sd">        :param float init_swap_rate:</span>
+<span class="sd">        :param float swap_annuity:</span>
+<span class="sd">        :param float option_maturity:</span>
+<span class="sd">        :param float vol: volatility</span>
+<span class="sd">        :return: receiver&#39;s swaption pricer as a function of strike.</span>
+<span class="sd">        :rtype: LambdaType.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">option_strike</span><span class="p">:</span> <span class="n">black_receivers_swaption_value</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="o">=</span><span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="o">=</span><span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="o">=</span><span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="o">=</span><span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

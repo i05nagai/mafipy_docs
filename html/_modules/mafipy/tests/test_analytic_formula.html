@@ -139,6 +139,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">mafipy.analytic_formula</span> <span class="k">as</span> <span class="nn">target</span>
 <span class="kn">import</span> <span class="nn">mafipy.math_formula</span>
+<span class="kn">import</span> <span class="nn">mafipy.tests.util</span> <span class="k">as</span> <span class="nn">util</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span>
@@ -446,6 +447,227 @@
                 <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
 
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Black payers/recievers swaption</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, option_strike, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="c1"># vol &lt; 0 raise AssertionError</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># maturity &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># otherwise</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestAnalytic.test_black_payers_swaption_value"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_black_payers_swaption_value">[docs]</a>    <span class="k">def</span> <span class="nf">test_black_payers_swaption_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                         <span class="n">init_swap_rate</span><span class="p">,</span>
+                                         <span class="n">option_strike</span><span class="p">,</span>
+                                         <span class="n">swap_annuity</span><span class="p">,</span>
+                                         <span class="n">option_maturity</span><span class="p">,</span>
+                                         <span class="n">vol</span><span class="p">):</span>
+        <span class="c1"># raise AssertionError</span>
+        <span class="k">if</span> <span class="n">vol</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">):</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value</span><span class="p">(</span>
+                    <span class="n">init_swap_rate</span><span class="p">,</span>
+                    <span class="n">option_strike</span><span class="p">,</span>
+                    <span class="n">swap_annuity</span><span class="p">,</span>
+                    <span class="n">option_maturity</span><span class="p">,</span>
+                    <span class="n">vol</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># double checking implimentation of formula</span>
+            <span class="c1"># because it is a bit complicated to generate test cases</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span>
+
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, option_strike, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="c1"># vol &lt; 0 raise AssertionError</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># maturity &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># otherwise</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestAnalytic.test_black_receivers_swaption_value"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_black_receivers_swaption_value">[docs]</a>    <span class="k">def</span> <span class="nf">test_black_receivers_swaption_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                            <span class="n">init_swap_rate</span><span class="p">,</span>
+                                            <span class="n">option_strike</span><span class="p">,</span>
+                                            <span class="n">swap_annuity</span><span class="p">,</span>
+                                            <span class="n">option_maturity</span><span class="p">,</span>
+                                            <span class="n">vol</span><span class="p">):</span>
+        <span class="c1"># raise AssertionError</span>
+        <span class="k">if</span> <span class="n">vol</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">):</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_receivers_swaption_value</span><span class="p">(</span>
+                    <span class="n">init_swap_rate</span><span class="p">,</span>
+                    <span class="n">option_strike</span><span class="p">,</span>
+                    <span class="n">swap_annuity</span><span class="p">,</span>
+                    <span class="n">option_maturity</span><span class="p">,</span>
+                    <span class="n">vol</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># double checking implimentation of formula</span>
+            <span class="c1"># because it is a bit complicated to generate test cases</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_put_formula</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span>
+
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_receivers_swaption_value</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, option_strike, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="c1"># vol &lt; 0 raise AssertionError</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># maturity &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># otherwise</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestAnalytic.test_black_payers_swaption_value_fprime_by_strike"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_black_payers_swaption_value_fprime_by_strike">[docs]</a>    <span class="k">def</span> <span class="nf">test_black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                                          <span class="n">init_swap_rate</span><span class="p">,</span>
+                                                          <span class="n">option_strike</span><span class="p">,</span>
+                                                          <span class="n">swap_annuity</span><span class="p">,</span>
+                                                          <span class="n">option_maturity</span><span class="p">,</span>
+                                                          <span class="n">vol</span><span class="p">):</span>
+        <span class="c1"># raise AssertionError</span>
+        <span class="k">if</span> <span class="n">vol</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">):</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span>
+                    <span class="n">init_swap_rate</span><span class="p">,</span>
+                    <span class="n">option_strike</span><span class="p">,</span>
+                    <span class="n">swap_annuity</span><span class="p">,</span>
+                    <span class="n">option_maturity</span><span class="p">,</span>
+                    <span class="n">vol</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># double checking implimentation of formula</span>
+            <span class="c1"># because it is a bit complicated to generate test cases</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_scholes_call_value_fprime_by_strike</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span>
+
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, option_strike, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="c1"># vol &lt; 0 raise AssertionError</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># maturity &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># otherwise</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestAnalytic.test_black_payers_swaption_value_fhess_by_strike"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_black_payers_swaption_value_fhess_by_strike">[docs]</a>    <span class="k">def</span> <span class="nf">test_black_payers_swaption_value_fhess_by_strike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                                         <span class="n">init_swap_rate</span><span class="p">,</span>
+                                                         <span class="n">option_strike</span><span class="p">,</span>
+                                                         <span class="n">swap_annuity</span><span class="p">,</span>
+                                                         <span class="n">option_maturity</span><span class="p">,</span>
+                                                         <span class="n">vol</span><span class="p">):</span>
+        <span class="c1"># raise AssertionError</span>
+        <span class="k">if</span> <span class="n">vol</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">):</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value_fhess_by_strike</span><span class="p">(</span>
+                    <span class="n">init_swap_rate</span><span class="p">,</span>
+                    <span class="n">option_strike</span><span class="p">,</span>
+                    <span class="n">swap_annuity</span><span class="p">,</span>
+                    <span class="n">option_maturity</span><span class="p">,</span>
+                    <span class="n">vol</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># double checking implimentation of formula</span>
+            <span class="c1"># because it is a bit complicated to generate test cases</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_scholes_call_value_fhess_by_strike</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span>
+
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value_fhess_by_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, option_strike, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="c1"># vol &lt; 0 raise AssertionError</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># maturity &lt; 0</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+            <span class="c1"># otherwise</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestAnalytic.test_black_payers_swaption_value_third_by_strike"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestAnalytic.test_black_payers_swaption_value_third_by_strike">[docs]</a>    <span class="k">def</span> <span class="nf">test_black_payers_swaption_value_third_by_strike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                                         <span class="n">init_swap_rate</span><span class="p">,</span>
+                                                         <span class="n">option_strike</span><span class="p">,</span>
+                                                         <span class="n">swap_annuity</span><span class="p">,</span>
+                                                         <span class="n">option_maturity</span><span class="p">,</span>
+                                                         <span class="n">vol</span><span class="p">):</span>
+        <span class="c1"># raise AssertionError</span>
+        <span class="k">if</span> <span class="n">vol</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">):</span>
+                <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value_third_by_strike</span><span class="p">(</span>
+                    <span class="n">init_swap_rate</span><span class="p">,</span>
+                    <span class="n">option_strike</span><span class="p">,</span>
+                    <span class="n">swap_annuity</span><span class="p">,</span>
+                    <span class="n">option_maturity</span><span class="p">,</span>
+                    <span class="n">vol</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># double checking implimentation of formula</span>
+            <span class="c1"># because it is a bit complicated to generate test cases</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_scholes_call_value_third_by_strike</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="n">expect</span> <span class="o">=</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">value</span>
+
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value_third_by_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expect</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span></div>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Black scholes greeks</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
         <span class="s2">&quot;underlying, strike, rate, maturity, vol, today&quot;</span><span class="p">,</span>
         <span class="p">[</span>
@@ -764,6 +986,104 @@
         <span class="n">actual_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_class</span><span class="o">.</span><span class="n">make_put_wrt_strike</span><span class="p">(</span>
             <span class="n">underlying</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">expect_func</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">actual_func</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper">[docs]</a><span class="k">class</span> <span class="nc">TestBlackSwaptionPricerHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1"># before all tests starts</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper.setup_class"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># after all tests finish</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper.teardown_class"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper.teardown_class">[docs]</a>    <span class="k">def</span> <span class="nf">teardown_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># before each test start</span>
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper.setup"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">BlackSwaptionPricerHelper</span><span class="p">()</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># after each test finish</span>
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper.teardown"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper.test_make_payers_swaption_strike"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper.test_make_payers_swaption_strike">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_payers_swaption_strike</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">expect_func</span><span class="p">(</span><span class="n">option_strike</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">target</span><span class="o">.</span><span class="n">black_payers_swaption_value</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="o">=</span><span class="n">init_swap_rate</span><span class="p">,</span>
+                <span class="n">option_strike</span><span class="o">=</span><span class="n">option_strike</span><span class="p">,</span>
+                <span class="n">swap_annuity</span><span class="o">=</span><span class="n">swap_annuity</span><span class="p">,</span>
+                <span class="n">option_maturity</span><span class="o">=</span><span class="n">option_maturity</span><span class="p">,</span>
+                <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span>
+        <span class="n">actual_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">make_payers_swaption_wrt_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">expect_func</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">actual_func</span><span class="p">)</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;init_swap_rate, swap_annuity, option_maturity, vol&quot;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestBlackSwaptionPricerHelper.test_make_receivers_swaption_wrt_strike"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestBlackSwaptionPricerHelper.test_make_receivers_swaption_wrt_strike">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_receivers_swaption_wrt_strike</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">expect_func</span><span class="p">(</span><span class="n">option_strike</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">target</span><span class="o">.</span><span class="n">black_receivers_swaption_value</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="o">=</span><span class="n">init_swap_rate</span><span class="p">,</span>
+                <span class="n">option_strike</span><span class="o">=</span><span class="n">option_strike</span><span class="p">,</span>
+                <span class="n">swap_annuity</span><span class="o">=</span><span class="n">swap_annuity</span><span class="p">,</span>
+                <span class="n">option_maturity</span><span class="o">=</span><span class="n">option_maturity</span><span class="p">,</span>
+                <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span>
+        <span class="n">actual_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">make_receivers_swaption_wrt_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">expect_func</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">actual_func</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestModelAnalyticFormula"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestModelAnalyticFormula">[docs]</a><span class="k">class</span> <span class="nc">TestModelAnalyticFormula</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1"># before all tests starts</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestModelAnalyticFormula.setup_class"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestModelAnalyticFormula.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># after all tests finish</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TestModelAnalyticFormula.teardown_class"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestModelAnalyticFormula.teardown_class">[docs]</a>    <span class="k">def</span> <span class="nf">teardown_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># before each test start</span>
+<div class="viewcode-block" id="TestModelAnalyticFormula.setup"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestModelAnalyticFormula.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># after each test finish</span>
+<div class="viewcode-block" id="TestModelAnalyticFormula.teardown"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestModelAnalyticFormula.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+        <span class="s2">&quot;underlying, strike, rate, maturity, vol, today&quot;</span><span class="p">,</span> <span class="p">[</span>
+            <span class="n">util</span><span class="o">.</span><span class="n">get_real</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="p">])</span>
+<div class="viewcode-block" id="TestModelAnalyticFormula.test_put_call_parity_black_scholes"><a class="viewcode-back" href="../../../mafipy.tests.test_analytic_formula.html#mafipy.tests.test_analytic_formula.TestModelAnalyticFormula.test_put_call_parity_black_scholes">[docs]</a>    <span class="k">def</span> <span class="nf">test_put_call_parity_black_scholes</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">):</span>
+
+        <span class="n">call_value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+        <span class="n">put_value</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">calc_black_scholes_put_value</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+        <span class="c1"># forward</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">maturity</span> <span class="o">-</span> <span class="n">today</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">forward_value</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
+            <span class="n">forward_value</span> <span class="o">=</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">discount</span> <span class="o">*</span> <span class="n">strike</span>
+
+        <span class="k">assert</span> <span class="n">forward_value</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="n">call_value</span> <span class="o">-</span> <span class="n">put_value</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

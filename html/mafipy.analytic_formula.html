@@ -219,6 +219,323 @@ as funciton of a single variable.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="mafipy.analytic_formula.BlackSwaptionPricerHelper">
+<em class="property">class </em><code class="descclassname">mafipy.analytic_formula.</code><code class="descname">BlackSwaptionPricerHelper</code><a class="reference internal" href="_modules/mafipy/analytic_formula.html#BlackSwaptionPricerHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.BlackSwaptionPricerHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Helper functions to generate a function with respect to a sigle variable.
+For instance, black formula as a function of volatility is needed to
+evaluate market smile by implied volatility.</p>
+<dl class="method">
+<dt id="mafipy.analytic_formula.BlackSwaptionPricerHelper.make_payers_swaption_wrt_strike">
+<code class="descname">make_payers_swaption_wrt_strike</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#BlackSwaptionPricerHelper.make_payers_swaption_wrt_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.BlackSwaptionPricerHelper.make_payers_swaption_wrt_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>make function of black payer&#8217;s swaption formula
+with respect to function.
+This function return <a class="reference internal" href="#mafipy.analytic_formula.black_receivers_swaption_value" title="mafipy.analytic_formula.black_receivers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_receivers_swaption_value()</span></code></a>
+as funciton of a single variable.</p>
+<div class="math">
+\[V_{\mathrm{payers}}(K; S, A, T, \sigma)
+    := V_{\mathrm{payers}}(S, K, A, T, \sigma)\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">payer&#8217;s swaption pricer as a function of strike.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">LambdaType</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mafipy.analytic_formula.BlackSwaptionPricerHelper.make_receivers_swaption_wrt_strike">
+<code class="descname">make_receivers_swaption_wrt_strike</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#BlackSwaptionPricerHelper.make_receivers_swaption_wrt_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.BlackSwaptionPricerHelper.make_receivers_swaption_wrt_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>make_put_wrt_strike
+make function of black receiver&#8217;s swaption formula
+with respect to strike.
+This function return <a class="reference internal" href="#mafipy.analytic_formula.black_receivers_swaption_value" title="mafipy.analytic_formula.black_receivers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_receivers_swaption_value()</span></code></a>
+as funciton of a single variable.</p>
+<div class="math">
+\[V_{\mathrm{receivers}}(K; S, A, T, \sigma)
+    := V_{\mathrm{receiver}}(S, K, A, T, \sigma)\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">receiver&#8217;s swaption pricer as a function of strike.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">LambdaType.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_payers_swaption_value">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates value of payer&#8217;s swaptions under black model.</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+    V_{\mathrm{payersswap}}(t)
+    &amp; = &amp;
+        A(t)
+        \mathrm{E}_{t}^{A}
+        \left[
+            (S(T) - K)^{+}
+        \right]
+    \\
+    &amp; = &amp;
+        A(t)(S(t)N(d_{1}) - KN(d_{2})),
+    \\
+    d_{1}
+        &amp; = &amp;
+            \frac{
+                \ln\left(\frac{S(t)}{K} \right)
+                    + \frac{1}{2}\sigma^{2}(T - t)
+            }{
+                \sigma \sqrt{T - t}
+            },
+    \\
+    d_{2}
+        &amp; = &amp;
+            \frac{
+                \ln\left(\frac{S(t)}{K} \right)
+                    - \frac{1}{2}\sigma^{2}(T - t)
+            }{
+                \sigma \sqrt{T - t}
+            }
+\end{eqnarray}\end{split}\]</div>
+<p>where
+<span class="math">\(A(t)\)</span> is <cite>swap_annuity</cite>,
+<span class="math">\(S(t)\)</span> is <cite>init_swap_rate</cite>,
+<span class="math">\(K\)</span> is <cite>option_strike</cite>,
+<span class="math">\(\sigma\)</span> is <cite>vol</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; initial swap rate.</li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; swaption strike.</li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; annuity of referencing swap</li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; swaption maturity.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatilty. this must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_payers_swaption_value_fhess_by_strike">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_value_fhess_by_strike</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_value_fhess_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_value_fhess_by_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Second derivative of value of payer&#8217;s swaption with respect to strike
+under black model.
+See <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>.</p>
+<div class="math">
+\[\frac{\partial^{2} }{\partial K^{2}}
+    V_{\mathrm{payer}}(K; S, A, T, \sigma)
+        = - A\phi(d_{2}(K)) d_{2}^{\prime}(K)\]</div>
+<p>where
+<span class="math">\(S\)</span> is <cite>init_swap_rate</cite>,
+<span class="math">\(K\)</span> is <cite>option_strike</cite>,
+<span class="math">\(A\)</span> is <cite>swap_annuity</cite>,
+<span class="math">\(T\)</span> is <cite>option_maturity</cite>,
+<span class="math">\(\sigma\)</span> is <cite>vol</cite>,
+<span class="math">\(d_{1}, d_{2}\)</span> is defined
+in <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>,
+<span class="math">\(\Phi(\cdot)\)</span> is c.d.f. of standard normal distribution,
+<span class="math">\(\phi(\cdot)\)</span> is p.d.f. of standard normal distribution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; initial swap rate.</li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. must be non-negative.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of derivative.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_payers_swaption_value_fprime_by_strike">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_value_fprime_by_strike</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_value_fprime_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_value_fprime_by_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>First derivative of value of payer&#8217;s swaption with respect to strike
+under black model.
+See <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>.</p>
+<div class="math">
+\[\frac{\partial }{\partial K}
+    V_{\mathrm{payer}}(K; S, A, T, \sigma)
+    = - A\Phi(d_{2}(K))\]</div>
+<p>where
+<span class="math">\(S\)</span> is <cite>init_swap_rate</cite>,
+<span class="math">\(K\)</span> is <cite>option_strike</cite>,
+<span class="math">\(A\)</span> is <cite>swap_annuity</cite>,
+<span class="math">\(T\)</span> is <cite>option_maturity</cite>,
+<span class="math">\(\sigma\)</span> is <cite>vol</cite>,
+<span class="math">\(d_{1}, d_{2}\)</span> is defined
+in <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>,
+<span class="math">\(\Phi(\cdot)\)</span> is c.d.f. of standard normal distribution,
+<span class="math">\(\phi(\cdot)\)</span> is p.d.f. of standard normal distribution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. must be non-negative.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of derivative.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_payers_swaption_value_third_by_strike">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_value_third_by_strike</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_value_third_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_value_third_by_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Third derivative of value of payer&#8217;s swaption with respect to strike
+under black model.
+See <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>.</p>
+<div class="math">
+\[\frac{\partial^{3} }{\partial K^{3}}
+V_{\mathrm{payer}}(K; S, A, T, \sigma)
+    = - A
+    \left(
+        \phi^{\prime}(d_{2}(K)) (d_{2}^{\prime}(K))^{2}
+            + \phi(d_{2}(K)) d_{2}^{\prime\prime}(K)
+    \right)\]</div>
+<p>where
+<span class="math">\(S\)</span> is <cite>init_swap_rate</cite>,
+<span class="math">\(K\)</span> is <cite>option_strike</cite>,
+<span class="math">\(A\)</span> is <cite>swap_annuity</cite>,
+<span class="math">\(T\)</span> is <cite>option_maturity</cite>,
+<span class="math">\(\sigma\)</span> is <cite>vol</cite>,
+<span class="math">\(d_{1}, d_{2}\)</span> is defined
+in <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>,
+<span class="math">\(\Phi(\cdot)\)</span> is c.d.f. of standard normal distribution,
+<span class="math">\(\phi(\cdot)\)</span> is p.d.f. of standard normal distribution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; initial swap rate.</li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; strike of swaption.</li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; annuity of referencing swap.</li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; maturity of swaption.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatility. must be non-negative.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of derivative.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_receivers_swaption_value">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_receivers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_receivers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_receivers_swaption_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates value of receiver&#8217;s swaptions under black model.</p>
+<div class="math">
+\[\begin{eqnarray}
+    V_{\mathrm{receiver}}(t; S(t), K, A(t), T, \sigma)
+    &amp; = &amp;
+        A(t)
+        \mathrm{E}_{t}^{A}
+        \left[
+            (K - S(T))^{+}
+        \right]
+\end{eqnarray}\]</div>
+<p>where
+<span class="math">\(S(t)\)</span> is <cite>init_swap_rate</cite>,
+<span class="math">\(A(t)\)</span> is <cite>swap_annuity</cite>,
+<span class="math">\(K\)</span> is <cite>option_strike</cite>,
+<span class="math">\(T\)</span> is <cite>option_maturity</cite>,
+<span class="math">\(\sigma\)</span> is <cite>vol</cite>.
+<span class="math">\(d_{1}, d_{2}\)</span> are defined in <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swaption_value" title="mafipy.analytic_formula.black_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">black_payers_swaption_value()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> &#8211; initial swap rate.</li>
+<li><strong>option_strike</strong> &#8211; strike of swaption.</li>
+<li><strong>swap_annuity</strong> &#8211; annuity of referencing swap.</li>
+<li><strong>option_maturity</strong> &#8211; maturity of swaption.</li>
+<li><strong>vol</strong> &#8211; volatility. This must be non-negative.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
 <dt id="mafipy.analytic_formula.black_scholes_call_delta">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_scholes_call_delta</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>rate</em>, <em>maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_scholes_call_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_scholes_call_delta" title="Permalink to this definition">¶</a></dt>

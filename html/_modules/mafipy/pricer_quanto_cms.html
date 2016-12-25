@@ -144,6 +144,127 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">replication</span>
 
 
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Black swaption model</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="make_pdf_black_swaption"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_black_swaption">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_black_swaption</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;make_pdf_black_swaption</span>
+<span class="sd">    return p.d.f. of black swaption model.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \Phi_{S}(k) := \\frac{\partial^{2}}{\partial K^{2}}</span>
+<span class="sd">            V_{\mathrm{payer}}(0, S; T, K, A, \sigma)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is `init_swap_rate`,</span>
+<span class="sd">    :math:`A` is `swap_annuity`,</span>
+<span class="sd">    :math:`T` is `option_maturity`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`\Phi_{S}(k)` is p.d.f. of :math:`S`,</span>
+<span class="sd">    :math:`V_{\mathrm{payers}}(0, S; T, K)` is value of payer`s swaption</span>
+<span class="sd">    with strike :math:`K` and :math:`T` maturity at time 0.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float swap_annuity: annuity of referencing swap.</span>
+<span class="sd">    :param float option_maturity: maturity of swaption.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
+<span class="sd">    :return: p.d.f. of swaption price under black swaption model</span>
+<span class="sd">        as a function of strike.</span>
+<span class="sd">    :rtype: function with strike.</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span><span class="n">option_strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_payers_swaption_value_fhess_by_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="o">=</span><span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="o">=</span><span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="o">=</span><span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="o">=</span><span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pdf</span></div>
+
+
+<div class="viewcode-block" id="make_pdf_fprime_black_swaption"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_fprime_black_swaption">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_fprime_black_swaption</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;make_pdf_fprime_black_swaption</span>
+<span class="sd">    return first derivative of p.d.f. of black swaption.</span>
+<span class="sd">    See :py:func:`make_pdf_black_swaption`.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \Phi_{S}^{\prime}(k)</span>
+<span class="sd">        := \\frac{\partial^{3}}{\partial K^{3}}</span>
+<span class="sd">            V_{\mathrm{payers}}(0, S; K, A, T)</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is `init_swap_rate`,</span>
+<span class="sd">    :math:`S` is `swap_annuity`,</span>
+<span class="sd">    :math:`T` is `option_maturity`,</span>
+<span class="sd">    :math:`K` is `option_strike`,</span>
+<span class="sd">    :math:`\Phi_{S}(k)` is p.d.f. of :math:`S`,</span>
+<span class="sd">    :math:`V_{\mathrm{payers}}(0, S; K, A, T)` is value of call option</span>
+<span class="sd">    with strike :math:`K` and :math:`T` maturity at time 0.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float swap_annuity: annuity of referencing swap.</span>
+<span class="sd">    :param float option_maturity: maturity of swaption.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
+<span class="sd">    :return: first derivative of p.d.f. of black swaption model</span>
+<span class="sd">        as a function of strike.</span>
+<span class="sd">    :rtype: function</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pdf_fprime</span><span class="p">(</span><span class="n">option_strike</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_payers_swaption_value_third_by_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="o">=</span><span class="n">init_swap_rate</span><span class="p">,</span>
+            <span class="n">option_strike</span><span class="o">=</span><span class="n">option_strike</span><span class="p">,</span>
+            <span class="n">swap_annuity</span><span class="o">=</span><span class="n">swap_annuity</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="o">=</span><span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">vol</span><span class="o">=</span><span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pdf_fprime</span></div>
+
+
+<div class="viewcode-block" id="make_cdf_black_swaption"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_cdf_black_swaption">[docs]</a><span class="k">def</span> <span class="nf">make_cdf_black_swaption</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;make_cdf_black_swaption</span>
+<span class="sd">    returns c.d.f. of black swaption.</span>
+
+<span class="sd">    :param init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param swap_annuity: swap annuity.</span>
+<span class="sd">    :param option_maturity: maturity of swaption.</span>
+<span class="sd">    :param vol: volatility. non-negative.</span>
+<span class="sd">    :return: distribution of black swaption model</span>
+<span class="sd">        as a funciton of strike.</span>
+<span class="sd">    :rtype: function</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">option_strike</span><span class="p">:</span> <span class="p">(</span>
+        <span class="mf">1.0</span> <span class="o">+</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">))</span></div>
+
+
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># Black scholes model</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="make_pdf_black_scholes"><a class="viewcode-back" href="../../mafipy.pricer_quanto_cms.html#mafipy.pricer_quanto_cms.make_pdf_black_scholes">[docs]</a><span class="k">def</span> <span class="nf">make_pdf_black_scholes</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">rate</span><span class="p">,</span>
