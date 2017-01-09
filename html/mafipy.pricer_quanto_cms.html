@@ -89,6 +89,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="mafipy.analytic_formula.html">mafipy.analytic_formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.calibrator.html">mafipy.calibrator module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.error.html">mafipy.error module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.math_formula.html">mafipy.math_formula module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.payoff.html">mafipy.payoff module</a></li>
@@ -190,28 +191,6 @@ see <code class="xref py py-func docutils literal"><span class="pre">_forward_fx
             + \alpha(s)\tilde{\chi}^{\prime\prime}(s)
             + 2\alpha^{\prime}(s)\tilde{\chi}^{\prime}(s).
 \end{eqnarray*}\end{split}\]</div>
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_analytic_funcs">
-<code class="descname">make_denominator_analytic_funcs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_denominator_analytic_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_analytic_funcs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interface of analytically computable terms in replication method.
-The terms depedend on the model of forward FX rate
-and forward swap rate.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_call_integrands">
-<code class="descname">make_denominator_call_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_denominator_call_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_call_integrands" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interface of integrands which are integrated with call pricer
-in replication method in the denominator.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_put_integrands">
-<code class="descname">make_denominator_put_integrands</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_denominator_put_integrands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_denominator_put_integrands" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interface of integrands which are integrated with put pricer
-in replication method in the denominator.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_analytic_funcs">
 <code class="descname">make_numerator_analytic_funcs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/pricer_quanto_cms.html#SimpleQuantoCmsHelper.make_numerator_analytic_funcs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.pricer_quanto_cms.SimpleQuantoCmsHelper.make_numerator_analytic_funcs" title="Permalink to this definition">¶</a></dt>

@@ -133,136 +133,363 @@
 <span></span><span class="ch">#!/bin/python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">mafipy</span> <span class="k">import</span> <span class="n">analytic_formula</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">analytic_formula</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">date_util</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">market_data</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 
-<div class="viewcode-block" id="Calibrator"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.Calibrator">[docs]</a><span class="k">class</span> <span class="nc">Calibrator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="black_scholes_implied_vol"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.black_scholes_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_implied_vol</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span>
+                              <span class="n">strike</span><span class="p">,</span>
+                              <span class="n">rate</span><span class="p">,</span>
+                              <span class="n">maturity</span><span class="p">,</span>
+                              <span class="n">option_value</span><span class="p">,</span>
+                              <span class="n">vol_min</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">vol_max</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                              <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_implied_vol</span>
+<span class="sd">    calculates implied volatility of black schoels model by brent method.</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity:</span>
+<span class="sd">    :param float option_value: value of option.</span>
+<span class="sd">    :param float vol_min: lower bound of volatility. default value is 1e-4.</span>
+<span class="sd">    :param float vol_max: upper bound of volatility. default value is 6.0.</span>
+<span class="sd">    :param int max_iter: maximum number of iterations. default value is 2000.</span>
 
-<div class="viewcode-block" id="Calibrator.calibrate"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.Calibrator.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
-
-
-<div class="viewcode-block" id="SimpleSabrCalibrator"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.SimpleSabrCalibrator">[docs]</a><span class="k">class</span> <span class="nc">SimpleSabrCalibrator</span><span class="p">(</span><span class="n">Calibrator</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calibrate Alpha, Rho, and Nu Directly</span>
+<span class="sd">    :return: implied volatility.</span>
+<span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">objective_func</span><span class="p">(</span><span class="n">vol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_scholes_call_formula</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span> <span class="o">-</span> <span class="n">option_value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SimpleSabrCalibrator.calibrate"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.SimpleSabrCalibrator.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div></div>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span>
+        <span class="n">objective_func</span><span class="p">,</span>
+        <span class="n">vol_min</span><span class="p">,</span>
+        <span class="n">vol_max</span><span class="p">,</span>
+        <span class="n">xtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">rtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="WestSabrCalibrator"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.WestSabrCalibrator">[docs]</a><span class="k">class</span> <span class="nc">WestSabrCalibrator</span><span class="p">(</span><span class="n">Calibrator</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calibrate Rho and Nu by Implying Alpha from At-The-Money Volatility.</span>
-<span class="sd">    West, G., &quot;Calibration of the SABR Model in Illiquid Markets,&quot; Applied Mathematical Finance, 12(4), pp. 371–385, 2004.</span>
+<div class="viewcode-block" id="black_swaption_implied_vol"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.black_swaption_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">black_swaption_implied_vol</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span>
+                               <span class="n">option_strike</span><span class="p">,</span>
+                               <span class="n">swap_annuity</span><span class="p">,</span>
+                               <span class="n">option_maturity</span><span class="p">,</span>
+                               <span class="n">option_value</span><span class="p">,</span>
+                               <span class="n">vol_min</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+                               <span class="n">vol_max</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                               <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_swaption_implied_vol</span>
+<span class="sd">    calculates implied volatility of payer&#39;s swaption by brent method.</span>
+
+<span class="sd">    :param float init_swap_rate:</span>
+<span class="sd">    :param float option_strike:</span>
+<span class="sd">    :param float swap_annuity:</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float option_value: value of option.</span>
+<span class="sd">    :param float vol_min: lower bound of volatility. default value is 1e-4.</span>
+<span class="sd">    :param float vol_max: upper bound of volatility. default value is 6.0.</span>
+<span class="sd">    :param int max_iter: maximum number of iterations. default value is 2000.</span>
+
+<span class="sd">    :return: implied volatility.</span>
+<span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">objective_func</span><span class="p">(</span><span class="n">vol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">analytic_formula</span><span class="o">.</span><span class="n">black_payers_swaption_value</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">option_value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_calc_poly_alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Given rho and nu, then solve cubic polynominal with respecto alpha.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">nu</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">underlying</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">time</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-        <span class="n">atm_vol</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span>
+        <span class="n">objective_func</span><span class="p">,</span>
+        <span class="n">vol_min</span><span class="p">,</span>
+        <span class="n">vol_max</span><span class="p">,</span>
+        <span class="n">xtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">rtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span>
 
-        <span class="n">oneMinusBeta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span>
-        <span class="n">numerator1</span> <span class="o">=</span> <span class="p">(</span><span class="n">oneMinusBeta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">time</span>
-        <span class="n">denominator1</span> <span class="o">=</span> <span class="mf">24.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oneMinusBeta</span><span class="p">))</span>
-        <span class="n">term1</span> <span class="o">=</span> <span class="n">numerator1</span> <span class="o">/</span> <span class="n">denominator1</span>
-        <span class="n">numerator2</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">time</span>
-        <span class="n">denominator2</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span><span class="o">**</span><span class="n">oneMinusBeta</span><span class="p">)</span>
-        <span class="n">term2</span> <span class="o">=</span> <span class="n">numerator2</span> <span class="o">/</span> <span class="n">denominator2</span>
-        <span class="n">numerator3</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">time</span>
-        <span class="n">term3</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">numerator3</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span>
-        <span class="n">term4</span> <span class="o">=</span> <span class="n">atm_vol</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span><span class="o">**</span><span class="n">oneMinusBeta</span><span class="p">)</span>
-        <span class="n">coeff</span> <span class="o">=</span> <span class="p">[</span><span class="n">term1</span><span class="p">,</span> <span class="n">term2</span><span class="p">,</span> <span class="n">term3</span><span class="p">,</span> <span class="n">term4</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_solve_alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">complex_to_real</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
-        <span class="n">roots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_poly_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">underlying</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">complex_to_real</span><span class="p">,</span> <span class="n">roots</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_make_objective_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">,</span> <span class="n">strike_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        param:</span>
-<span class="sd">        vol_list:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">atm_strike</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_strike</span><span class="p">(</span><span class="n">strike_list</span><span class="p">)</span>
-        <span class="n">atm_vol</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_vol</span><span class="p">(</span><span class="n">vol_list</span><span class="p">)</span>
-        <span class="n">underlying</span> <span class="o">=</span> <span class="n">atm_strike</span>
-
-        <span class="k">def</span> <span class="nf">objective_function</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-            <span class="n">rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">nu</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solve_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">atm_strike</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">)</span>
-            <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="k">for</span> <span class="n">strike</span><span class="p">,</span> <span class="n">vol</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">strike_list</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">):</span>
-                <span class="n">total</span> <span class="o">+=</span> <span class="p">(</span><span class="n">vol</span> <span class="o">-</span> <span class="n">analytic_formula</span><span class="o">.</span><span class="n">calc_sabr_model_implied_vol</span><span class="p">(</span>
-                    <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
-            <span class="k">return</span> <span class="n">total</span>
-        <span class="k">return</span> <span class="n">objective_function</span>
-
-<div class="viewcode-block" id="WestSabrCalibrator.calibrate"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.WestSabrCalibrator.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strike_list</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">atm_strike</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_strike</span><span class="p">(</span><span class="n">strike_list</span><span class="p">)</span>
-        <span class="n">atm_vol</span> <span class="o">=</span> <span class="n">market_data</span><span class="o">.</span><span class="n">get_atm_vol</span><span class="p">(</span><span class="n">vol_list</span><span class="p">)</span>
-        <span class="n">objective_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_objective_function</span><span class="p">(</span>
-            <span class="n">vol_list</span><span class="p">,</span> <span class="n">strike_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
-        <span class="c1"># determine rho and nu</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
-            <span class="n">objective_function</span><span class="p">,</span> <span class="p">[</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;BFGS&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;optimization error!&quot;</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
-        <span class="c1"># determine alpha by rho and nu</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solve_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">atm_strike</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">atm_vol</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span></div></div>
+    <span class="k">return</span> <span class="n">result</span></div>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">market_reader</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># SABR calibration</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="k">def</span> <span class="nf">_guess_alpha_from_vol_atm</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">vol_atm</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_guess_alpha_from_vol_atm_</span>
+<span class="sd">    guess alpha from volatility at the money</span>
+<span class="sd">    by using Hagan&#39;s approximated atm implied volatility.</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;./tests/data/market_volatility.json&quot;</span>
-    <span class="n">market_date</span> <span class="o">=</span> <span class="s2">&quot;2013-06-12&quot;</span>
-    <span class="n">maturity_date</span> <span class="o">=</span> <span class="s2">&quot;2014-09-12&quot;</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        \ln\sigma(F, F)</span>
+<span class="sd">            \\approx \ln \\alpha - (1 - \\beta) \ln F</span>
 
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">nu</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">time</span> <span class="o">=</span> <span class="n">date_util</span><span class="o">.</span><span class="n">calc_day_count_fraction</span><span class="p">(</span><span class="n">market_date</span><span class="p">,</span> <span class="n">maturity_date</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="sd">    :param float underlying: must be positive.</span>
+<span class="sd">    :param float vol_atm: volatility at the money. This must be positive.</span>
+<span class="sd">    :param float beta:</span>
 
-    <span class="n">reader</span> <span class="o">=</span> <span class="n">market_reader</span><span class="o">.</span><span class="n">VolatilityReader</span><span class="p">()</span>
-    <span class="n">reader</span><span class="o">.</span><span class="n">read_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">vol_list</span><span class="p">,</span> <span class="n">strike_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_volatility_and_strike</span><span class="p">(</span>
-        <span class="n">market_date</span><span class="p">,</span> <span class="n">maturity_date</span><span class="p">)</span>
+<span class="sd">    :return: alpha.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol_atm</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">ln_underlying</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">underlying</span><span class="p">)</span>
+    <span class="n">ln_vol_atm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">vol_atm</span><span class="p">)</span>
+    <span class="n">one_minus_beta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span>
+    <span class="n">ln_alpha</span> <span class="o">=</span> <span class="n">ln_vol_atm</span> <span class="o">+</span> <span class="n">one_minus_beta</span> <span class="o">*</span> <span class="n">ln_underlying</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">ln_alpha</span><span class="p">)</span>
 
-    <span class="n">calibrator</span> <span class="o">=</span> <span class="n">WestSabrCalibrator</span><span class="p">()</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="n">calibrator</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">strike_list</span><span class="p">,</span> <span class="n">vol_list</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+
+<div class="viewcode-block" id="sabr_caibration_simple"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.sabr_caibration_simple">[docs]</a><span class="k">def</span> <span class="nf">sabr_caibration_simple</span><span class="p">(</span><span class="n">market_vols</span><span class="p">,</span>
+                           <span class="n">market_strikes</span><span class="p">,</span>
+                           <span class="n">option_maturity</span><span class="p">,</span>
+                           <span class="n">beta</span><span class="p">,</span>
+                           <span class="n">init_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">init_rho</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">init_nu</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                           <span class="n">nu_lower_bound</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span>
+                           <span class="n">tol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sabr_caibration_simple</span>
+<span class="sd">    calibrates SABR parametes, alpha, rho and nu to market volatilities</span>
+<span class="sd">    by simultaneously minimizing error of market volatilities.</span>
+
+<span class="sd">    :param array market_vols: market volatilities.</span>
+<span class="sd">        Middle of elements in the array must be atm volatility.</span>
+<span class="sd">    :param array market_strikes: market strikes.</span>
+<span class="sd">        Middle of elements in the array must be atm strike.</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float beta: pre-determined beta.</span>
+<span class="sd">        beta must be within [0, 1].</span>
+<span class="sd">    :param float init_alpha: initial guess of alpha.</span>
+<span class="sd">        Default value is meaningless value, 0.1.</span>
+<span class="sd">        alpha must be positive.</span>
+<span class="sd">    :param float init_rho: initial guess of rho.</span>
+<span class="sd">        Default value is meaningless value, 0.1.</span>
+<span class="sd">        rho must be within [-1, 1].</span>
+<span class="sd">    :param float init_nu: initial guess of nu.</span>
+<span class="sd">        Default value is meaningless value, 0.1.</span>
+<span class="sd">        nu must be positive.</span>
+<span class="sd">    :param float nu_lower_bound:</span>
+<span class="sd">    :param float tol: tolerance of minimization.</span>
+
+<span class="sd">    :return: alpha, beta, rho, nu.</span>
+<span class="sd">    :rtype: four float value.</span>
+
+<span class="sd">    :raise AssertionError: if length of `market_vols` is not odd.</span>
+<span class="sd">    :raise AssertionError:</span>
+<span class="sd">        if length of `market_vols` and `market_strikes` are not same.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">market_vols</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> \
+        <span class="s2">&quot;lenght of makret_vols must be odd&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">market_strikes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">market_vols</span><span class="p">),</span> \
+        <span class="s2">&quot;market_vols and market_strikes must be same lenght&quot;</span>
+
+    <span class="c1"># atm strike is underlying</span>
+    <span class="n">underlying</span> <span class="o">=</span> <span class="n">market_strikes</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">market_strikes</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+    <span class="n">vol_atm</span> <span class="o">=</span> <span class="n">market_vols</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">market_vols</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">init_alpha</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">init_alpha</span> <span class="o">=</span> <span class="n">_guess_alpha_from_vol_atm</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">vol_atm</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+    <span class="c1"># parameter check</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol_atm</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">beta</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">init_alpha</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">&lt;=</span> <span class="n">init_rho</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">init_nu</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="c1"># 3-dim func</span>
+    <span class="c1"># (alpha, rho, nu)</span>
+    <span class="k">def</span> <span class="nf">objective_func</span><span class="p">(</span><span class="n">alpha_rho_nu</span><span class="p">):</span>
+        <span class="n">sabr_vols</span> <span class="o">=</span> <span class="p">[</span><span class="n">analytic_formula</span><span class="o">.</span><span class="n">sabr_implied_vol_hagan</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span>
+            <span class="n">strike</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">alpha_rho_nu</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">beta</span><span class="p">,</span>
+            <span class="n">alpha_rho_nu</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">alpha_rho_nu</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">strike</span> <span class="ow">in</span> <span class="n">market_strikes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">market_vols</span><span class="p">,</span> <span class="n">sabr_vols</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+        <span class="n">objective_func</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">init_alpha</span><span class="p">,</span> <span class="n">init_rho</span><span class="p">,</span> <span class="n">init_nu</span><span class="p">],</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="n">nu_lower_bound</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
+    <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span></div>
+
+
+<span class="k">def</span> <span class="nf">_is_real_and_positive</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_is_real_and_positive</span>
+
+<span class="sd">    :param complex val:</span>
+
+<span class="sd">    :return: True if `val` is real and positive.</span>
+<span class="sd">    :rtype: bool.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_find_alpha</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol_atm</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_find_alpha</span>
+<span class="sd">    find value of alpha solving the following polynominal equation</span>
+<span class="sd">    with respect to alpha.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\frac{</span>
+<span class="sd">            (1 - \\beta)^{2} \\tau</span>
+<span class="sd">        }{</span>
+<span class="sd">            24F^{2-2\\beta}</span>
+<span class="sd">        }</span>
+<span class="sd">        \\alpha^{3}</span>
+<span class="sd">        +</span>
+<span class="sd">            \\frac{</span>
+<span class="sd">                \\rho\\beta\\nu\\tau</span>
+<span class="sd">            }{</span>
+<span class="sd">                4F^{1-\\beta}</span>
+<span class="sd">            }</span>
+<span class="sd">            \\alpha^{2}</span>
+<span class="sd">        +</span>
+<span class="sd">            \left(</span>
+<span class="sd">                1</span>
+<span class="sd">                +</span>
+<span class="sd">                \\frac{</span>
+<span class="sd">                    2 - 3\\rho^{2}</span>
+<span class="sd">                }{</span>
+<span class="sd">                    24</span>
+<span class="sd">                }</span>
+<span class="sd">                \\nu^{2} \\tau</span>
+<span class="sd">            \\right)</span>
+<span class="sd">            \\alpha</span>
+<span class="sd">        - \sigma_{\mathrm{atm}} F^{1-\\beta}</span>
+<span class="sd">        = 0</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float vol_atm:</span>
+<span class="sd">    :param float beta:</span>
+<span class="sd">    :param float rho:</span>
+<span class="sd">    :param float nu:</span>
+
+<span class="sd">    :return: mininum real positive root of the equiation.</span>
+<span class="sd">    :rtype: float.</span>
+
+<span class="sd">    :raise ValueError:</span>
+<span class="sd">        if there is no positive real roots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">one_minus_beta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span>
+    <span class="n">one_minus_beta2</span> <span class="o">=</span> <span class="n">one_minus_beta</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">numerator1</span> <span class="o">=</span> <span class="n">one_minus_beta2</span> <span class="o">*</span> <span class="n">option_maturity</span>
+    <span class="n">denominator1</span> <span class="o">=</span> <span class="mf">24.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">**</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">one_minus_beta</span><span class="p">))</span>
+    <span class="n">coeff1</span> <span class="o">=</span> <span class="n">numerator1</span> <span class="o">/</span> <span class="n">denominator1</span>
+
+    <span class="n">numerator2</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">option_maturity</span>
+    <span class="n">denominator2</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">**</span> <span class="n">one_minus_beta</span><span class="p">)</span>
+    <span class="n">coeff2</span> <span class="o">=</span> <span class="n">numerator2</span> <span class="o">/</span> <span class="n">denominator2</span>
+
+    <span class="n">numerator3</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">rho</span><span class="p">)</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">*</span> <span class="n">option_maturity</span>
+    <span class="n">coeff3</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">numerator3</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span>
+
+    <span class="n">constant_term</span> <span class="o">=</span> <span class="o">-</span><span class="n">vol_atm</span> <span class="o">*</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">**</span> <span class="n">one_minus_beta</span><span class="p">)</span>
+
+    <span class="n">coeffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">coeff1</span><span class="p">,</span> <span class="n">coeff2</span><span class="p">,</span> <span class="n">coeff3</span><span class="p">,</span> <span class="n">constant_term</span><span class="p">]</span>
+
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roots</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)</span>
+    <span class="c1"># find smallest real roots</span>
+    <span class="n">positive_real_roots</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">real</span> <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">roots</span> <span class="k">if</span> <span class="n">_is_real_and_positive</span><span class="p">(</span><span class="n">root</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">positive_real_roots</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Find no real positive roots for alpha:</span>
+<span class="s2">    underlying: </span><span class="si">{0}</span><span class="s2">,</span>
+<span class="s2">    option_maturity: </span><span class="si">{1}</span><span class="s2">,</span>
+<span class="s2">    vol_atm: </span><span class="si">{2}</span><span class="s2">,</span>
+<span class="s2">    alpha: </span><span class="si">{3}</span><span class="s2">,</span>
+<span class="s2">    beta: </span><span class="si">{4}</span><span class="s2">,</span>
+<span class="s2">    rho: </span><span class="si">{5}</span><span class="s2">,</span>
+<span class="s2">    nu: </span><span class="si">{6}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol_atm</span><span class="p">,</span>
+                      <span class="n">roots</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">positive_real_roots</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="sabr_caibration_west"><a class="viewcode-back" href="../../mafipy.calibrator.html#mafipy.calibrator.sabr_caibration_west">[docs]</a><span class="k">def</span> <span class="nf">sabr_caibration_west</span><span class="p">(</span><span class="n">market_vols</span><span class="p">,</span>
+                         <span class="n">market_strikes</span><span class="p">,</span>
+                         <span class="n">option_maturity</span><span class="p">,</span>
+                         <span class="n">beta</span><span class="p">,</span>
+                         <span class="n">init_rho</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                         <span class="n">init_nu</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sabr_caibration_west</span>
+<span class="sd">    calibrates SABR parameters to market volatilities by algorithm</span>
+<span class="sd">    in West, G. (2005).</span>
+<span class="sd">    Calibration of the SABR Model in Illiquid Markets.</span>
+<span class="sd">    Applied Mathematical Finance, 12(4), 371–385.</span>
+<span class="sd">    https://doi.org/10.1080/13504860500148672</span>
+
+<span class="sd">    :param array market_vols: market volatilities.</span>
+<span class="sd">        Middle of elements in the array must be atm volatility.</span>
+<span class="sd">    :param array market_strikes: market strikes corresponded to `market_vol`.</span>
+<span class="sd">        Middle of elements in the array must be atm strike.</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float beta: pre-determined beta.</span>
+<span class="sd">    :param float init_rho: initial guess of rho.</span>
+<span class="sd">        Default value is meaningless value, 0.1.</span>
+<span class="sd">    :param float init_nu: initial guess of nu.</span>
+<span class="sd">        Default value is meaningless value, 0.1.</span>
+
+<span class="sd">    :return: alpha, beta, rho, nu.</span>
+<span class="sd">    :rtype: four float value.</span>
+
+<span class="sd">    :raise AssertionError: if length of `market_vols` is not odd.</span>
+<span class="sd">    :raise AssertionError:</span>
+<span class="sd">        if length of `market_vols` and `market_strikes` are not same.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">market_vols</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> \
+        <span class="s2">&quot;lenght of makret_vols must be odd&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">market_strikes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">market_vols</span><span class="p">),</span> \
+        <span class="s2">&quot;market_vols and market_strikes must be same lenght&quot;</span>
+
+    <span class="c1"># atm strike is underlying</span>
+    <span class="n">underlying</span> <span class="o">=</span> <span class="n">market_strikes</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">market_strikes</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+    <span class="n">vol_atm</span> <span class="o">=</span> <span class="n">market_vols</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">market_vols</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">find_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_find_alpha</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol_atm</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+
+    <span class="c1"># 2-dim func</span>
+    <span class="c1"># (rho, nu)</span>
+    <span class="k">def</span> <span class="nf">objective_func</span><span class="p">(</span><span class="n">rho_nu</span><span class="p">):</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">find_alpha</span><span class="p">(</span><span class="n">rho_nu</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rho_nu</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sabr_vols</span> <span class="o">=</span> <span class="p">[</span><span class="n">analytic_formula</span><span class="o">.</span><span class="n">sabr_implied_vol_hagan</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span>
+            <span class="n">strike</span><span class="p">,</span>
+            <span class="n">option_maturity</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="p">,</span>
+            <span class="n">beta</span><span class="p">,</span>
+            <span class="n">rho_nu</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">rho_nu</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">strike</span> <span class="ow">in</span> <span class="n">market_strikes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">market_vols</span><span class="p">,</span> <span class="n">sabr_vols</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+        <span class="n">objective_func</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">init_rho</span><span class="p">,</span> <span class="n">init_nu</span><span class="p">],</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">((</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+    <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">find_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span></div>
 </pre></div>
 
            </div>

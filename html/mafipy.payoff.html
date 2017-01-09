@@ -89,6 +89,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="mafipy.analytic_formula.html">mafipy.analytic_formula module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.calibrator.html">mafipy.calibrator module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.error.html">mafipy.error module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.math_formula.html">mafipy.math_formula module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.payoff module</a></li>
@@ -259,7 +260,7 @@ and sell put option with upper_strike <span class="math">\(K_{\mathrm{upper}}\)<
 As the name denotes, lower_strike is lower than upper_strike.
 Payoff formula is as follows:</p>
 <div class="math">
-\[g(\max(S - K_{\mathrm{lower}}, 0) - \min(K_{\mathrm{upper}} - S, 0))
+\[g(\max(S - K_{\mathrm{lower}}, 0) - \min(S - K_{\mathrm{upper}}, 0))
 = g\min(K_{\mathrm{upper}}, \max(S - K_{\mathrm{lower}}))\]</div>
 <p>where <span class="math">\(S\)</span> is underlying, <span class="math">\(g\)</span> is gearing.</p>
 <table class="docutils field-list" frame="void" rules="none">

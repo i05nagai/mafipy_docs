@@ -162,7 +162,7 @@
 <div class="viewcode-block" id="func_d1"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.func_d1">[docs]</a><span class="k">def</span> <span class="nf">func_d1</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;func_d1</span>
 <span class="sd">    calculate :math:`d_{1}` in black scholes formula.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_call_formula`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_formula`.</span>
 
 <span class="sd">    :param float underlying: underlying/strike must be non-negative.</span>
 <span class="sd">    :param float strike: underlying/strike must be non-negative.</span>
@@ -184,7 +184,7 @@
 <div class="viewcode-block" id="func_d2"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.func_d2">[docs]</a><span class="k">def</span> <span class="nf">func_d2</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;func_d2</span>
 <span class="sd">    calculate :math:`d_{2}` in black scholes formula.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_call_formula`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_formula`.</span>
 
 <span class="sd">    :param float underlying: underlying/strike must be non-negative.</span>
 <span class="sd">    :param float strike: underlying/strike must be non-negative.</span>
@@ -259,8 +259,8 @@
     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">strike</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="calc_black_scholes_call_formula"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_black_scholes_call_formula">[docs]</a><span class="k">def</span> <span class="nf">calc_black_scholes_call_formula</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calc_black_scholes_call_formula</span>
+<div class="viewcode-block" id="black_scholes_call_formula"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_formula">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_formula</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_call_formula</span>
 <span class="sd">    calculate well known black scholes formula for call option.</span>
 
 <span class="sd">    .. math::</span>
@@ -303,8 +303,8 @@
             <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">d2</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="calc_black_scholes_put_formula"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_black_scholes_put_formula">[docs]</a><span class="k">def</span> <span class="nf">calc_black_scholes_put_formula</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calc_black_scholes_put_formula</span>
+<div class="viewcode-block" id="black_scholes_put_formula"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_put_formula">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_put_formula</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_put_formula</span>
 <span class="sd">    calculate well known black scholes formula for put option.</span>
 <span class="sd">    Here value of put option is calculated by put-call parity.</span>
 
@@ -328,7 +328,7 @@
 <span class="sd">    :math:`\sigma` is vol.</span>
 
 <span class="sd">    :math:`c(\cdot)` is calculated</span>
-<span class="sd">    by :py:func:`calc_black_scholes_call_formula`.</span>
+<span class="sd">    by :py:func:`black_scholes_call_formula`.</span>
 
 <span class="sd">    :param float underlying: value of underlying.</span>
 <span class="sd">    :param float strike: strike of put option.</span>
@@ -338,23 +338,23 @@
 <span class="sd">    :return: put value.</span>
 <span class="sd">    :rtype: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">call_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+    <span class="n">call_value</span> <span class="o">=</span> <span class="n">black_scholes_call_formula</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
     <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">call_value</span> <span class="o">-</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">discount</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="calc_black_scholes_call_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_black_scholes_call_value">[docs]</a><span class="k">def</span> <span class="nf">calc_black_scholes_call_value</span><span class="p">(</span>
+<div class="viewcode-block" id="black_scholes_call_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_value">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_value</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">strike</span><span class="p">,</span>
         <span class="n">rate</span><span class="p">,</span>
         <span class="n">maturity</span><span class="p">,</span>
         <span class="n">vol</span><span class="p">,</span>
         <span class="n">today</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calc_black_scholes_call_value</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_call_value</span>
 <span class="sd">    calculate call value in the case of today is not zero.</span>
 <span class="sd">    (`maturity` - `today`) is treated as time to expiry.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_call_formula`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_formula`.</span>
 
 <span class="sd">    * case :math:`S &gt; 0, K &lt; 0`</span>
 
@@ -386,6 +386,12 @@
     <span class="c1"># option is expired</span>
     <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
         <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">today</span><span class="p">)</span> <span class="o">*</span> <span class="n">underlying</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
     <span class="c1"># never below strike</span>
     <span class="k">elif</span> <span class="n">strike</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span>
@@ -394,25 +400,25 @@
         <span class="k">return</span> <span class="mf">0.0</span>
     <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="c1"># max(S - K, 0) = (S - K) + max(-(S - K), 0)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">black_scholes_call_formula</span><span class="p">(</span>
             <span class="o">-</span><span class="n">underlying</span><span class="p">,</span> <span class="o">-</span><span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span>
 
-    <span class="k">return</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">black_scholes_call_formula</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="calc_black_scholes_put_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_black_scholes_put_value">[docs]</a><span class="k">def</span> <span class="nf">calc_black_scholes_put_value</span><span class="p">(</span>
+<div class="viewcode-block" id="black_scholes_put_value"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_put_value">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_put_value</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span>
         <span class="n">strike</span><span class="p">,</span>
         <span class="n">rate</span><span class="p">,</span>
         <span class="n">maturity</span><span class="p">,</span>
         <span class="n">vol</span><span class="p">,</span>
         <span class="n">today</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calc_black_scholes_put_value</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_put_value</span>
 <span class="sd">    evaluates value of put option using put-call parity so that</span>
-<span class="sd">    this function calls :py:func:`calc_black_scholes_call_value`.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_put_formula`.</span>
+<span class="sd">    this function calls :py:func:`black_scholes_call_value`.</span>
+<span class="sd">    See :py:func:`black_scholes_put_formula`.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
@@ -427,8 +433,12 @@
     <span class="c1"># option is expired</span>
     <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
         <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">underlying</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">today</span><span class="p">)</span>
 
-    <span class="n">call_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+    <span class="n">call_value</span> <span class="o">=</span> <span class="n">black_scholes_call_value</span><span class="p">(</span>
         <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
     <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">call_value</span> <span class="o">-</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">-</span> <span class="n">strike</span> <span class="o">*</span> <span class="n">discount</span><span class="p">)</span></div>
@@ -443,7 +453,7 @@
     <span class="sd">&quot;&quot;&quot;black_scholes_call_value_fprime_by_strike</span>
 <span class="sd">    First derivative of value of call option with respect to strike</span>
 <span class="sd">    under black scholes model.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_call_formula`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_formula`.</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">        \\frac{\partial }{\partial K} c(K; S, r, T, \sigma)</span>
@@ -456,7 +466,7 @@
 <span class="sd">    :math:`T` is maturity,</span>
 <span class="sd">    :math:`\sigma` is vol,</span>
 <span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
-<span class="sd">    in :py:func:`calc_black_scholes_call_formula`,</span>
+<span class="sd">    in :py:func:`black_scholes_call_formula`,</span>
 <span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
 <span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
 
@@ -486,7 +496,7 @@
     <span class="sd">&quot;&quot;&quot;black_scholes_call_value_fhess_by_strike</span>
 <span class="sd">    Second derivative of value of call option with respect to strike</span>
 <span class="sd">    under black scholes model.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_call_formula`</span>
+<span class="sd">    See :py:func:`black_scholes_call_formula`</span>
 <span class="sd">    and :py:func:`black_scholes_call_value_fprime_by_strike`.</span>
 
 <span class="sd">    .. math::</span>
@@ -504,7 +514,7 @@
 <span class="sd">    :math:`T` is maturity,</span>
 <span class="sd">    :math:`\sigma` is vol,</span>
 <span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
-<span class="sd">    in :py:func:`calc_black_scholes_call_formula`,</span>
+<span class="sd">    in :py:func:`black_scholes_call_formula`,</span>
 <span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
 <span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
 
@@ -517,7 +527,19 @@
 <span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="c1"># option is expired</span>
+    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="c1"># never below strike</span>
+    <span class="k">elif</span> <span class="n">strike</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="c1"># never beyond strike</span>
+    <span class="k">elif</span> <span class="n">strike</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">underlying</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">strike</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">underlying</span> <span class="o">=</span> <span class="o">-</span><span class="n">underlying</span>
+        <span class="n">strike</span> <span class="o">=</span> <span class="o">-</span><span class="n">strike</span>
 
     <span class="n">discount</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span>
     <span class="n">d2</span> <span class="o">=</span> <span class="n">func_d2</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
@@ -536,7 +558,7 @@
     <span class="sd">&quot;&quot;&quot;black_scholes_call_value_third_by_strike</span>
 <span class="sd">    Third derivative of value of call option with respect to strike</span>
 <span class="sd">    under black scholes model.</span>
-<span class="sd">    See :py:func:`calc_black_scholes_call_formula`</span>
+<span class="sd">    See :py:func:`black_scholes_call_formula`</span>
 <span class="sd">    and :py:func:`black_scholes_call_value_fprime_by_strike`,</span>
 <span class="sd">    and :py:func:`black_scholes_call_value_fhess_by_strike`.</span>
 
@@ -558,7 +580,7 @@
 <span class="sd">    :math:`T` is maturity,</span>
 <span class="sd">    :math:`\sigma` is vol,</span>
 <span class="sd">    :math:`d_{1}, d_{2}` is defined</span>
-<span class="sd">    in :py:func:`calc_black_scholes_call_formula`,</span>
+<span class="sd">    in :py:func:`black_scholes_call_formula`,</span>
 <span class="sd">    :math:`\Phi(\cdot)` is c.d.f. of standard normal distribution,</span>
 <span class="sd">    :math:`\phi(\cdot)` is p.d.f. of standard normal distribution.</span>
 
@@ -583,6 +605,72 @@
     <span class="n">term1</span> <span class="o">=</span> <span class="n">d2_density_fprime</span> <span class="o">*</span> <span class="n">d_fprime</span> <span class="o">*</span> <span class="n">d_fprime</span>
     <span class="n">term2</span> <span class="o">=</span> <span class="n">d2_density</span> <span class="o">*</span> <span class="n">d_fhess</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">discount</span> <span class="o">*</span> <span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="implied_vol_brenner_subrahmanyam"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.implied_vol_brenner_subrahmanyam">[docs]</a><span class="k">def</span> <span class="nf">implied_vol_brenner_subrahmanyam</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">option_value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;implied_vol_brenner_subrahmanyam</span>
+<span class="sd">    calculates implied volatility by Brenner-Subrahmanym approximation formula.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \sigma</span>
+<span class="sd">            \\approx</span>
+<span class="sd">                \sqrt{\\frac{2 \pi}{T}}</span>
+<span class="sd">                    \\frac{C}{K}</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`K` is `strike`,</span>
+<span class="sd">    :math:`T` is `maturity`,</span>
+<span class="sd">    :math:`C` is `option_value`.</span>
+<span class="sd">    If :math:`T&lt;=0` or :math:`K \\neq 0` then, this function return 0.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike: this funciton returns 0 if strike is 0.</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity:</span>
+<span class="sd">    :param float option_value:</span>
+
+<span class="sd">    :return: approximated implied vol at the money.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">option_value</span> <span class="o">/</span> <span class="n">strike</span></div>
+
+
+<div class="viewcode-block" id="implied_vol_quadratic_approx"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.implied_vol_quadratic_approx">[docs]</a><span class="k">def</span> <span class="nf">implied_vol_quadratic_approx</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">option_value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;implied_vol_quadratic_approx</span>
+<span class="sd">    calculates implied volatility by Corrado-Miller approximation formula.</span>
+<span class="sd">    See Corrado, C. J., &amp; Miller, T. W. (1996).</span>
+<span class="sd">    A note on a simple, accurate formula</span>
+<span class="sd">    to compute implied standard deviations.</span>
+<span class="sd">    Journal of Banking &amp; Finance, 20(1996), 595–603.</span>
+<span class="sd">    https://doi.org/10.1016/0378-4266(95)00014-3</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity:</span>
+<span class="sd">    :param float option_value:</span>
+
+<span class="sd">    :return: approximated implied volatility.</span>
+<span class="sd">        If `maturity` is not positive, this function returns 0.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">discount_strike</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">rate</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">strike</span>
+    <span class="n">moneyness_delta</span> <span class="o">=</span> <span class="n">underlying</span> <span class="o">-</span> <span class="n">discount_strike</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">option_value</span> <span class="o">-</span> <span class="n">moneyness_delta</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">moneyness_delta2</span> <span class="o">=</span> <span class="n">moneyness_delta</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="c1"># take lower bound</span>
+    <span class="n">sqrt_inner</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">diff</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">moneyness_delta2</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">factor1</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sqrt_inner</span><span class="p">)</span>
+    <span class="n">factor2</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">underlying</span> <span class="o">+</span> <span class="n">discount_strike</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">factor1</span> <span class="o">*</span> <span class="n">factor2</span></div>
 
 
 <span class="c1"># ----------------------------------------------------------------------------</span>
@@ -640,10 +728,7 @@
 <span class="sd">    :raises AssertionError: if volatility is not positive.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
-    <span class="c1"># option is expired</span>
-    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mf">0.0</span>
-    <span class="n">option_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_call_formula</span><span class="p">(</span>
+    <span class="n">option_value</span> <span class="o">=</span> <span class="n">black_scholes_call_value</span><span class="p">(</span>
         <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">option_value</span></div>
 
@@ -684,9 +769,11 @@
     <span class="c1"># option is expired</span>
     <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
         <span class="k">return</span> <span class="mf">0.0</span>
-    <span class="n">option_value</span> <span class="o">=</span> <span class="n">calc_black_scholes_put_formula</span><span class="p">(</span>
-        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">option_value</span></div>
+
+    <span class="n">payer_value</span> <span class="o">=</span> <span class="n">black_payers_swaption_value</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">forward_value</span> <span class="o">=</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="p">(</span><span class="n">init_swap_rate</span> <span class="o">-</span> <span class="n">option_strike</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">payer_value</span> <span class="o">-</span> <span class="n">forward_value</span></div>
 
 
 <div class="viewcode-block" id="black_payers_swaption_value_fprime_by_strike"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_payers_swaption_value_fprime_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span>
@@ -725,6 +812,13 @@
 <span class="sd">    :rtype: float</span>
 
 <span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Roughly speaking, this function calculates :math:`A(t) \Phi(d)`.</span>
+<span class="sd">        Percentile of probability 1 is infinity so that</span>
+<span class="sd">        assumption that annuity is equal to 1 is not good assumption</span>
+<span class="sd">        beacuse of :math:`\Phi(d)` returns 1 in some cases.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="c1"># option is expired</span>
@@ -774,9 +868,6 @@
 <span class="sd">    :raises AssertionError: if volatility is not positive.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
-    <span class="c1"># option is expired</span>
-    <span class="k">if</span> <span class="n">option_maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">option_maturity</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mf">0.0</span>
 
     <span class="n">value</span> <span class="o">=</span> <span class="n">black_scholes_call_value_fhess_by_strike</span><span class="p">(</span>
         <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
@@ -900,7 +991,7 @@
 <span class="sd">    :math:`d_{1}` is defined in</span>
 <span class="sd">    :py:func:`func_d1`.</span>
 
-<span class="sd">    See :py:func:`calc_black_scholes_call_value`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_value`.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
@@ -928,7 +1019,7 @@
 
 <span class="sd">    .. math::</span>
 <span class="sd">        \\frac{\partial}{\partial \sigma} c(S, K, r, T, \sigma)</span>
-<span class="sd">            = -\sqrt{T}S\phi(d_{1}(S, K, r, T, \sigma))</span>
+<span class="sd">            = \sqrt{T}S\phi(d_{1}(S, K, r, T, \sigma))</span>
 
 <span class="sd">    where</span>
 <span class="sd">    :math:`S` is underlying,</span>
@@ -940,7 +1031,7 @@
 <span class="sd">    :math:`d_{1}` is defined in</span>
 <span class="sd">    :py:func:`func_d1`.</span>
 
-<span class="sd">    See :py:func:`calc_black_scholes_call_value`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_value`.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
@@ -953,7 +1044,53 @@
     <span class="k">assert</span><span class="p">(</span><span class="n">maturity</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="n">d1</span> <span class="o">=</span> <span class="n">func_d1</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
-    <span class="k">return</span> <span class="o">-</span> <span class="n">underlying</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">maturity</span><span class="p">)</span> <span class="o">*</span> <span class="n">underlying</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="black_scholes_call_volga"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_volga">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_volga</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_call_volg</span>
+<span class="sd">    calculates black scholes volga.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\frac{\partial^{2}}{\partial \sigma^{2}} c(S, K, r, T, \sigma)</span>
+<span class="sd">            S \phi^{\prime}(d_{1}(\sigma))</span>
+<span class="sd">            \\frac{</span>
+<span class="sd">                (\\frac{1}{2} \sigma^{2} - r)T</span>
+<span class="sd">            }{</span>
+<span class="sd">                \sigma^{2}</span>
+<span class="sd">            }</span>
+
+<span class="sd">    where</span>
+<span class="sd">    :math:`S` is underlying,</span>
+<span class="sd">    :math:`K` is strike,</span>
+<span class="sd">    :math:`r` is rate,</span>
+<span class="sd">    :math:`T` is maturity,</span>
+<span class="sd">    :math:`\sigma` is volatility,</span>
+<span class="sd">    :math:`\phi` is standard normal p.d.f,</span>
+<span class="sd">    :math:`d_{1}` is defined in</span>
+<span class="sd">    :py:func:`func_d1`.</span>
+
+<span class="sd">    See :py:func:`black_scholes_call_value`.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity: must be non-negative.</span>
+<span class="sd">    :param float vol: volatility. This must be positive.</span>
+
+<span class="sd">    :return: value of volga.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">maturity</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">func_d1</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">pdf_fprime</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">math_formula</span><span class="o">.</span><span class="n">norm_pdf_fprime</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">*</span> <span class="n">vol</span> <span class="o">-</span> <span class="n">rate</span><span class="p">)</span> <span class="o">*</span> <span class="n">maturity</span> <span class="o">/</span> <span class="p">(</span><span class="n">vol</span> <span class="o">*</span> <span class="n">vol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">underlying</span> <span class="o">*</span> <span class="n">pdf_fprime</span> <span class="o">*</span> <span class="n">factor</span></div>
 
 
 <div class="viewcode-block" id="black_scholes_call_theta"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.black_scholes_call_theta">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_call_theta</span><span class="p">(</span>
@@ -984,7 +1121,7 @@
 <span class="sd">    :math:`d_{1}` is defined in</span>
 <span class="sd">    :py:func:`func_d1`.</span>
 
-<span class="sd">    See :py:func:`calc_black_scholes_call_value`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_value`.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
@@ -1031,7 +1168,7 @@
 <span class="sd">    :math:`d_{2}` is defined in</span>
 <span class="sd">    :py:func:`func_d2`.</span>
 
-<span class="sd">    See :py:func:`calc_black_scholes_call_value`.</span>
+<span class="sd">    See :py:func:`black_scholes_call_value`.</span>
 
 <span class="sd">    :param float underlying:</span>
 <span class="sd">    :param float strike:</span>
@@ -1113,15 +1250,9 @@
     <span class="k">return</span> <span class="n">local_vol_val</span> <span class="o">*</span> <span class="n">term</span></div>
 
 
-<div class="viewcode-block" id="calc_sabr_implied_vol"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_sabr_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">calc_sabr_implied_vol</span><span class="p">(</span>
-        <span class="n">underlying</span><span class="p">,</span>
-        <span class="n">strike</span><span class="p">,</span>
-        <span class="n">maturity</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="p">,</span>
-        <span class="n">beta</span><span class="p">,</span>
-        <span class="n">rho</span><span class="p">,</span>
-        <span class="n">nu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calc_sabr_model_implied_vol</span>
+<div class="viewcode-block" id="sabr_implied_vol_hagan"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.sabr_implied_vol_hagan">[docs]</a><span class="k">def</span> <span class="nf">sabr_implied_vol_hagan</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sabr_implied_vol_hagan</span>
 <span class="sd">    calculate implied volatility under SABR model.</span>
 
 <span class="sd">    .. math::</span>
@@ -1201,13 +1332,16 @@
 <span class="sd">    :rtype: float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;alpha must be greater than 0.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">rho</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">rho</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;rho must be between -1 and 1.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;alpha(</span><span class="si">{0}</span><span class="s2">) must be greater than 0.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">rho</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">rho</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">1.0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;rho(</span><span class="si">{0}</span><span class="s2">) must be between -1 and 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rho</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">nu</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nu must be greater than 0.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nu must be greater than 0.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nu</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">underlying</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Approximation not defined for non-positive underlying.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Approximation not defined for non-positive underlying(</span><span class="si">{0}</span><span class="s2">).&quot;</span>
+            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">underlying</span><span class="p">))</span>
 
     <span class="n">log_val</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">underlying</span> <span class="o">/</span> <span class="n">strike</span><span class="p">)</span>
     <span class="n">log_val2</span> <span class="o">=</span> <span class="n">log_val</span> <span class="o">**</span> <span class="mi">2</span>
@@ -1225,8 +1359,14 @@
     <span class="c1"># factor2</span>
     <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">nu</span> <span class="o">*</span> <span class="n">common_factor1</span> <span class="o">*</span> <span class="n">log_val</span> <span class="o">/</span> <span class="n">alpha</span><span class="p">)</span>
     <span class="n">numerator2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">z</span> <span class="o">-</span> <span class="n">rho</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">numerator2</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">))</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rho</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">E</span><span class="o">-</span><span class="mi">10</span> <span class="k">else</span> <span class="mf">1.0</span>
-    <span class="n">factor2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="n">E</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="k">else</span> <span class="n">z</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">if</span> <span class="n">numerator2</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">factor2</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">factor2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="n">E</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="k">else</span> <span class="n">z</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">numerator2</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">rho</span><span class="p">))</span>
+        <span class="n">factor2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="n">E</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span> <span class="k">else</span> <span class="n">z</span> <span class="o">/</span> <span class="n">x</span>
     <span class="c1"># factor3</span>
     <span class="n">numerator31</span> <span class="o">=</span> <span class="n">one_minus_beta2</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">denominator31</span> <span class="o">=</span> <span class="mf">24.0</span> <span class="o">*</span> <span class="p">((</span><span class="n">underlying</span> <span class="o">*</span> <span class="n">strike</span><span class="p">)</span> <span class="o">**</span> <span class="n">one_minus_beta</span><span class="p">)</span>
@@ -1239,14 +1379,9 @@
     <span class="k">return</span> <span class="n">factor1</span> <span class="o">*</span> <span class="n">factor2</span> <span class="o">*</span> <span class="n">factor3</span></div>
 
 
-<div class="viewcode-block" id="calc_sabr_atm_implied_vol"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.calc_sabr_atm_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">calc_sabr_atm_implied_vol</span><span class="p">(</span>
-        <span class="n">underlying</span><span class="p">,</span>
-        <span class="n">maturity</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="p">,</span>
-        <span class="n">beta</span><span class="p">,</span>
-        <span class="n">rho</span><span class="p">,</span>
-        <span class="n">nu</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;calc_sabr_atm_implied_vol</span>
+<div class="viewcode-block" id="sabr_atm_implied_vol_hagan"><a class="viewcode-back" href="../../mafipy.analytic_formula.html#mafipy.analytic_formula.sabr_atm_implied_vol_hagan">[docs]</a><span class="k">def</span> <span class="nf">sabr_atm_implied_vol_hagan</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sabr_atm_implied_vol_hagan</span>
 <span class="sd">    calculate implied volatility under SABR model at the money.</span>
 
 <span class="sd">    .. math::</span>
@@ -1305,7 +1440,7 @@
             <span class="n">today</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;make_call_wrt_strike</span>
 <span class="sd">        make function of black shcoles call formula with respect to function.</span>
-<span class="sd">        This function return :py:func:`calc_black_scholes_call_value`</span>
+<span class="sd">        This function return :py:func:`black_scholes_call_value`</span>
 <span class="sd">        as funciton of a single variable.</span>
 
 <span class="sd">        .. math::</span>
@@ -1320,7 +1455,7 @@
 <span class="sd">        :return: call option pricer as a function of strike.</span>
 <span class="sd">        :rtype: LambdaType</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="k">lambda</span> <span class="n">strike</span><span class="p">:</span> <span class="n">calc_black_scholes_call_value</span><span class="p">(</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">strike</span><span class="p">:</span> <span class="n">black_scholes_call_value</span><span class="p">(</span>
             <span class="n">underlying</span><span class="o">=</span><span class="n">underlying</span><span class="p">,</span>
             <span class="n">strike</span><span class="o">=</span><span class="n">strike</span><span class="p">,</span>
             <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span>
@@ -1337,7 +1472,7 @@
             <span class="n">today</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;make_put_wrt_strike</span>
 <span class="sd">        make function of black shcoles put formula with respect to function.</span>
-<span class="sd">        This function return :py:func:`calc_black_scholes_put_value`</span>
+<span class="sd">        This function return :py:func:`black_scholes_put_value`</span>
 <span class="sd">        as funciton of a single variable.</span>
 
 <span class="sd">        .. math::</span>
@@ -1352,7 +1487,7 @@
 <span class="sd">        :return: put option pricer as a function of strike.</span>
 <span class="sd">        :rtype: LambdaType.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="k">lambda</span> <span class="n">strike</span><span class="p">:</span> <span class="n">calc_black_scholes_put_value</span><span class="p">(</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">strike</span><span class="p">:</span> <span class="n">black_scholes_put_value</span><span class="p">(</span>
             <span class="n">underlying</span><span class="o">=</span><span class="n">underlying</span><span class="p">,</span>
             <span class="n">strike</span><span class="o">=</span><span class="n">strike</span><span class="p">,</span>
             <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span>

@@ -1,5 +1,5 @@
 mafipy.calibrator module
-========================
+==========================
 
 .. automodule:: mafipy.calibrator
     :members:
