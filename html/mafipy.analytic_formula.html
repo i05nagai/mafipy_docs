@@ -295,6 +295,36 @@ as funciton of a single variable.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="mafipy.analytic_formula.black_payers_swaption_delta">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_delta</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates delta of payer&#8217;s swaptions under black model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; initial swap rate.</li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; swaption strike.</li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; annuity of referencing swap</li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; swaption maturity.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatilty. this must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">delta</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="mafipy.analytic_formula.black_payers_swaption_value">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculates value of payer&#8217;s swaptions under black model.</p>
@@ -494,6 +524,36 @@ in <a class="reference internal" href="#mafipy.analytic_formula.black_payers_swa
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.black_payers_swaption_vega">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">black_payers_swaption_vega</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>vol</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#black_payers_swaption_vega"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.black_payers_swaption_vega" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates vega of payer&#8217;s swaption under black model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; initial swap rate.</li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; swaption strike.</li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; annuity of referencing swap</li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; swaption maturity.</li>
+<li><strong>vol</strong> (<em>float</em>) &#8211; volatilty. this must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">vega.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">float.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>AssertionError</strong> &#8211; if volatility is not positive.</p>
@@ -1545,6 +1605,38 @@ with respect to strike.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="mafipy.analytic_formula.sabr_implied_vol_hagan_fhess_by_underlying">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_implied_vol_hagan_fhess_by_underlying</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_implied_vol_hagan_fhess_by_underlying"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_implied_vol_hagan_fhess_by_underlying" title="Permalink to this definition">¶</a></dt>
+<dd><p>second derivative of Hagan&#8217;s SABR implied volatility formula
+with respect to underlying.
+See <a class="reference internal" href="#mafipy.analytic_formula.sabr_implied_vol_hagan" title="mafipy.analytic_formula.sabr_implied_vol_hagan"><code class="xref py py-func docutils literal"><span class="pre">sabr_implied_vol_hagan()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; must be positve.</li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; must be within [0, 1].</li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; must be within [-1, 1].</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">second derivative of hagan implied volatility formula
+with respect to underlying.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="mafipy.analytic_formula.sabr_implied_vol_hagan_fprime_by_strike">
 <code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_implied_vol_hagan_fprime_by_strike</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_implied_vol_hagan_fprime_by_strike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_implied_vol_hagan_fprime_by_strike" title="Permalink to this definition">¶</a></dt>
 <dd><p>first derivative of Hagan&#8217;s SABR implied volatility formula
@@ -1577,8 +1669,71 @@ with respect to strike.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="mafipy.analytic_formula.sabr_implied_vol_hagan_fprime_by_underlying">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_implied_vol_hagan_fprime_by_underlying</code><span class="sig-paren">(</span><em>underlying</em>, <em>strike</em>, <em>maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_implied_vol_hagan_fprime_by_underlying"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_implied_vol_hagan_fprime_by_underlying" title="Permalink to this definition">¶</a></dt>
+<dd><p>first derivative of Hagan&#8217;s SABR implied volatility formula
+with respect to underlying.
+See <a class="reference internal" href="#mafipy.analytic_formula.sabr_implied_vol_hagan" title="mafipy.analytic_formula.sabr_implied_vol_hagan"><code class="xref py py-func docutils literal"><span class="pre">sabr_implied_vol_hagan()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
+<li><strong>strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; must be positve.</li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; must be within [0, 1].</li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; must be within [-1, 1].</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">first derivative of hagan implied volatility formula
+with respect to underlying.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mafipy.analytic_formula.sabr_payers_swaption_delta">
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_payers_swaption_delta</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_payers_swaption_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_payers_swaption_delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate payer&#8217;s swaption delta under SABR model.
+See <a class="reference internal" href="#mafipy.analytic_formula.sabr_payers_swaption_value" title="mafipy.analytic_formula.sabr_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">sabr_payers_swaption_value()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>init_swap_rate</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_strike</strong> (<em>float</em>) &#8211; </li>
+<li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; must be greater than 0.</li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; must be within <span class="math">\([0, 1]\)</span>.</li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; must be within <span class="math">\([-1, 1]\)</span>.</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; must be positive.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">payer&#8217;s swaption delta.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="mafipy.analytic_formula.sabr_payers_swaption_value">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_payers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>implied_vol_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_payers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_payers_swaption_value" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_payers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_payers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_payers_swaption_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate european payer&#8217;s swaption value.
 See
 Hagan, P. S., Kumar, D., Lesniewski, A. S., &amp; Woodward, D. E. (2002).
@@ -1594,8 +1749,10 @@ Retrieved from <a class="reference external" href="http://www.math.columbia.edu/
 <li><strong>option_strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
 <li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>implied_vol_func</strong> (<em>callable</em>) &#8211; arguments are
-underlying, strike, swap_annuity.</li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; must be greater than 0.</li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; must be within <span class="math">\([0, 1]\)</span>.</li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; must be within <span class="math">\([-1, 1]\)</span>.</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; must be positive.</li>
 </ul>
 </td>
 </tr>
@@ -1611,7 +1768,7 @@ underlying, strike, swap_annuity.</li>
 
 <dl class="function">
 <dt id="mafipy.analytic_formula.sabr_receivers_swaption_value">
-<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_receivers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>implied_vol_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_receivers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_receivers_swaption_value" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mafipy.analytic_formula.</code><code class="descname">sabr_receivers_swaption_value</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>option_strike</em>, <em>swap_annuity</em>, <em>option_maturity</em>, <em>alpha</em>, <em>beta</em>, <em>rho</em>, <em>nu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/analytic_formula.html#sabr_receivers_swaption_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.analytic_formula.sabr_receivers_swaption_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate european reciever&#8217;s swaption value.
 This value is calculated by put-call parity.
 See <a class="reference internal" href="#mafipy.analytic_formula.sabr_payers_swaption_value" title="mafipy.analytic_formula.sabr_payers_swaption_value"><code class="xref py py-func docutils literal"><span class="pre">sabr_payers_swaption_value()</span></code></a>.</p>
@@ -1624,8 +1781,10 @@ See <a class="reference internal" href="#mafipy.analytic_formula.sabr_payers_swa
 <li><strong>option_strike</strong> (<em>float</em>) &#8211; </li>
 <li><strong>swap_annuity</strong> (<em>float</em>) &#8211; </li>
 <li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
-<li><strong>implied_vol_func</strong> (<em>callable</em>) &#8211; arguments are
-underlying, strike, swap_annuity.</li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; must be greater than 0.</li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; must be within <span class="math">\([0, 1]\)</span>.</li>
+<li><strong>rho</strong> (<em>float</em>) &#8211; must be within <span class="math">\([-1, 1]\)</span>.</li>
+<li><strong>nu</strong> (<em>float</em>) &#8211; must be positive.</li>
 </ul>
 </td>
 </tr>
