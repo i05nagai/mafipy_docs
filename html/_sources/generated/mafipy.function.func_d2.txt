@@ -1,0 +1,6 @@
+mafipy.function.func_d2
+=======================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: func_d2

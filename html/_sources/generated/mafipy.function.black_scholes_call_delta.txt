@@ -1,0 +1,6 @@
+mafipy.function.black_scholes_call_delta
+========================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: black_scholes_call_delta

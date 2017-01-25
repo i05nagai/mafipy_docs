@@ -1,0 +1,6 @@
+mafipy.calibrator.sabr_caibration_west
+======================================
+
+.. currentmodule:: mafipy.calibrator
+
+.. autofunction:: sabr_caibration_west

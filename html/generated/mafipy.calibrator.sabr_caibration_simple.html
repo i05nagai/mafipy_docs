@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.calibrator.sabr_caibration_simple &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="mafipy.calibrator module" href="../mafipy.calibrator.html"/>
+        <link rel="next" title="mafipy.calibrator.sabr_caibration_west" href="mafipy.calibrator.sabr_caibration_west.html"/>
+        <link rel="prev" title="mafipy.calibrator.black_swaption_implied_vol" href="mafipy.calibrator.black_swaption_implied_vol.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../mafipy.html">mafipy package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../mafipy.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mafipy.calibrator.html">mafipy.calibrator module</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../mafipy.calibrator.html#calibrator-mafipy-calibrator">calibrator (<code class="docutils literal"><span class="pre">mafipy.calibrator</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mafipy.function.html">mafipy.function module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mafipy.replication.html">mafipy.replication module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mafipy.util.html">mafipy.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mafipy.html#module-mafipy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../mafipy.html">mafipy package</a> &raquo;</li>
+      
+          <li><a href="../mafipy.calibrator.html">mafipy.calibrator module</a> &raquo;</li>
+      
+    <li>mafipy.calibrator.sabr_caibration_simple</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/generated/mafipy.calibrator.sabr_caibration_simple.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mafipy-calibrator-sabr-caibration-simple">
+<h1>mafipy.calibrator.sabr_caibration_simple<a class="headerlink" href="#mafipy-calibrator-sabr-caibration-simple" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="mafipy.calibrator.sabr_caibration_simple">
+<code class="descclassname">mafipy.calibrator.</code><code class="descname">sabr_caibration_simple</code><span class="sig-paren">(</span><em>market_vols</em>, <em>market_strikes</em>, <em>option_maturity</em>, <em>beta</em>, <em>init_alpha=None</em>, <em>init_rho=0.1</em>, <em>init_nu=0.1</em>, <em>nu_lower_bound=1e-08</em>, <em>tol=1e-10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mafipy/calibrator/sabr.html#sabr_caibration_simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.calibrator.sabr_caibration_simple" title="Permalink to this definition">¶</a></dt>
+<dd><p>calibrates SABR parametes, alpha, rho and nu to market volatilities
+by simultaneously minimizing error of market volatilities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>market_vols</strong> (<em>array</em>) &#8211; market volatilities.
+Middle of elements in the array must be atm volatility.</li>
+<li><strong>market_strikes</strong> (<em>array</em>) &#8211; market strikes.
+Middle of elements in the array must be atm strike.</li>
+<li><strong>option_maturity</strong> (<em>float</em>) &#8211; </li>
+<li><strong>beta</strong> (<em>float</em>) &#8211; pre-determined beta.
+beta must be within [0, 1].</li>
+<li><strong>init_alpha</strong> (<em>float</em>) &#8211; initial guess of alpha.
+Default value is meaningless value, 0.1.
+alpha must be positive.</li>
+<li><strong>init_rho</strong> (<em>float</em>) &#8211; initial guess of rho.
+Default value is meaningless value, 0.1.
+rho must be within [-1, 1].</li>
+<li><strong>init_nu</strong> (<em>float</em>) &#8211; initial guess of nu.
+Default value is meaningless value, 0.1.
+nu must be positive.</li>
+<li><strong>nu_lower_bound</strong> (<em>float</em>) &#8211; </li>
+<li><strong>tol</strong> (<em>float</em>) &#8211; tolerance of minimization.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">alpha, beta, rho, nu.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">four float value.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>AssertionError</strong> &#8211; if length of <cite>market_vols</cite> is not odd.</li>
+<li><strong>AssertionError</strong> &#8211; if length of <cite>market_vols</cite> and <cite>market_strikes</cite> are not same.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mafipy.calibrator.sabr_caibration_west.html" class="btn btn-neutral float-right" title="mafipy.calibrator.sabr_caibration_west" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mafipy.calibrator.black_swaption_implied_vol.html" class="btn btn-neutral" title="mafipy.calibrator.black_swaption_implied_vol" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+mafipy.function.black_payers_swaption_vega
+==========================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: black_payers_swaption_vega

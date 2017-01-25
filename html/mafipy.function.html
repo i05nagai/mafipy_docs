@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.function module &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="index.html"/>
+        <link rel="up" title="mafipy package" href="mafipy.html"/>
+        <link rel="next" title="mafipy.function.black_payers_swaption_value" href="generated/mafipy.function.black_payers_swaption_value.html"/>
+        <link rel="prev" title="mafipy.calibrator.sabr_caibration_west" href="generated/mafipy.calibrator.sabr_caibration_west.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mafipy.calibrator.html">mafipy.calibrator module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.function module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-mafipy-function">function (<code class="docutils literal"><span class="pre">mafipy.function</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.replication.html">mafipy.replication module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.util.html">mafipy.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mafipy.html#module-mafipy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="mafipy.html">mafipy package</a> &raquo;</li>
+      
+    <li>mafipy.function module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/mafipy.function.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-mafipy.function">
+<span id="mafipy-function-module"></span><h1>mafipy.function module<a class="headerlink" href="#module-mafipy.function" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="function-mafipy-function">
+<h2>function (<a class="reference internal" href="#module-mafipy.function" title="mafipy.function"><code class="xref py py-mod docutils literal"><span class="pre">mafipy.function</span></code></a>)<a class="headerlink" href="#function-mafipy-function" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="black-model">
+<h3>Black Model<a class="headerlink" href="#black-model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="basics">
+<h4>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_value.html#mafipy.function.black_payers_swaption_value" title="mafipy.function.black_payers_swaption_value"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_value</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculates value of payer&#8217;s swaptions under black model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_receivers_swaption_value.html#mafipy.function.black_receivers_swaption_value" title="mafipy.function.black_receivers_swaption_value"><code class="xref py py-obj docutils literal"><span class="pre">black_receivers_swaption_value</span></code></a>(...)</td>
+<td>calculates value of receiver&#8217;s swaptions under black model.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_value_fprime_by_strike.html#mafipy.function.black_payers_swaption_value_fprime_by_strike" title="mafipy.function.black_payers_swaption_value_fprime_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_value_fprime_by_strike</span></code></a>(...)</td>
+<td>First derivative of value of payer&#8217;s swaption with respect to strike under black model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_value_fhess_by_strike.html#mafipy.function.black_payers_swaption_value_fhess_by_strike" title="mafipy.function.black_payers_swaption_value_fhess_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_value_fhess_by_strike</span></code></a>(...)</td>
+<td>Second derivative of value of payer&#8217;s swaption with respect to strike under black model.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_value_third_by_strike.html#mafipy.function.black_payers_swaption_value_third_by_strike" title="mafipy.function.black_payers_swaption_value_third_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_value_third_by_strike</span></code></a>(...)</td>
+<td>Third derivative of value of payer&#8217;s swaption with respect to strike under black model.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="greeks">
+<h4>Greeks<a class="headerlink" href="#greeks" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_delta.html#mafipy.function.black_payers_swaption_delta" title="mafipy.function.black_payers_swaption_delta"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_delta</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculates delta of payer&#8217;s swaptions under black model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_vega.html#mafipy.function.black_payers_swaption_vega" title="mafipy.function.black_payers_swaption_vega"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_vega</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculates vega of payer&#8217;s swaption under black model.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="black-scholes-model">
+<h3>Black Scholes Model<a class="headerlink" href="#black-scholes-model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="miscs">
+<h4>Miscs<a class="headerlink" href="#miscs" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.func_d1.html#mafipy.function.func_d1" title="mafipy.function.func_d1"><code class="xref py py-obj docutils literal"><span class="pre">func_d1</span></code></a>(underlying,&nbsp;strike,&nbsp;rate,&nbsp;maturity,&nbsp;vol)</td>
+<td>calculate <span class="math">\(d_{1}\)</span> in black scholes formula.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.func_d2.html#mafipy.function.func_d2" title="mafipy.function.func_d2"><code class="xref py py-obj docutils literal"><span class="pre">func_d2</span></code></a>(underlying,&nbsp;strike,&nbsp;rate,&nbsp;maturity,&nbsp;vol)</td>
+<td>calculate <span class="math">\(d_{2}\)</span> in black scholes formula.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.d_fprime_by_strike.html#mafipy.function.d_fprime_by_strike" title="mafipy.function.d_fprime_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">d_fprime_by_strike</span></code></a>(underlying,&nbsp;strike,&nbsp;rate,&nbsp;...)</td>
+<td>derivative of <span class="math">\(d_{1}\)</span> with respect to <span class="math">\(K\)</span></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.d_fhess_by_strike.html#mafipy.function.d_fhess_by_strike" title="mafipy.function.d_fhess_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">d_fhess_by_strike</span></code></a>(underlying,&nbsp;strike,&nbsp;rate,&nbsp;...)</td>
+<td>second derivative of <span class="math">\(d_{i}\ (i = 1, 2)\)</span> with respect to <span class="math">\(K\)</span>,</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id1">
+<h4>Basics<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_value.html#mafipy.function.black_scholes_call_value" title="mafipy.function.black_scholes_call_value"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_value</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculate call value in the case of today is not zero.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_put_value.html#mafipy.function.black_scholes_put_value" title="mafipy.function.black_scholes_put_value"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_put_value</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>evaluates value of put option using put-call parity so that</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_value_fprime_by_strike.html#mafipy.function.black_scholes_call_value_fprime_by_strike" title="mafipy.function.black_scholes_call_value_fprime_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_value_fprime_by_strike</span></code></a>(...)</td>
+<td>First derivative of value of call option with respect to strike under black scholes model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_value_fhess_by_strike.html#mafipy.function.black_scholes_call_value_fhess_by_strike" title="mafipy.function.black_scholes_call_value_fhess_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_value_fhess_by_strike</span></code></a>(...)</td>
+<td>Second derivative of value of call option with respect to strike under black scholes model.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_value_third_by_strike.html#mafipy.function.black_scholes_call_value_third_by_strike" title="mafipy.function.black_scholes_call_value_third_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_value_third_by_strike</span></code></a>(...)</td>
+<td>Third derivative of value of call option with respect to strike under black scholes model.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id2">
+<h4>Greeks<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_delta.html#mafipy.function.black_scholes_call_delta" title="mafipy.function.black_scholes_call_delta"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_delta</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculates black scholes delta.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_gamma.html#mafipy.function.black_scholes_call_gamma" title="mafipy.function.black_scholes_call_gamma"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_gamma</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculates black scholes gamma.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_vega.html#mafipy.function.black_scholes_call_vega" title="mafipy.function.black_scholes_call_vega"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_vega</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculates black scholes vega.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_volga.html#mafipy.function.black_scholes_call_volga" title="mafipy.function.black_scholes_call_volga"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_volga</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>black_scholes_call_volg</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_theta.html#mafipy.function.black_scholes_call_theta" title="mafipy.function.black_scholes_call_theta"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_theta</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculates black scholes theta.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_rho.html#mafipy.function.black_scholes_call_rho" title="mafipy.function.black_scholes_call_rho"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_rho</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculates black scholes rho.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="local-volatility-model">
+<h3>Local Volatility model<a class="headerlink" href="#local-volatility-model" title="Permalink to this headline">¶</a></h3>
+<p>To be displayed.</p>
+</div>
+<div class="section" id="sabr-model">
+<h3>SABR model<a class="headerlink" href="#sabr-model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h4>Basics<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_payers_swaption_value.html#mafipy.function.sabr_payers_swaption_value" title="mafipy.function.sabr_payers_swaption_value"><code class="xref py py-obj docutils literal"><span class="pre">sabr_payers_swaption_value</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculate european payer&#8217;s swaption value.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.sabr_receivers_swaption_value.html#mafipy.function.sabr_receivers_swaption_value" title="mafipy.function.sabr_receivers_swaption_value"><code class="xref py py-obj docutils literal"><span class="pre">sabr_receivers_swaption_value</span></code></a>(...)</td>
+<td>calculate european reciever&#8217;s swaption value.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_implied_vol_hagan.html#mafipy.function.sabr_implied_vol_hagan" title="mafipy.function.sabr_implied_vol_hagan"><code class="xref py py-obj docutils literal"><span class="pre">sabr_implied_vol_hagan</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
+<td>calculate implied volatility under SABR model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.sabr_atm_implied_vol_hagan.html#mafipy.function.sabr_atm_implied_vol_hagan" title="mafipy.function.sabr_atm_implied_vol_hagan"><code class="xref py py-obj docutils literal"><span class="pre">sabr_atm_implied_vol_hagan</span></code></a>(underlying,&nbsp;...)</td>
+<td>calculate implied volatility under SABR model at the money.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id4">
+<h4>Greeks<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_implied_vol_hagan_fprime_by_strike.html#mafipy.function.sabr_implied_vol_hagan_fprime_by_strike" title="mafipy.function.sabr_implied_vol_hagan_fprime_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">sabr_implied_vol_hagan_fprime_by_strike</span></code></a>(...)</td>
+<td>first derivative of Hagan&#8217;s SABR implied volatility formula</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.sabr_implied_vol_hagan_fhess_by_strike.html#mafipy.function.sabr_implied_vol_hagan_fhess_by_strike" title="mafipy.function.sabr_implied_vol_hagan_fhess_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">sabr_implied_vol_hagan_fhess_by_strike</span></code></a>(...)</td>
+<td>second derivative of Hagan&#8217;s SABR implied volatility formula</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_implied_vol_hagan_fprime_by_underlying.html#mafipy.function.sabr_implied_vol_hagan_fprime_by_underlying" title="mafipy.function.sabr_implied_vol_hagan_fprime_by_underlying"><code class="xref py py-obj docutils literal"><span class="pre">sabr_implied_vol_hagan_fprime_by_underlying</span></code></a>(...)</td>
+<td>first derivative of Hagan&#8217;s SABR implied volatility formula</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.sabr_implied_vol_hagan_fhess_by_underlying.html#mafipy.function.sabr_implied_vol_hagan_fhess_by_underlying" title="mafipy.function.sabr_implied_vol_hagan_fhess_by_underlying"><code class="xref py py-obj docutils literal"><span class="pre">sabr_implied_vol_hagan_fhess_by_underlying</span></code></a>(...)</td>
+<td>second derivative of Hagan&#8217;s SABR implied volatility formula</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_payers_swaption_delta.html#mafipy.function.sabr_payers_swaption_delta" title="mafipy.function.sabr_payers_swaption_delta"><code class="xref py py-obj docutils literal"><span class="pre">sabr_payers_swaption_delta</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculate payer&#8217;s swaption delta under SABR model.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generated/mafipy.function.black_payers_swaption_value.html" class="btn btn-neutral float-right" title="mafipy.function.black_payers_swaption_value" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generated/mafipy.calibrator.sabr_caibration_west.html" class="btn btn-neutral" title="mafipy.calibrator.sabr_caibration_west" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

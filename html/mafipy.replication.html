@@ -35,8 +35,8 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="mafipy 0.0.1 documentation" href="index.html"/>
         <link rel="up" title="mafipy package" href="mafipy.html"/>
-        <link rel="next" title="mafipy.util module" href="mafipy.util.html"/>
-        <link rel="prev" title="mafipy.pricer_quanto_cms module" href="mafipy.pricer_quanto_cms.html"/> 
+        <link rel="next" title="mafipy.replication.make_pdf_black_swaption" href="generated/mafipy.replication.make_pdf_black_swaption.html"/>
+        <link rel="prev" title="mafipy.function.sabr_payers_swaption_delta" href="generated/mafipy.function.sabr_payers_swaption_delta.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,13 +88,12 @@
                 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="mafipy.html">mafipy package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="mafipy.html#submodules">Submodules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="mafipy.analytic_formula.html">mafipy.analytic_formula module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.calibrator.html">mafipy.calibrator module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.error.html">mafipy.error module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.math_formula.html">mafipy.math_formula module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.payoff.html">mafipy.payoff module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mafipy.pricer_quanto_cms.html">mafipy.pricer_quanto_cms module</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.replication module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mafipy.function.html">mafipy.function module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mafipy.replication module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#replication-mafipy-replication">replication (<code class="docutils literal"><span class="pre">mafipy.replication</span></code>)</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="mafipy.util.html">mafipy.util module</a></li>
 </ul>
 </li>
@@ -149,270 +148,68 @@
             
   <div class="section" id="module-mafipy.replication">
 <span id="mafipy-replication-module"></span><h1>mafipy.replication module<a class="headerlink" href="#module-mafipy.replication" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="mafipy.replication.AnalyticReplication">
-<em class="property">class </em><code class="descclassname">mafipy.replication.</code><code class="descname">AnalyticReplication</code><span class="sig-paren">(</span><em>call_pricer</em>, <em>put_pricer</em>, <em>analytic_funcs=[]</em>, <em>call_integrands=[]</em>, <em>put_integrands=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#AnalyticReplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.AnalyticReplication" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mafipy.replication.Replication" title="mafipy.replication.Replication"><code class="xref py py-class docutils literal"><span class="pre">mafipy.replication.Replication</span></code></a></p>
-<p>This class calculates replication methods using knowledge of derivative.
-In mathmetical finance, payoff function is discontinuous function
-or the function which is diffentialble but cannot differentiate twice.
-Replication method calculates integration with stochastic weight
-which may contains derivative of payoff funciton.
-If integrands have dirac delta function or discontinuous function,
-numerical integration does not work properly.</p>
-<p>This class calculates numerical integration with
-pre-calculation of stochastic weight.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
+<div class="section" id="replication-mafipy-replication">
+<h2>replication (<a class="reference internal" href="#module-mafipy.replication" title="mafipy.replication"><code class="xref py py-mod docutils literal"><span class="pre">mafipy.replication</span></code></a>)<a class="headerlink" href="#replication-mafipy-replication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="quanto-cms">
+<h3>Quanto CMS<a class="headerlink" href="#quanto-cms" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="black-swaption-model">
+<h4>Black swaption model<a class="headerlink" href="#black-swaption-model" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>call_pricer</strong> (<em>callable</em>) &#8211; </li>
-<li><strong>put_pricer</strong> (<em>callable</em>) &#8211; </li>
-<li><strong>analytic_funcs</strong> (<em>list</em>) &#8211; </li>
-<li><strong>call_integrands</strong> (<em>list</em>) &#8211; </li>
-<li><strong>put_integrands</strong> (<em>list</em>) &#8211; </li>
-</ul>
-</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.replication.make_pdf_black_swaption.html#mafipy.replication.make_pdf_black_swaption" title="mafipy.replication.make_pdf_black_swaption"><code class="xref py py-obj docutils literal"><span class="pre">make_pdf_black_swaption</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>return p.d.f. of black swaption model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.replication.make_pdf_fprime_black_swaption.html#mafipy.replication.make_pdf_fprime_black_swaption" title="mafipy.replication.make_pdf_fprime_black_swaption"><code class="xref py py-obj docutils literal"><span class="pre">make_pdf_fprime_black_swaption</span></code></a>(...)</td>
+<td>return first derivative of p.d.f. of black swaption.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.replication.make_cdf_black_swaption.html#mafipy.replication.make_cdf_black_swaption" title="mafipy.replication.make_cdf_black_swaption"><code class="xref py py-obj docutils literal"><span class="pre">make_cdf_black_swaption</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>returns c.d.f. of black swaption.</td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="mafipy.replication.AnalyticReplication.eval">
-<code class="descname">eval</code><span class="sig-paren">(</span><em>init_swap_rate</em>, <em>min_put_range</em>, <em>max_call_range</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#AnalyticReplication.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.AnalyticReplication.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>evaluates expectation by the replication method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
+</div>
+<div class="section" id="black-scholes-model">
+<h4>Black Scholes model<a class="headerlink" href="#black-scholes-model" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>init_swap_rate</strong> &#8211; </li>
-<li><strong>min_put_range</strong> &#8211; </li>
-<li><strong>max_call_range</strong> &#8211; </li>
-</ul>
-</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.replication.make_pdf_black_swaption.html#mafipy.replication.make_pdf_black_swaption" title="mafipy.replication.make_pdf_black_swaption"><code class="xref py py-obj docutils literal"><span class="pre">make_pdf_black_swaption</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>return p.d.f. of black swaption model.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of expectation.</p>
-</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.replication.make_pdf_fprime_black_scholes.html#mafipy.replication.make_pdf_fprime_black_scholes" title="mafipy.replication.make_pdf_fprime_black_scholes"><code class="xref py py-obj docutils literal"><span class="pre">make_pdf_fprime_black_scholes</span></code></a>(underlying,&nbsp;...)</td>
+<td>make_pdf_fprime_black_scholes_model</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
-</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.replication.make_cdf_black_scholes.html#mafipy.replication.make_cdf_black_scholes" title="mafipy.replication.make_cdf_black_scholes"><code class="xref py py-obj docutils literal"><span class="pre">make_cdf_black_scholes</span></code></a>(underlying,&nbsp;rate,&nbsp;...)</td>
+<td>returns c.d.f. of black scholes model.</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="mafipy.replication.AnnuityMappingFuncHelper">
-<em class="property">class </em><code class="descclassname">mafipy.replication.</code><code class="descname">AnnuityMappingFuncHelper</code><a class="reference internal" href="_modules/mafipy/replication.html#AnnuityMappingFuncHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.AnnuityMappingFuncHelper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Interface to generate annuity mapping function
-and it&#8217;s first and second derivative.</p>
-<dl class="method">
-<dt id="mafipy.replication.AnnuityMappingFuncHelper.make_fhess">
-<code class="descname">make_fhess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#AnnuityMappingFuncHelper.make_fhess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.AnnuityMappingFuncHelper.make_fhess" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.replication.AnnuityMappingFuncHelper.make_fprime">
-<code class="descname">make_fprime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#AnnuityMappingFuncHelper.make_fprime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.AnnuityMappingFuncHelper.make_fprime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="mafipy.replication.AnnuityMappingFuncHelper.make_func">
-<code class="descname">make_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#AnnuityMappingFuncHelper.make_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.AnnuityMappingFuncHelper.make_func" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="mafipy.replication.LinearAnnuityMappingFuncHelper">
-<em class="property">class </em><code class="descclassname">mafipy.replication.</code><code class="descname">LinearAnnuityMappingFuncHelper</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#LinearAnnuityMappingFuncHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.LinearAnnuityMappingFuncHelper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mafipy.replication.AnnuityMappingFuncHelper" title="mafipy.replication.AnnuityMappingFuncHelper"><code class="xref py py-class docutils literal"><span class="pre">mafipy.replication.AnnuityMappingFuncHelper</span></code></a></p>
-<p>Helper class to generate linear annuity mappiing function
-and it&#8217;s first and second derivative as a function of swap rate.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
+</div>
+<div class="section" id="pricer">
+<h4>Pricer<a class="headerlink" href="#pricer" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha0</strong> (<em>float</em>) &#8211; required.</li>
-<li><strong>alpha1</strong> (<em>float</em>) &#8211; required.</li>
-</ul>
-</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.replication.replicate.html#mafipy.replication.replicate" title="mafipy.replication.replicate"><code class="xref py py-obj docutils literal"><span class="pre">replicate</span></code></a>(init_swap_rate,&nbsp;discount_factor,&nbsp;...)</td>
+<td>Simple qunato cms pricer.</td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="mafipy.replication.LinearAnnuityMappingFuncHelper.make_fhess">
-<code class="descname">make_fhess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#LinearAnnuityMappingFuncHelper.make_fhess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.LinearAnnuityMappingFuncHelper.make_fhess" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns first derivative of linear annuity mapping function.
-See <a class="reference internal" href="#mafipy.replication.linear_annuity_mapping_fprime" title="mafipy.replication.linear_annuity_mapping_fprime"><code class="xref py py-func docutils literal"><span class="pre">linear_annuity_mapping_fprime()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">first derivative of linear annuity mapping function
-as a function of swap rate.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">FuncionType</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="mafipy.replication.LinearAnnuityMappingFuncHelper.make_fprime">
-<code class="descname">make_fprime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#LinearAnnuityMappingFuncHelper.make_fprime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.LinearAnnuityMappingFuncHelper.make_fprime" title="Permalink to this definition">¶</a></dt>
-<dd><p>make_fpirme
-returns first derivative of linear annuity mapping function.
-See <a class="reference internal" href="#mafipy.replication.linear_annuity_mapping_fprime" title="mafipy.replication.linear_annuity_mapping_fprime"><code class="xref py py-func docutils literal"><span class="pre">linear_annuity_mapping_fprime()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">first derivative of linear annuity mapping function
-as a function of swap rate.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">FuncionType</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="mafipy.replication.LinearAnnuityMappingFuncHelper.make_func">
-<code class="descname">make_func</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#LinearAnnuityMappingFuncHelper.make_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.LinearAnnuityMappingFuncHelper.make_func" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns linear annuity mapping function.
-See <a class="reference internal" href="#mafipy.replication.linear_annuity_mapping_func" title="mafipy.replication.linear_annuity_mapping_func"><code class="xref py py-func docutils literal"><span class="pre">linear_annuity_mapping_func()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">linear annuity mapping function as a function of swap rate.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">FuncionType</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="mafipy.replication.Replication">
-<em class="property">class </em><code class="descclassname">mafipy.replication.</code><code class="descname">Replication</code><a class="reference internal" href="_modules/mafipy/replication.html#Replication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.Replication" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Interface class to the class which uses replication method.</p>
-<dl class="method">
-<dt id="mafipy.replication.Replication.eval">
-<code class="descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#Replication.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.Replication.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>evaluates value of derivative by replication methods.</p>
-<div class="math">
-\[\mathrm{E}
-\left[
-    f(S(T))
-\right]
-= f(S(0))
-    + \int_{-\infty}^{S(0)} f^{\prime\prime}(K)p(K)\ d K
-    + \int_{S(0)}^{\infty} f^{\prime\prime}(K)c(K)\ d K\]</div>
-<p>where
-<span class="math">\(S(t)\)</span> is value of underlying at time <span class="math">\(t\)</span>,
-<span class="math">\(f(\cdot)\)</span> is payoff function</p>
-<blockquote>
-<div>as a function of underlying,</div></blockquote>
-<dl class="docutils">
-<dt><span class="math">\(p(K; S(0), T, \sigma)\)</span> is value of put pricer</dt>
-<dd>with strike <span class="math">\(K\)</span>.</dd>
-<dt><span class="math">\(c(K; S(0), T, \sigma)\)</span> is value of call pricer</dt>
-<dd>with strike <span class="math">\(K\)</span>.</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.replication.linear_annuity_mapping_fhess">
-<code class="descclassname">mafipy.replication.</code><code class="descname">linear_annuity_mapping_fhess</code><span class="sig-paren">(</span><em>underlying</em>, <em>alpha0</em>, <em>alpha1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#linear_annuity_mapping_fhess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.linear_annuity_mapping_fhess" title="Permalink to this definition">¶</a></dt>
-<dd><p>second derivative of linear annuity mapping function.
-See <a class="reference internal" href="#mafipy.replication.linear_annuity_mapping_func" title="mafipy.replication.linear_annuity_mapping_func"><code class="xref py py-func docutils literal"><span class="pre">linear_annuity_mapping_func()</span></code></a>
-and <a class="reference internal" href="#mafipy.replication.linear_annuity_mapping_fprime" title="mafipy.replication.linear_annuity_mapping_fprime"><code class="xref py py-func docutils literal"><span class="pre">linear_annuity_mapping_fprime()</span></code></a>.
-The value is 0.</p>
-<p>:param float underlying
-:param float alpha0: not used.
-:param float alpha1: not used.
-:return: return 0. value of second derivative.
-:rtype: float.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.replication.linear_annuity_mapping_fprime">
-<code class="descclassname">mafipy.replication.</code><code class="descname">linear_annuity_mapping_fprime</code><span class="sig-paren">(</span><em>underlying</em>, <em>alpha0</em>, <em>alpha1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#linear_annuity_mapping_fprime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.linear_annuity_mapping_fprime" title="Permalink to this definition">¶</a></dt>
-<dd><p>first derivative of linear annuity mapping function.
-See <a class="reference internal" href="#mafipy.replication.linear_annuity_mapping_func" title="mafipy.replication.linear_annuity_mapping_func"><code class="xref py py-func docutils literal"><span class="pre">linear_annuity_mapping_func()</span></code></a>.
-The function calculates following formula:</p>
-<div class="math">
-\[\alpha^{\prime}(S) := \alpha_{0.}\]</div>
-<p>where
-<span class="math">\(S\)</span> is underlying,
-<span class="math">\(\alpha_{0}\)</span> is alpha0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha0</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha1</strong> (<em>float</em>) &#8211; not used.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of first derivative of linear annuity mapping function.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="mafipy.replication.linear_annuity_mapping_func">
-<code class="descclassname">mafipy.replication.</code><code class="descname">linear_annuity_mapping_func</code><span class="sig-paren">(</span><em>underlying</em>, <em>alpha0</em>, <em>alpha1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mafipy/replication.html#linear_annuity_mapping_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mafipy.replication.linear_annuity_mapping_func" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculate linear annuity mapping function.
-Annuity mapping function is model of $P(t, T) / A(t)$
-so that it&#8217;s value is positive.
-linear annuity mapping function calculates following formula:</p>
-<div class="math">
-\[\alpha(S) := S \alpha_{0} + \alpha_{1}.\]</div>
-<p>where
-<span class="math">\(S\)</span> is underlying,
-<span class="math">\(\alpha_{0}\)</span> is alpha0,
-<span class="math">\(\alpha_{1}\)</span> is alpha1.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>underlying</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha0</strong> (<em>float</em>) &#8211; </li>
-<li><strong>alpha1</strong> (<em>float</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value of linear annuity mapping function.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+</div>
+</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 
 
@@ -422,10 +219,10 @@ linear annuity mapping function calculates following formula:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mafipy.util.html" class="btn btn-neutral float-right" title="mafipy.util module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="generated/mafipy.replication.make_pdf_black_swaption.html" class="btn btn-neutral float-right" title="mafipy.replication.make_pdf_black_swaption" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="mafipy.pricer_quanto_cms.html" class="btn btn-neutral" title="mafipy.pricer_quanto_cms module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="generated/mafipy.function.sabr_payers_swaption_delta.html" class="btn btn-neutral" title="mafipy.function.sabr_payers_swaption_delta" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

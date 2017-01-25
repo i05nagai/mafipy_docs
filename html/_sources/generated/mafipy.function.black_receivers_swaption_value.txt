@@ -1,0 +1,6 @@
+mafipy.function.black_receivers_swaption_value
+==============================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: black_receivers_swaption_value

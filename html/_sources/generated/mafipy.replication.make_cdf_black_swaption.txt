@@ -1,0 +1,6 @@
+mafipy.replication.make_cdf_black_swaption
+==========================================
+
+.. currentmodule:: mafipy.replication
+
+.. autofunction:: make_cdf_black_swaption

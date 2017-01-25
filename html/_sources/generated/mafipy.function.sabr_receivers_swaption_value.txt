@@ -1,0 +1,6 @@
+mafipy.function.sabr_receivers_swaption_value
+=============================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: sabr_receivers_swaption_value

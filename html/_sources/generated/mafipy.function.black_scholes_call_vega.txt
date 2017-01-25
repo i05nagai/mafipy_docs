@@ -1,0 +1,6 @@
+mafipy.function.black_scholes_call_vega
+=======================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: black_scholes_call_vega

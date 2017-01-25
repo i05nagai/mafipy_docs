@@ -1,0 +1,6 @@
+mafipy.function.d_fprime_by_strike
+==================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: d_fprime_by_strike

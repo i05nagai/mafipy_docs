@@ -1,0 +1,6 @@
+mafipy.replication.make_pdf_fprime_black_scholes
+================================================
+
+.. currentmodule:: mafipy.replication
+
+.. autofunction:: make_pdf_fprime_black_scholes

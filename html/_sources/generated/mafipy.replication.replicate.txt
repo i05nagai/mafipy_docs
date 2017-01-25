@@ -1,0 +1,6 @@
+mafipy.replication.replicate
+============================
+
+.. currentmodule:: mafipy.replication
+
+.. autofunction:: replicate

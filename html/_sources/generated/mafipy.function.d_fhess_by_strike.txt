@@ -1,0 +1,6 @@
+mafipy.function.d_fhess_by_strike
+=================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: d_fhess_by_strike

@@ -1,0 +1,6 @@
+mafipy.function.sabr_atm_implied_vol_hagan
+==========================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: sabr_atm_implied_vol_hagan

@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mafipy.calibrator.implied_vol &mdash; mafipy 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="mafipy 0.0.1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> mafipy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mafipy.html">mafipy package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">mafipy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>mafipy.calibrator.implied_vol</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for mafipy.calibrator.implied_vol</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+
+<span class="kn">import</span> <span class="nn">mafipy.function</span>
+
+
+<div class="viewcode-block" id="black_scholes_implied_vol"><a class="viewcode-back" href="../../../generated/mafipy.calibrator.black_scholes_implied_vol.html#mafipy.calibrator.black_scholes_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">black_scholes_implied_vol</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span>
+                              <span class="n">strike</span><span class="p">,</span>
+                              <span class="n">rate</span><span class="p">,</span>
+                              <span class="n">maturity</span><span class="p">,</span>
+                              <span class="n">option_value</span><span class="p">,</span>
+                              <span class="n">vol_min</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">vol_max</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                              <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_scholes_implied_vol</span>
+<span class="sd">    calculates implied volatility of black schoels model by brent method.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float rate:</span>
+<span class="sd">    :param float maturity:</span>
+<span class="sd">    :param float option_value: value of option.</span>
+<span class="sd">    :param float vol_min: lower bound of volatility. default value is 1e-4.</span>
+<span class="sd">    :param float vol_max: upper bound of volatility. default value is 6.0.</span>
+<span class="sd">    :param int max_iter: maximum number of iterations. default value is 2000.</span>
+
+<span class="sd">    :return: implied volatility.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">objective_func</span><span class="p">(</span><span class="n">vol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_scholes_call_formula</span><span class="p">(</span>
+            <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span> <span class="o">-</span> <span class="n">option_value</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span>
+        <span class="n">objective_func</span><span class="p">,</span>
+        <span class="n">vol_min</span><span class="p">,</span>
+        <span class="n">vol_max</span><span class="p">,</span>
+        <span class="n">xtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">rtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="black_swaption_implied_vol"><a class="viewcode-back" href="../../../generated/mafipy.calibrator.black_swaption_implied_vol.html#mafipy.calibrator.black_swaption_implied_vol">[docs]</a><span class="k">def</span> <span class="nf">black_swaption_implied_vol</span><span class="p">(</span><span class="n">init_swap_rate</span><span class="p">,</span>
+                               <span class="n">option_strike</span><span class="p">,</span>
+                               <span class="n">swap_annuity</span><span class="p">,</span>
+                               <span class="n">option_maturity</span><span class="p">,</span>
+                               <span class="n">option_value</span><span class="p">,</span>
+                               <span class="n">vol_min</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+                               <span class="n">vol_max</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                               <span class="n">max_iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_swaption_implied_vol</span>
+<span class="sd">    calculates implied volatility of payer&#39;s swaption by brent method.</span>
+
+<span class="sd">    :param float init_swap_rate:</span>
+<span class="sd">    :param float option_strike:</span>
+<span class="sd">    :param float swap_annuity:</span>
+<span class="sd">    :param float option_maturity:</span>
+<span class="sd">    :param float option_value: value of option.</span>
+<span class="sd">    :param float vol_min: lower bound of volatility. default value is 1e-4.</span>
+<span class="sd">    :param float vol_max: upper bound of volatility. default value is 6.0.</span>
+<span class="sd">    :param int max_iter: maximum number of iterations. default value is 2000.</span>
+
+<span class="sd">    :return: implied volatility.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">objective_func</span><span class="p">(</span><span class="n">vol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_payers_swaption_value</span><span class="p">(</span>
+            <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">option_value</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span>
+        <span class="n">objective_func</span><span class="p">,</span>
+        <span class="n">vol_min</span><span class="p">,</span>
+        <span class="n">vol_max</span><span class="p">,</span>
+        <span class="n">xtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">rtol</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, i05nagai.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

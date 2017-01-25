@@ -1,0 +1,6 @@
+mafipy.calibrator.black_scholes_implied_vol
+===========================================
+
+.. currentmodule:: mafipy.calibrator
+
+.. autofunction:: black_scholes_implied_vol
