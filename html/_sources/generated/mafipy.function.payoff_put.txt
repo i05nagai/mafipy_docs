@@ -1,0 +1,6 @@
+mafipy.function.payoff_put
+==========================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_put

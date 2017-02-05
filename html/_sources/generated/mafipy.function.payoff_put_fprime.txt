@@ -1,0 +1,6 @@
+mafipy.function.payoff_put_fprime
+=================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_put_fprime

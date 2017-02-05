@@ -1,0 +1,6 @@
+mafipy.function.black_scholes_pdf
+=================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: black_scholes_pdf

@@ -1780,6 +1780,73 @@
         <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">bs_delta</span> <span class="o">+</span> <span class="n">bs_vega</span> <span class="o">*</span> <span class="n">backbone</span></div>
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># SABR distribution</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="sabr_cdf"><a class="viewcode-back" href="../../../generated/mafipy.function.sabr_cdf.html#mafipy.function.sabr_cdf">[docs]</a><span class="k">def</span> <span class="nf">sabr_cdf</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sabr_cdf</span>
+<span class="sd">    calculates value of c.d.f. when underlying follows SABR model.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float maturity:</span>
+<span class="sd">    :param float alpha:</span>
+<span class="sd">    :param float beta:</span>
+<span class="sd">    :param float rho:</span>
+<span class="sd">    :param float nu:</span>
+
+<span class="sd">    :return: value of c.d.f. under SABR model.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vol</span> <span class="o">=</span> <span class="n">sabr_implied_vol_hagan</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="n">bs_cdf</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_swaption_cdf</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">bs_vega</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_payers_swaption_vega</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">vol_fprime</span> <span class="o">=</span> <span class="n">sabr_implied_vol_hagan_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bs_cdf</span> <span class="o">+</span> <span class="n">bs_vega</span> <span class="o">*</span> <span class="n">vol_fprime</span></div>
+
+
+<div class="viewcode-block" id="sabr_pdf"><a class="viewcode-back" href="../../../generated/mafipy.function.sabr_pdf.html#mafipy.function.sabr_pdf">[docs]</a><span class="k">def</span> <span class="nf">sabr_pdf</span><span class="p">(</span><span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;sabr_pdf</span>
+<span class="sd">    calculates value of p.d.f. when underlying follows SABR model.</span>
+
+<span class="sd">    :param float underlying:</span>
+<span class="sd">    :param float strike:</span>
+<span class="sd">    :param float maturity:</span>
+<span class="sd">    :param float alpha:</span>
+<span class="sd">    :param float beta:</span>
+<span class="sd">    :param float rho:</span>
+<span class="sd">    :param float nu:</span>
+
+<span class="sd">    :return: value of c.d.f. under SABR model.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mf</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">function</span>
+    <span class="n">vol</span> <span class="o">=</span> <span class="n">sabr_implied_vol_hagan</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="n">bs_pdf</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">black_swaption_pdf</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">bs_vega</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">black_payers_swaption_vega</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">bs_volga</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">black_payers_swaption_volga</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">bs_vega_fprime</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">black_payers_swaption_vega_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="n">vol_fprime</span> <span class="o">=</span> <span class="n">sabr_implied_vol_hagan_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="n">vol_fhess</span> <span class="o">=</span> <span class="n">sabr_implied_vol_hagan_fhess_by_strike</span><span class="p">(</span>
+        <span class="n">underlying</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">maturity</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">nu</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bs_pdf</span>
+            <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">bs_vega_fprime</span> <span class="o">*</span> <span class="n">vol_fprime</span>
+            <span class="o">+</span> <span class="n">bs_volga</span> <span class="o">*</span> <span class="n">vol_fprime</span> <span class="o">*</span> <span class="n">vol_fprime</span>
+            <span class="o">+</span> <span class="n">bs_vega</span> <span class="o">*</span> <span class="n">vol_fhess</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -1,0 +1,6 @@
+mafipy.function.black_swaption_pdf
+==================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: black_swaption_pdf

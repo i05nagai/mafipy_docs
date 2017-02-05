@@ -1,0 +1,6 @@
+mafipy.function.payoff_strangle
+===============================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_strangle

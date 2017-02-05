@@ -438,6 +438,103 @@
     <span class="n">bs_vega</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_scholes_call_vega</span><span class="p">(</span>
         <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">bs_vega</span></div>
+
+
+<div class="viewcode-block" id="black_payers_swaption_volga"><a class="viewcode-back" href="../../../generated/mafipy.function.black_payers_swaption_volga.html#mafipy.function.black_payers_swaption_volga">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_volga</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_payers_swaption_volga</span>
+<span class="sd">    calculates volga of payer&#39;s swaption under black model.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike: swaption strike.</span>
+<span class="sd">    :param float swap_annuity: annuity of referencing swap</span>
+<span class="sd">    :param float option_maturity: swaption maturity.</span>
+<span class="sd">    :param float vol: volatilty. this must be positive.</span>
+
+<span class="sd">    :return: volga.</span>
+<span class="sd">    :rtype: float.</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">bs_volga</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_scholes_call_volga</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">bs_volga</span></div>
+
+
+<div class="viewcode-block" id="black_payers_swaption_vega_fprime_by_strike"><a class="viewcode-back" href="../../../generated/mafipy.function.black_payers_swaption_vega_fprime_by_strike.html#mafipy.function.black_payers_swaption_vega_fprime_by_strike">[docs]</a><span class="k">def</span> <span class="nf">black_payers_swaption_vega_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_payers_swaption_vega_fprime_by_strike</span>
+<span class="sd">    calculates derivative of vega with respect to strike under black model.</span>
+<span class="sd">    This is required for :py:func:`sabr_pdf`.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike: swaption strike.</span>
+<span class="sd">    :param float swap_annuity: annuity of referencing swap</span>
+<span class="sd">    :param float option_maturity: swaption maturity.</span>
+<span class="sd">    :param float vol: volatilty. this must be positive.</span>
+
+<span class="sd">    :return: derivative of vega w.r.t. strike.</span>
+<span class="sd">    :rtype: float.</span>
+
+<span class="sd">    :raises AssertionError: if volatility is not positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">bs_vega_fprime</span> <span class="o">=</span> <span class="n">mafipy</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">black_scholes_call_vega_fprime_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swap_annuity</span> <span class="o">*</span> <span class="n">bs_vega_fprime</span></div>
+
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># black payer&#39;s/reciever&#39;s swaption distribution</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="black_swaption_cdf"><a class="viewcode-back" href="../../../generated/mafipy.function.black_swaption_cdf.html#mafipy.function.black_swaption_cdf">[docs]</a><span class="k">def</span> <span class="nf">black_swaption_cdf</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_swaption_cdf</span>
+<span class="sd">    calculates value of c.d.f. of black swaption.</span>
+<span class="sd">    :py:func:`black_payers_swaption_value_fprime_by_strike`.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike: option strike.</span>
+<span class="sd">    :param float swap_annuity: swap annuity.</span>
+<span class="sd">    :param float option_maturity: maturity of swaption.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
+
+<span class="sd">    :return: value of c.d.f. of black swaption model.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span>
+            <span class="o">+</span> <span class="n">black_payers_swaption_value_fprime_by_strike</span><span class="p">(</span>
+                <span class="n">init_swap_rate</span><span class="p">,</span>
+                <span class="n">option_strike</span><span class="p">,</span>
+                <span class="n">swap_annuity</span><span class="p">,</span>
+                <span class="n">option_maturity</span><span class="p">,</span>
+                <span class="n">vol</span><span class="p">)</span> <span class="o">/</span> <span class="n">swap_annuity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="black_swaption_pdf"><a class="viewcode-back" href="../../../generated/mafipy.function.black_swaption_pdf.html#mafipy.function.black_swaption_pdf">[docs]</a><span class="k">def</span> <span class="nf">black_swaption_pdf</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span> <span class="n">option_strike</span><span class="p">,</span> <span class="n">swap_annuity</span><span class="p">,</span> <span class="n">option_maturity</span><span class="p">,</span> <span class="n">vol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;black_swaption_pdf</span>
+<span class="sd">    calculates value of p.d.f. of black swaption.</span>
+<span class="sd">    :py:func:`black_payers_swaption_value_fhess_by_strike`.</span>
+
+<span class="sd">    :param float init_swap_rate: initial swap rate.</span>
+<span class="sd">    :param float option_strike: option strike.</span>
+<span class="sd">    :param float swap_annuity: swap annuity.</span>
+<span class="sd">    :param float option_maturity: maturity of swaption.</span>
+<span class="sd">    :param float vol: volatility. non-negative.</span>
+
+<span class="sd">    :return: value of p.d.f. of black swaption model.</span>
+<span class="sd">    :rtype: float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">vol</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">black_payers_swaption_value_fhess_by_strike</span><span class="p">(</span>
+        <span class="n">init_swap_rate</span><span class="p">,</span>
+        <span class="n">option_strike</span><span class="p">,</span>
+        <span class="n">swap_annuity</span><span class="p">,</span>
+        <span class="n">option_maturity</span><span class="p">,</span>
+        <span class="n">vol</span><span class="p">)</span> <span class="o">/</span> <span class="n">swap_annuity</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -1,0 +1,6 @@
+mafipy.function.payoff_straddle
+===============================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_straddle

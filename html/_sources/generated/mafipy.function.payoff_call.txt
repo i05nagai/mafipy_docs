@@ -1,0 +1,6 @@
+mafipy.function.payoff_call
+===========================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_call

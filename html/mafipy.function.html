@@ -192,6 +192,29 @@
 <tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_vega.html#mafipy.function.black_payers_swaption_vega" title="mafipy.function.black_payers_swaption_vega"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_vega</span></code></a>(init_swap_rate,&nbsp;...)</td>
 <td>calculates vega of payer&#8217;s swaption under black model.</td>
 </tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_volga.html#mafipy.function.black_payers_swaption_volga" title="mafipy.function.black_payers_swaption_volga"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_volga</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculates volga of payer&#8217;s swaption under black model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_payers_swaption_vega_fprime_by_strike.html#mafipy.function.black_payers_swaption_vega_fprime_by_strike" title="mafipy.function.black_payers_swaption_vega_fprime_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_payers_swaption_vega_fprime_by_strike</span></code></a>(...)</td>
+<td>calculates derivative of vega with respect to strike under black model.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="distribution">
+<h4>Distribution<a class="headerlink" href="#distribution" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_swaption_cdf.html#mafipy.function.black_swaption_cdf" title="mafipy.function.black_swaption_cdf"><code class="xref py py-obj docutils literal"><span class="pre">black_swaption_cdf</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculates value of c.d.f. of black swaption.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_swaption_pdf.html#mafipy.function.black_swaption_pdf" title="mafipy.function.black_swaption_pdf"><code class="xref py py-obj docutils literal"><span class="pre">black_swaption_pdf</span></code></a>(init_swap_rate,&nbsp;...)</td>
+<td>calculates value of p.d.f. of black swaption.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -273,6 +296,26 @@
 <tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_rho.html#mafipy.function.black_scholes_call_rho" title="mafipy.function.black_scholes_call_rho"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_rho</span></code></a>(underlying,&nbsp;strike,&nbsp;...)</td>
 <td>calculates black scholes rho.</td>
 </tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_call_vega_fprime_by_strike.html#mafipy.function.black_scholes_call_vega_fprime_by_strike" title="mafipy.function.black_scholes_call_vega_fprime_by_strike"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_call_vega_fprime_by_strike</span></code></a>(...)</td>
+<td>calculates derivative of black scholes vega with respect to strike.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id3">
+<h4>Distribution<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_cdf.html#mafipy.function.black_scholes_cdf" title="mafipy.function.black_scholes_cdf"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_cdf</span></code></a>(underlying,&nbsp;strike,&nbsp;rate,&nbsp;...)</td>
+<td>calculates value of c.d.f. of black scholes model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.black_scholes_pdf.html#mafipy.function.black_scholes_pdf" title="mafipy.function.black_scholes_pdf"><code class="xref py py-obj docutils literal"><span class="pre">black_scholes_pdf</span></code></a>(underlying,&nbsp;strike,&nbsp;rate,&nbsp;...)</td>
+<td>calculates value of p.d.f. of black scholes model.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -281,10 +324,54 @@
 <h3>Local Volatility model<a class="headerlink" href="#local-volatility-model" title="Permalink to this headline">¶</a></h3>
 <p>To be displayed.</p>
 </div>
+<div class="section" id="payoff-functions">
+<h3>Payoff functions<a class="headerlink" href="#payoff-functions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.payoff_call.html#mafipy.function.payoff_call" title="mafipy.function.payoff_call"><code class="xref py py-obj docutils literal"><span class="pre">payoff_call</span></code></a>(underlying,&nbsp;strike[,&nbsp;gearing])</td>
+<td>Payoff of call option.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.payoff_call_fprime.html#mafipy.function.payoff_call_fprime" title="mafipy.function.payoff_call_fprime"><code class="xref py py-obj docutils literal"><span class="pre">payoff_call_fprime</span></code></a>(underlying,&nbsp;strike[,&nbsp;gearing])</td>
+<td>derivative of payoff of call option with respect to underlying.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.payoff_put.html#mafipy.function.payoff_put" title="mafipy.function.payoff_put"><code class="xref py py-obj docutils literal"><span class="pre">payoff_put</span></code></a>(underlying,&nbsp;strike[,&nbsp;gearing])</td>
+<td>Payoff of put option.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.payoff_put_fprime.html#mafipy.function.payoff_put_fprime" title="mafipy.function.payoff_put_fprime"><code class="xref py py-obj docutils literal"><span class="pre">payoff_put_fprime</span></code></a>(underlying,&nbsp;strike[,&nbsp;gearing])</td>
+<td>derivative of payoff of call option with respect to underlying.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.payoff_bull_spread.html#mafipy.function.payoff_bull_spread" title="mafipy.function.payoff_bull_spread"><code class="xref py py-obj docutils literal"><span class="pre">payoff_bull_spread</span></code></a>(underlying,&nbsp;lower_strike,&nbsp;...)</td>
+<td>Buy call option with lower_strike <span class="math">\(K_{\mathrm{lower}}\)</span> and sell put option with upper_strike <span class="math">\(K_{\mathrm{upper}}\)</span>.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.payoff_bull_spread_fprime.html#mafipy.function.payoff_bull_spread_fprime" title="mafipy.function.payoff_bull_spread_fprime"><code class="xref py py-obj docutils literal"><span class="pre">payoff_bull_spread_fprime</span></code></a>(underlying,&nbsp;...[,&nbsp;...])</td>
+<td>calculate value of derivative of payoff of bull spread option</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.payoff_straddle.html#mafipy.function.payoff_straddle" title="mafipy.function.payoff_straddle"><code class="xref py py-obj docutils literal"><span class="pre">payoff_straddle</span></code></a>(underlying,&nbsp;strike[,&nbsp;gearing])</td>
+<td>Buy call option and put option at same time with same strike.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.payoff_strangle.html#mafipy.function.payoff_strangle" title="mafipy.function.payoff_strangle"><code class="xref py py-obj docutils literal"><span class="pre">payoff_strangle</span></code></a>(underlying,&nbsp;lower_strike,&nbsp;...)</td>
+<td>Buy call option and put option at same time with different strike.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.payoff_butterfly_spread.html#mafipy.function.payoff_butterfly_spread" title="mafipy.function.payoff_butterfly_spread"><code class="xref py py-obj docutils literal"><span class="pre">payoff_butterfly_spread</span></code></a>(underlying,&nbsp;...[,&nbsp;...])</td>
+<td>Butterfly option consists of following options:</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.payoff_risk_reversal.html#mafipy.function.payoff_risk_reversal" title="mafipy.function.payoff_risk_reversal"><code class="xref py py-obj docutils literal"><span class="pre">payoff_risk_reversal</span></code></a>(underlying,&nbsp;...[,&nbsp;gearing])</td>
+<td><ul class="simple">
+<li>Sell 1 out of the money put option.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="sabr-model">
 <h3>SABR model<a class="headerlink" href="#sabr-model" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id3">
-<h4>Basics<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id4">
+<h4>Basics<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
@@ -306,8 +393,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="id4">
-<h4>Greeks<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id5">
+<h4>Greeks<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
@@ -328,6 +415,23 @@
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_payers_swaption_delta.html#mafipy.function.sabr_payers_swaption_delta" title="mafipy.function.sabr_payers_swaption_delta"><code class="xref py py-obj docutils literal"><span class="pre">sabr_payers_swaption_delta</span></code></a>(init_swap_rate,&nbsp;...)</td>
 <td>calculate payer&#8217;s swaption delta under SABR model.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h4>Distribution<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/mafipy.function.sabr_cdf.html#mafipy.function.sabr_cdf" title="mafipy.function.sabr_cdf"><code class="xref py py-obj docutils literal"><span class="pre">sabr_cdf</span></code></a>(underlying,&nbsp;strike,&nbsp;maturity,&nbsp;...)</td>
+<td>calculates value of c.d.f. when underlying follows SABR model.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/mafipy.function.sabr_pdf.html#mafipy.function.sabr_pdf" title="mafipy.function.sabr_pdf"><code class="xref py py-obj docutils literal"><span class="pre">sabr_pdf</span></code></a>(underlying,&nbsp;strike,&nbsp;maturity,&nbsp;...)</td>
+<td>calculates value of p.d.f. when underlying follows SABR model.</td>
 </tr>
 </tbody>
 </table>

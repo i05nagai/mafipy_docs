@@ -1,0 +1,6 @@
+mafipy.function.payoff_call_fprime
+==================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_call_fprime

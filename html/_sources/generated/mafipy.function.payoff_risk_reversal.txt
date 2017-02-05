@@ -1,0 +1,6 @@
+mafipy.function.payoff_risk_reversal
+====================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_risk_reversal

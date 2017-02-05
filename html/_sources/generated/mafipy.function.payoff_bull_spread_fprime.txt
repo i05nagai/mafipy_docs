@@ -1,0 +1,6 @@
+mafipy.function.payoff_bull_spread_fprime
+=========================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_bull_spread_fprime

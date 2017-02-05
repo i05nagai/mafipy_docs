@@ -1,0 +1,6 @@
+mafipy.function.payoff_butterfly_spread
+=======================================
+
+.. currentmodule:: mafipy.function
+
+.. autofunction:: payoff_butterfly_spread
